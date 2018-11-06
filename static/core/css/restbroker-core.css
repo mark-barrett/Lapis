@@ -1,8 +1,15 @@
 /* RESTBroker Core CSS File
    Created By: Mark Barrett
 */
+html {
+    height: 100%;
+    overflow: auto;
+}
+
 body {
     font-family: 'Titillium Web', sans-serif;
+    height: 100%;
+    overflow: auto;
 }
 
 .main-background {
@@ -46,7 +53,7 @@ body {
 
 .sidebar-wrapper {
     padding: 0px;
-    height:100vh;
+    flex: 1;
 }
 
 .page-wrapper {
@@ -86,18 +93,12 @@ body {
     padding-bottom: 10px;
 }
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> master
 .project {
     padding-left: 20px;
 }
 
 .page-content {
     padding: 20px;
-<<<<<<< HEAD
 }
 
 .request {
@@ -158,6 +159,16 @@ body {
 .inside-padding {
     padding-left: 10px;
     padding-right: 10px;
-=======
->>>>>>> master
+}
+
+.btn-default {
+    color: #29C761;
+}
+
+.btn-default:hover {
+    color: black;
+}
+
+.subtext {
+    font-size: 20px;
 }

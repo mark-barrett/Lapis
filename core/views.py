@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -9,11 +8,6 @@ from django.views import View
 from core.forms import *
 from core.models import *
 
-=======
-from django.shortcuts import render
-from django.views import View
-
->>>>>>> master
 
 class Home(View):
 
@@ -21,12 +15,9 @@ class Home(View):
         return render(request, 'core/home.html')
 
 
-<<<<<<< HEAD
     def post(self, request):
         username = request.POST['username']
         password = request.POST['password']
-
-        print("Here")
 
         # Try log the user in
         user = authenticate(username=username, password=password)
@@ -113,10 +104,11 @@ class CreateProject(LoginRequiredMixin, View):
     def get(self, request):
         context = {
             'form': ProjectForm(request=request),
-            'projects': Project.objects.all().filter(user=request.user)
+            'projects': Project.objects.all().filter(user=request.user),
+            'action': 'Create'
         }
 
-        return render(request, 'core/create-project.html', context)
+        return render(request, 'core/create-edit-project.html', context)
 
     def post(self, request):
         form = ProjectForm(request.POST, request=request)
@@ -134,7 +126,7 @@ class CreateProject(LoginRequiredMixin, View):
                 'form': form,
                 'projects': Project.objects.all().filter(user=request.user)
             }
-            return render(request, 'core/create-project.html', context)
+            return render(request, 'core/create-edit-project.html', context)
 
 
 class ViewProject(LoginRequiredMixin, View):
@@ -160,9 +152,95 @@ class ViewProject(LoginRequiredMixin, View):
         except:
             messages.error(request, 'Project does not exist.')
             return redirect('/dashboard')
-=======
-class Dashboard(View):
 
-    def get(self, request):
-        return render(request, 'core/dashboard.html')
->>>>>>> master
+
+class EditProject(LoginRequiredMixin, View):
+    login_url = '/'
+
+    def get(self, request, project_id):
+
+        try:
+            # Get the project
+            project = Project.objects.get(id=project_id)
+
+            # Check to make sure the user viewing this project is the owner of it
+            if project.user == request.user:
+
+                context = {
+                    'form': ProjectForm(instance=project),
+                    'projects': Project.objects.all().filter(user=request.user),
+                    'action': 'Edit'
+                }
+
+                return render(request, 'core/create-edit-project.html', context)
+            else:
+                messages.error(request, 'Sorry, we can\'t seem to find what you were looking for.')
+                return redirect('/dashboard')
+        except:
+            messages.error(request, 'Project does not exist.')
+            return redirect('/dashboard')
+
+
+    def post(self, request, project_id):
+
+        project = Project.objects.get(id=project_id)
+
+        form = ProjectForm(request.POST, instance=project, request=request, project_id=project_id)
+
+        if form.is_valid():
+            project = form.save(commit=False)
+
+            project.user = request.user
+
+            project.save()
+
+            messages.success(request, 'Project edited successfully.')
+            return redirect('/project/' + str(project.id))
+        else:
+            context = {
+                'form': form,
+                'projects': Project.objects.all().filter(user=request.user)
+            }
+            return render(request, 'core/create-edit-project.html', context)
+
+
+class DeleteProject(LoginRequiredMixin, View):
+    login_url = '/'
+
+    def get(self, request, project_id):
+        # Get the project
+        project = Project.objects.get(id=project_id)
+
+        # Check the ownership
+        if project.user == request.user:
+            # Confirmed that they own the project. Delete and redirect to the dashboard with a message.
+            project.delete()
+
+            messages.success(request, 'Successfully deleted project.')
+            return redirect('/dashboard')
+
+
+class BuildDatabase(LoginRequiredMixin, View):
+    login_url = '/'
+
+    def get(self, request, project_id):
+        try:
+            # Get the project
+            project = Project.objects.get(id=project_id)
+
+            # Check to make sure the user viewing this project is the owner of it
+            if project.user == request.user:
+
+                context = {
+                    'form': DatabaseBuilderForm(),
+                    'projects': Project.objects.all().filter(user=request.user)
+                }
+
+                return render(request, 'core/build-database.html', context)
+            else:
+                messages.error(request, 'Sorry, we can\'t seem to find what you were looking for.')
+                return redirect('/dashboard')
+        except Exception as e:
+            print(e)
+            messages.error(request, 'Project does not exist.')
+            return redirect('/dashboard')

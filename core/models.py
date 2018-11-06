@@ -26,13 +26,13 @@ def create_user_account(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.account.save()
-<<<<<<< HEAD
 
 
 class Project(models.Model):
     name = models.CharField(max_length=64)
     description = models.TextField()
     user = models.ForeignKey(User)
+    database_built = models.BooleanField(default=False)
 
     class Meta:
         unique_together = (('name', 'user'))
@@ -40,5 +40,3 @@ class Project(models.Model):
 
     def __str__(self):
         return 'User: '+self.user.username+' Project:'+self.name
-=======
->>>>>>> master
