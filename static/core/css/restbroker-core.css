@@ -86,12 +86,18 @@ body {
     padding-bottom: 10px;
 }
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> master
 .project {
     padding-left: 20px;
 }
 
 .page-content {
     padding: 20px;
+<<<<<<< HEAD
 }
 
 .request {
@@ -152,4 +158,6 @@ body {
 .inside-padding {
     padding-left: 10px;
     padding-right: 10px;
+=======
+>>>>>>> master
 }

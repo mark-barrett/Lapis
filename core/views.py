@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -8,6 +9,11 @@ from django.views import View
 from core.forms import *
 from core.models import *
 
+=======
+from django.shortcuts import render
+from django.views import View
+
+>>>>>>> master
 
 class Home(View):
 
@@ -15,6 +21,7 @@ class Home(View):
         return render(request, 'core/home.html')
 
 
+<<<<<<< HEAD
     def post(self, request):
         username = request.POST['username']
         password = request.POST['password']
@@ -153,3 +160,9 @@ class ViewProject(LoginRequiredMixin, View):
         except:
             messages.error(request, 'Project does not exist.')
             return redirect('/dashboard')
+=======
+class Dashboard(View):
+
+    def get(self, request):
+        return render(request, 'core/dashboard.html')
+>>>>>>> master
