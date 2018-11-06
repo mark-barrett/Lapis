@@ -16,18 +16,22 @@
                 </div>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#"><i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard</a>
+                        <a class="nav-link active" href="{% url 'dashboard' %}"><i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard</a>
                     </li>
 
                     <li class="separator"><i class="fa fa-archive" aria-hidden="true"></i> Projects</li>
-                    <li class="nav-item project">
-                        <a class="nav-link" href="#">Ticketr</a>
-                    </li>
-                    <li class="nav-item project">
-                        <a class="nav-link" href="#">Test App</a>
-                    </li>
-                    <li class="nav-item project">
-                        <a class="nav-link" href="#"><i class="fa fa-plus" aria-hidden="true"></i> New Project</a>
+
+                    {% if projects %}
+                        {% for project in projects %}
+                            <li class="nav-item project">
+                                <a class="nav-link" href="/project/{{ project.id }}">{{ project.name }}</a>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        <p class="project text-white">No projects yet.</p>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'create-project' %}"><i class="fa fa-plus" aria-hidden="true"></i> New Project</a>
                     </li>
                 </ul>
             </div>
@@ -45,12 +49,12 @@
                     <ul class="navbar-nav my-2 my-lg-0">
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-user" aria-hidden="true"></i> Logged in as Mark
+                                <i class="fa fa-user" aria-hidden="true"></i> Logged in as {{ request.user.username }}
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="#">Account</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Logout</a>
+                                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
                             </div>
                         </li>
                     </ul>

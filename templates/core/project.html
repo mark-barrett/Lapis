@@ -1,0 +1,35 @@
+{% extends 'core/nav-bar.html' %}
+
+{# Load static templating tag to be able to use it to get paths to static files #}
+{% load static %}
+
+{# Set the title and background color for the base.html file. #}
+{% block title %}RESTBroker - Dashboard{% endblock %}
+
+{% block page-content %}
+<div class="page-content">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    <div class="float-right"><br/><a href="/create/endpoint/{{ project.id }}" class="btn btn-success">Create Endpoint</a></div>
+    <h1 class="title-name">{{ project.name }}</h1>
+    <p class="title-description">{{ project.description }}</p>
+    <hr/>
+
+    {% if endpoints %}
+    {% else %}
+        <div class="card">
+            <div class="card-body">
+                <div class="text-center">
+                    <h1><i class="fa fa-frown-o" aria-hidden="true"></i></h1>
+                    <h3>No Endpoints Yet<br/><small>Start your next idea by creating one now!</small></h3>
+                    <a href="/create/endpoint/{{ project.id }}" class="btn btn-success">Create Endpoint</a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

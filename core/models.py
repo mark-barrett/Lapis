@@ -26,3 +26,16 @@ def create_user_account(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.account.save()
+
+
+class Project(models.Model):
+    name = models.CharField(max_length=64)
+    description = models.TextField()
+    user = models.ForeignKey(User)
+
+    class Meta:
+        unique_together = (('name', 'user'))
+        verbose_name_plural = 'Projects'
+
+    def __str__(self):
+        return 'User: '+self.user.username+' Project:'+self.name

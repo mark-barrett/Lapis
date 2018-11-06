@@ -33,13 +33,13 @@
                                         <div class="input-group-prepend">
                                             <span style="background-color: white;" class="input-group-text" id="basic-addon1"><i class="fa fa-user"></i></span>
                                         </div>
-                                        <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" required="required">
+                                        <input type="text" class="form-control" placeholder="Username" aria-label="Username" name="username" aria-describedby="basic-addon1" required="required">
                                     </div>
                                     <div class="input-group mb-3" style="padding-top: 5px;">
                                         <div class="input-group-prepend">
                                             <span style="background-color: white;" class="input-group-text" id="basic-addon1"><i class="fa fa-lock"></i></span>
                                         </div>
-                                        <input type="password" class="form-control" placeholder="Password" aria-label="Username" aria-describedby="basic-addon1" required="required">
+                                        <input type="password" class="form-control" placeholder="Password" aria-label="Username" name="password" aria-describedby="basic-addon1" required="required">
                                     </div>
 
                                     {% csrf_token %}
@@ -48,7 +48,7 @@
                                 <hr/>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <a href="" class="btn btn-block btn-secondary">Register</a>
+                                        <a href="{% url 'sign-up' %}" class="btn btn-block btn-secondary">Sign Up</a>
                                     </div>
                                     <div class="col-md-6">
                                         <a href="" class="btn btn-block btn-secondary">Forgot Password</a>
