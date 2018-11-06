@@ -86,12 +86,50 @@ body {
     padding-bottom: 10px;
 }
 
-
-
 .project {
     padding-left: 20px;
 }
 
 .page-content {
     padding: 20px;
+}
+
+.request {
+    border-top-left-radius: .25rem;
+    border-bottom-left-radius: .25rem;
+    height: 80px;
+    line-height: 80px;
+    font-size: 45px;
+    text-align: center;
+}
+
+.request-post {
+    background-color: #1C7CD5;
+}
+
+.request-get {
+    background-color: #F0AD4E;
+}
+
+.request-put {
+    background-color: #D9534F;
+}
+
+.endpoint-information {
+    padding-top: 10px;
+}
+
+.larger-font {
+    font-size: 45px;
+}
+
+.endpoint {
+    padding-left: 1rem;
+    height: 80px;
+}
+
+.manage-endpoint {
+    height: 70px;
+    line-height: 70px;
+    text-align: right;
 }
