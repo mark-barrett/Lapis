@@ -15,6 +15,9 @@ from sshtunnel import SSHTunnelForwarder
 
 import MySQLdb as db
 
+from core.tasks import build_database
+
+
 class Home(View):
 
     def get(self, request):
@@ -239,6 +242,7 @@ class BuildDatabase(LoginRequiredMixin, View):
 
                 context = {
                     'form': DatabaseBuilderForm(),
+                    'project_id': project_id,
                     'projects': Project.objects.all().filter(user=request.user)
                 }
 
@@ -252,9 +256,8 @@ class BuildDatabase(LoginRequiredMixin, View):
             return redirect('/dashboard')
 
 
-class BuildDatabaseSSH(View):
+    def post(self, request, project_id):
 
-    def post(self, request):
         try:
             ssh_address = request.POST['ssh_address']
             ssh_user = request.POST['ssh_user']
@@ -263,36 +266,35 @@ class BuildDatabaseSSH(View):
             database_user = request.POST['database_user']
             database_password = request.POST['database_password']
 
-            # Now that we have all of the information let us test the SSH Tunnel.
             try:
+                # Get the project
+                project = Project.objects.get(id=project_id)
 
-                with SSHTunnelForwarder(
-                    (ssh_address, 22),
-                    ssh_username=ssh_user,
-                    ssh_password=ssh_password,
-                    remote_bind_address=('127.0.0.1', 3306)
-                ) as server:
-                    try:
-                        conn = db.connect(host='localhost', port=server.local_bind_port,
-                                      user=database_user, password=database_password,
-                                      database=database_name)
+                # Check to make sure the user viewing this project is the owner of it
+                if project.user == request.user:
 
-                        conn.close()
-                    except Exception as e:
+                    # Now that we have all of the information let us test the SSH Tunnel.
+                    # Pass it to Celery to deal with
+                    async_result = build_database.delay(project_id=project.id, ssh_address=ssh_address, ssh_user=ssh_user,
+                                                        ssh_password=ssh_password, database_name=database_name,
+                                                        database_user=database_user,
+                                                        database_password=database_password)
 
-                        response = {
-                            'message': str(e)
-                        }
-                        return HttpResponse(json.dumps(response), content_type='application/json')
+                    response = {
+                        'message': async_result.get()
+                    }
 
-                server.start()
+                    print(response)
 
+                    return HttpResponse(json.dumps(response), content_type='application/json')
+
+                else:
+                    messages.error(request, 'Sorry, we can\'t seem to find what you were looking for.')
+                    return redirect('/dashboard')
             except Exception as e:
-
-                response = {
-                    'message': str(e)
-                }
-                return HttpResponse(json.dumps(response), content_type='application/json')
+                print(e)
+                messages.error(request, 'Project does not exist.')
+                return redirect('/dashboard')
 
         except Exception as e:
 

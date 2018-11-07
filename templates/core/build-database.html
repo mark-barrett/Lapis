@@ -52,23 +52,6 @@
                 </div>
             </div>
             <br/>
-            <h3>Database Information</h3>
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-4">
-                            {{ form.database_name|as_crispy_field }}
-                        </div>
-                        <div class="col-md-4">
-                            {{ form.database_user|as_crispy_field }}
-                        </div>
-                        <div class="col-md-4">
-                            {{ form.database_password|as_crispy_field }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br/>
             <h3>SSH Information</h3>
             <div class="card">
                 <div class="card-body">
@@ -85,6 +68,25 @@
                     </div>
                 </div>
             </div>
+            <br/>
+            <h3>Database Information</h3>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            {{ form.database_name|as_crispy_field }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.database_user|as_crispy_field }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.database_password|as_crispy_field }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% csrf_token %}
+            <input type="hidden" value="{{ project_id }}" name="project_id" id="project_id">
             <br/>
             <button type="button" id="build-database" class="btn btn-block btn-success">Build Database</button><br/>
         </form>

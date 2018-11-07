@@ -11,23 +11,26 @@ $('#build-database').click(function() {
     var serverAddress = $('#id_server_address').val();
     var sshUser = $('#id_ssh_user').val();
     var sshPassword = $('#id_ssh_password').val();
+    var projectID = $('#project_id').val();
+    var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+
 
     // If no database name was given
     if(databaseName.length === 0){
         // Raise an error
-        errorDiv.html('<div class="alert alert-danger">Cannot test connection as no database name was given.</div>');
+        toastr.error('Cannot test connection as no database name was given.');
     } else if(databaseUser.length == 0) {
         // Raise an error
-        errorDiv.html('<div class="alert alert-danger">Cannot test connection as no database user was given.</div>');
+        toastr.error('Cannot test connection as no database user was given.');
     } else if(serverAddress.length == 0) {
         // Raise an error
-        errorDiv.html('<div class="alert alert-danger">Cannot test connection as no server address was given.</div>');
+        toastr.error('Cannot test connection as no server address was given.');
     } else if(sshUser.length == 0) {
         // Raise an error
-        errorDiv.html('<div class="alert alert-danger">Cannot test connection as no SSH user was given.</div>');
+        toastr.error('Cannot test connection as no SSH user was given.');
     } else if(sshPassword.length == 0) {
         // Raise an error
-        errorDiv.html('<div class="alert alert-danger">Cannot test connection as no SSH password was given.</div>');
+        toastr.error('Cannot test connection as no SSH password was given.');
     } else {
         errorDiv.html('');
 
@@ -46,20 +49,24 @@ $('#build-database').click(function() {
             'database_password': databasePassword
         };
 
+        var buildingDatabaseLoader = $('#building-database-loader');
+
         // Let's test the connection. Send a request to test connection view
         $.ajax({
-            url: '/build-database',
+            url: '/build-database/'+projectID,
             type: 'POST',
             contentType: 'application/x-www-form-urlencoded',
+            headers: { "X-CSRFToken": csrfToken },
             data: postData,
             success: function(data) {
-                if(data.hasOwnProperty('success')) {
-                    alert('Epic!');
+                if(data['message'] == 'Built Database') {
+                    buildingDatabaseLoader.html('<i class="fa fa-check" aria-hidden="true"></i> Database Build Successful<br/><small>Let us finalise some things and we will redirect you.</small>');
+                    setTimeout(window.location.href = '/project/'+projectID, 50000);
                 } else {
                     // Remove the blur and loading screen
                     pageContent.removeClass('blur');
                     $('#building-database-loader').remove();
-                    errorDiv.html('<div class="alert alert-danger">'+data['message']+'</div>');
+                    toastr.error('Error Building Database: '+data['message']);
                 }
             },
             error: function(data) {

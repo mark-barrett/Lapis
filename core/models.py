@@ -40,3 +40,30 @@ class Project(models.Model):
 
     def __str__(self):
         return 'User: '+self.user.username+' Project:'+self.name
+
+
+class Database(models.Model):
+    name = models.CharField(max_length=64)
+    user = models.CharField(max_length=64)
+    password = models.CharField(max_length=256)
+    ssh_username = models.CharField(max_length=64)
+    ssh_password = models.CharField(max_length=256)
+    server_address = models.CharField(max_length=32)
+    project = models.ForeignKey(Project)
+
+    class Meta:
+        verbose_name_plural = 'Databases'
+
+    def __str__(self):
+        return 'Project: '+self.project.name +' Database: '+self.name
+
+
+class DatabaseTable(models.Model):
+    name = models.CharField(max_length=64)
+    database = models.ForeignKey(Database)
+
+    class Meta:
+        verbose_name_plural = 'Database Tables'
+
+    def __str__(self):
+        return 'Database: '+self.database.name+' Table: '+self.name
