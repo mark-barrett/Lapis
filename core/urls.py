@@ -2,6 +2,7 @@
 # http://markbarrettdesign.com
 # https://github.com/mark-barrett
 from django.conf.urls import url, include
+from django.views.decorators.csrf import csrf_exempt
 
 from core import admin
 from core import views
@@ -16,4 +17,5 @@ urlpatterns = [
     url(r'^project/edit/(?P<project_id>[0-9]+)$', views.EditProject.as_view(), name='edit-project'),
     url(r'^project/delete/(?P<project_id>[0-9]+)$', views.DeleteProject.as_view(), name='delete-project'),
     url(r'^build-database/(?P<project_id>[0-9]+)$', views.BuildDatabase.as_view(), name='build-database'),
+    url(r'^build-database', csrf_exempt(views.BuildDatabaseSSH.as_view()), name='build-database'),
 ]

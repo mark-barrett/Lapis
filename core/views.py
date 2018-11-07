@@ -1,13 +1,19 @@
+import json
+
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views import View
 
 from core.forms import *
 from core.models import *
 
+from sshtunnel import SSHTunnelForwarder
+
+import MySQLdb as db
 
 class Home(View):
 
@@ -244,3 +250,53 @@ class BuildDatabase(LoginRequiredMixin, View):
             print(e)
             messages.error(request, 'Project does not exist.')
             return redirect('/dashboard')
+
+
+class BuildDatabaseSSH(View):
+
+    def post(self, request):
+        try:
+            ssh_address = request.POST['ssh_address']
+            ssh_user = request.POST['ssh_user']
+            ssh_password = request.POST['ssh_password']
+            database_name = request.POST['database_name']
+            database_user = request.POST['database_user']
+            database_password = request.POST['database_password']
+
+            # Now that we have all of the information let us test the SSH Tunnel.
+            try:
+
+                with SSHTunnelForwarder(
+                    (ssh_address, 22),
+                    ssh_username=ssh_user,
+                    ssh_password=ssh_password,
+                    remote_bind_address=('127.0.0.1', 3306)
+                ) as server:
+                    try:
+                        conn = db.connect(host='localhost', port=server.local_bind_port,
+                                      user=database_user, password=database_password,
+                                      database=database_name)
+
+                        conn.close()
+                    except Exception as e:
+
+                        response = {
+                            'message': str(e)
+                        }
+                        return HttpResponse(json.dumps(response), content_type='application/json')
+
+                server.start()
+
+            except Exception as e:
+
+                response = {
+                    'message': str(e)
+                }
+                return HttpResponse(json.dumps(response), content_type='application/json')
+
+        except Exception as e:
+
+            response = {
+                'message': str(e)
+            }
+            return HttpResponse(json.dumps(response), content_type='application/json')

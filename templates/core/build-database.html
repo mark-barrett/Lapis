@@ -11,7 +11,7 @@
 
 {% block page-content %}
 
-    <div class="page-content">
+    <div id="page-content" class="page-content">
         {% if messages %}
             {% for message in messages %}
                 <div class="alert alert-{{ message.tags }}">{{ message }}</div>
@@ -19,6 +19,10 @@
         {% endif %}
         <h1 class="title-name">Build Database</h1>
         <p class="title-description">Link your database to your project and build a schema to build endpoints.</p>
+
+        <div id="database-builder-connection-messages">
+
+        </div>
 
         <form method="post" action="" name="build-database">
             <h3>Database Type</h3>
@@ -52,11 +56,14 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             {{ form.database_name|as_crispy_field }}
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             {{ form.database_user|as_crispy_field }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.database_password|as_crispy_field }}
                         </div>
                     </div>
                 </div>
@@ -66,17 +73,23 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
+                            {{ form.server_address|as_crispy_field }}
+                        </div>
+                        <div class="col-md-4">
                             {{ form.ssh_user|as_crispy_field }}
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             {{ form.ssh_password|as_crispy_field }}
                         </div>
                     </div>
                 </div>
             </div>
+            <br/>
+            <button type="button" id="build-database" class="btn btn-block btn-success">Build Database</button><br/>
         </form>
 
     </div>
-    {% include 'core/footer.html' %}
+    <br/>
+    {% include 'core/footer.html' with color="black" %}
 {% endblock %}
