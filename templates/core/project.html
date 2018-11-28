@@ -20,7 +20,7 @@
             Delete Project
         </button>
         {% if project.database_built %}
-            <a href="/create/endpoint/{{ project.id }}" class="btn btn-success">Create Endpoint</a>
+            <a href="/endpoint/create/{{ project.id }}" class="btn btn-success">Create Endpoint</a>
         {% endif %}
     </div>
     <h1 class="title-name">{{ project.name }}</h1>

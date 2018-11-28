@@ -311,7 +311,60 @@ class CreateEndpoint(LoginRequiredMixin, View):
 
         context = {
             'form': EndpointForm(request=request),
+            'project_id': project_id,
             'projects': Project.objects.all().filter(user=request.user)
         }
 
         return render(request, 'core/create-endpoint.html', context)
+
+
+    def post(self, request, project_id):
+        form = EndpointForm(request.POST, request=request)
+
+        if form.is_valid():
+            # Get the values from the form, set it to a session and send back to the same page
+            endpoint = {
+                'project': project_id,
+                'name': form.cleaned_data['name'],
+                'description': form.cleaned_data['description'],
+                'request': {
+                    'type': form.cleaned_data['request_type'],
+                    'url': form.cleaned_data['endpoint_url'],
+                    'headers': [],
+                    'parameters': []
+                }
+            }
+
+            # Get the headers as lists
+            header_keys = request.POST.getlist('header-key')
+            header_value = request.POST.getlist('header-value')
+            header_description = request.POST.getlist('header-description')
+
+            # Loop through the keys and add the headers to the endpoint object.
+            for index, key in enumerate(header_keys):
+                header = {
+                    'key': key,
+                    'value': header_value[index],
+                    'description': header_description[index]
+                }
+
+                endpoint['request']['headers'].append(header)
+
+            # Get the parameters as lists
+            parameter_types = request.POST.getlist('parameter-type')
+            parameter_keys = request.POST.getlist('parameter-key')
+
+            # Loop through them and add them to the endpoint
+            for index, key in enumerate(parameter_keys):
+                parameter = {
+                    'type': parameter_types[index],
+                    'key': key
+                }
+
+                endpoint['request']['parameters'].append(parameter)
+
+            # Set this as a session variable.
+            request.session['endpoint'] = endpoint
+
+            # Now that the session is set, redirect back to create an endpoint to create the response
+            return redirect('/endpoint/create/'+project_id)

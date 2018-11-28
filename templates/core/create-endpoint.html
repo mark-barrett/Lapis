@@ -18,49 +18,84 @@
         {% endif %}
         <h1 class="title-name">Create Endpoint</h1>
         <p class="title-description">Build and endpoint.</p>
-        <div>
-            <div class="card">
-                <div class="card-header">Endpoint: Basic Information</div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            {{ form.name|as_crispy_field }}
-                        </div>
-                        <div class="col-md-6">
-                            {{ form.description|as_crispy_field }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br/>
-            <div class="card">
-                <div class="card-header">Request: Data</div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            {{ form.request_type|as_crispy_field }}
-                        </div>
-                        <div class="col-md-6">
-                            {{ form.endpoint_url|as_crispy_field }}
-                        </div>
-                    </div>
-                    <strong>Headers</strong>
-                    <div id="headers">
 
+        {% if request.session.endpoint and request.session.endpoint.project == project_id %}
+            <div class="alert alert-info" role="alert">
+                Request for {{ request.session.endpoint.name }} endpoint is complete. Continue below. Click here to start from scratch?
+            </div>
+
+            <form name="create-endpoint" method="post" action="">
+                <div>
+                    <div class="card">
+                        <div class="card-header">Response: Basic Information</div>
+                        <div class="card-body">
+                            {{ form.response_type|as_crispy_field }}
+                        </div>
                     </div>
-                    <button type="button" id="add-header" class="btn btn-success btn-block btn-sm"><i class="fa fa-plus"></i> Add Header</button>
+
                     <br/>
-                    <strong>Parameters</strong>
-                    <div id="parameters">
+
+                    <div id="data-sources">
 
                     </div>
-                    <button type="button" id="add-parameter" class="btn btn-success btn-block btn-sm"><i class="fa fa-plus"></i> Add Parameters</button>
+
+                    <button type="button" id="add-data-source" class="btn btn-secondary btn-block"><i class="fa fa-plus"></i> Add Data Source</button>
+
+                    <br/>
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success btn-block">Continue <i class="fa fa-arrow-right"></i></button>
+                    <br/>
                 </div>
-            </div>
-            <br/>
-            <button type="button" class="btn btn-success btn-block">Continue <i class="fa fa-arrow-right"></i></button>
-            <br/>
-        </div>
+            </form>
+
+        {% else %}
+            <form name="create-endpoint" method="post" action="">
+                <div>
+                    <div class="card">
+                        <div class="card-header">Endpoint: Basic Information</div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {{ form.name|as_crispy_field }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ form.description|as_crispy_field }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="card">
+                        <div class="card-header">Request: Data</div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {{ form.request_type|as_crispy_field }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ form.endpoint_url|as_crispy_field }}
+                                </div>
+                            </div>
+                            <strong>Headers</strong>
+                            <div id="headers">
+
+                            </div>
+                            <button type="button" id="add-header" class="btn btn-secondary btn-block btn-sm"><i class="fa fa-plus"></i> Add Header</button>
+                            <br/>
+                            <strong>Parameters</strong>
+                            <div id="parameters">
+
+                            </div>
+                            <button type="button" id="add-parameter" class="btn btn-secondary btn-block btn-sm"><i class="fa fa-plus"></i> Add Parameters</button>
+                        </div>
+                    </div>
+                    <br/>
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success btn-block">Continue <i class="fa fa-arrow-right"></i></button>
+                    <br/>
+                </div>
+            </form>
+        {% endif %}
         <br/>
         {% include 'core/footer.html' with color="black" %}
     </div>

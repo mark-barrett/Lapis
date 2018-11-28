@@ -80,9 +80,10 @@ class EndpointForm(forms.Form):
 
     name = forms.CharField(max_length=64)
     description = forms.CharField(max_length=64)
-
     request_type = forms.ChoiceField(choices=REQUEST_CHOICES)
     endpoint_url = forms.CharField(max_length=64)
+
+    response_type = forms.ChoiceField(choices=RESPONSE_CHOICES)
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)

@@ -9,17 +9,17 @@ $('#add-header').click(function() {
                         <div class="row">\
                             <div class="col-md-3">\
                                 <div class="form-group">\
-                                    <input type="text" placeholder="Key" name="key" class="form-control"/>\
+                                    <input type="text" placeholder="Key" name="header-key" class="form-control"/>\
                                 </div>\
                             </div> \
                             <div class="col-md-3">\
                                 <div class="form-group">\
-                                    <input type="text" placeholder="Value" name="value" class="form-control"/>\
+                                    <input type="text" placeholder="Value" name="header-value" class="form-control"/>\
                                 </div>\
                             </div> \
                             <div class="col-md-3">\
                                 <div class="form-group">\
-                                    <input type="text" placeholder="Description" name="description" class="form-control"/>\
+                                    <input type="text" placeholder="Description" name="header-description" class="form-control"/>\
                                 </div>\
                             </div> \
                             <div class="col-md-3">\
@@ -40,12 +40,121 @@ $('body').on('click', '#remove-header', function() {
     $('#header-'+$(this).val()).fadeOut();
 });
 
+var capitalTipSent = false;
+var underscoreTipSent = false;
+var trailingSlash = false;
+
+// Checking the endpoint URL to offer tip
+$('#id_endpoint_url').bind('input', function() {
+
+    var usersEntry = $(this).val();
+
+    // Check if URL contains capital letters. Good API design practices say there shouldn't be any
+    if(/[A-Z]/.test(usersEntry) && capitalTipSent == false) {
+        toastr.info('Tip: Endpoint URIs a preferably lower case.', {timeOut: 6000});
+        capitalTipSent = true;
+    }
+
+    if(usersEntry.includes('_') && underscoreTipSent == false) {
+        toastr.info('Tip: Endpoint URIs a preferably separated by hyphens rather than underscores.', {timeOut: 6000});
+        underscoreTipSent = true;
+    }
+
+    if(usersEntry[usersEntry.length -1] == '/' && trailingSlash == false) {
+        toastr.info('Tip: Preferably URIs do not end with a slash, no slash means no more info after this URI.', {timeOut: 6000});
+        trailingSlash = true;
+    }
+});
+
+$('#add-data-source').click(function() {
+    // This will just present an option window of which the user can choose
+    var html = '<div id="data-choice-menu">\
+                    <div class="card">\
+                        <div class="card-header">Choose Data Source Type</div>\
+                        <div class="card-body">\
+                            <div class="row">\
+                                <div class="col-md-6 text-center">\
+                                    <h1><i class="fa fa-database"></i> Database</h1>\
+                                    <button type="button" class="btn btn-success" id="choose-database-as-source">Choose</button>\
+                                </div> \
+                                <div class="col-md-6 text-center">\
+                                    <h1><i class="fa fa-code" aria-hidden="true"></i> Text</h1>\
+                                    <button type="button" class="btn btn-success" id="choose-text-as-source">Choose</button>\
+                                </div> \
+                            </div>\
+                        </div>\
+                    </div>\
+                <br/></div>';
+
+    $('#data-sources').append(html);
+
+});
+
+var num_databases_as_source = 0;
+
+$('body').on('click', '#choose-database-as-source', function() {
+    // Fade out the data source choice menu and then create the new menu for the form.
+    const dataChoiceMenu = $('#data-choice-menu').fadeOut();
+    dataChoiceMenu.remove();
+
+    var html = '<div id="data-choice-menu">\
+                    <div class="card">\
+                        <div class="card-header">Response - Database Data Source</div>\
+                        <div class="card-body">\
+                        <div class="form-group">\
+                            <label for="table-select">Table:</label>\
+                                <select class="form-control" id="table-select" name="table">\
+                                    <option>Profile</option>\
+                                    <option>Users</option>\
+                                    <option>3</option>\
+                                    <option>4</option>\
+                                    <option>5</option>\
+                                </select>\
+                            </div>\
+                            Columns Here<br/><br/>\
+                            Filter By\
+                            <div class="row">\
+                                <div class="col-md-6 text-center">\
+                                    <select class="form-control" id="table-select">\
+                                        <option>GET Parameter</option>\
+                                        <option>POST Parameter</option>\
+                                        <option>Previous Data Source Result</option>\
+                                    </select>\
+                                </div> \
+                                <div class="col-md-6 text-center">\
+                                    <select class="form-control" id="table-select">\
+                                        <option>profile_id</option>\
+                                        <option>Content-Type</option>\
+                                        <option>user_id</option>\
+                                    </select>\
+                                </div> \
+                            </div>\
+                        </div>\
+                    </div>\
+                <br/></div>';
+
+    $('#data-sources').append(html);
+
+    num_databases_as_source++;
+});
+
+var num_text_as_source = 0;
+
+$('body').on('click', '#choose-text-as-source', function() {
+    // Fade out the data source choice menu and then create the new menu for the form.
+    const dataChoiceMenu = $('#data-choice-menu').fadeOut();
+    dataChoiceMenu.remove();
+
+    num_text_as_source++;
+});
+
+
 $('#add-parameter').click(function() {
-    var myString = '<div id="parameter-'+num_parameters+'">\
+    var html = '<div id="parameter-'+num_parameters+'">\
                         <div class="row">\
                             <div class="col-md-4">\
                                 <div class="form-group">\
-                                    <select class="form-control" id="exampleFormControlSelect1">\
+                                    <select class="form-control" name="parameter-type">\
                                         <option>GET</option>\
                                         <option>POST</option>\
                                     </select>\
@@ -53,7 +162,7 @@ $('#add-parameter').click(function() {
                             </div> \
                             <div class="col-md-4">\
                                 <div class="form-group">\
-                                    <input type="text" placeholder="Key" name="key" class="form-control"/>\
+                                    <input type="text" placeholder="Key" name="parameter-key" class="form-control"/>\
                                 </div>\
                             </div> \
                             <div class="col-md-4">\
@@ -64,7 +173,7 @@ $('#add-parameter').click(function() {
                         </div>\
                     </div>';
 
-    $('#parameters').append(myString);
+    $('#parameters').append(html);
 
     num_parameters++;
 });
