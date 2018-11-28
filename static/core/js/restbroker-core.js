@@ -94,15 +94,14 @@ var num_databases_as_source = 0;
 
 $('body').on('click', '#choose-database-as-source', function() {
     // Fade out the data source choice menu and then create the new menu for the form.
-    const dataChoiceMenu = $('#data-choice-menu').fadeOut();
-    dataChoiceMenu.remove();
+    $('#data-choice-menu').remove();
 
-    var html = '<div id="data-choice-menu">\
+    var html = '<div id="database-source-'+num_databases_as_source+'">\
                     <div class="card">\
-                        <div class="card-header">Response - Database Data Source</div>\
+                        <div class="card-header"><div class="float-right"><button type="button" id="remove-data-source" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></div>Response - Database Data Source</div>\
                         <div class="card-body">\
-                        <div class="form-group">\
-                            <label for="table-select">Table:</label>\
+                            <div class="form-group">\
+                                <label for="table-select">Table:</label>\
                                 <select class="form-control" id="table-select" name="table">\
                                     <option>Profile</option>\
                                     <option>Users</option>\
@@ -142,8 +141,18 @@ var num_text_as_source = 0;
 
 $('body').on('click', '#choose-text-as-source', function() {
     // Fade out the data source choice menu and then create the new menu for the form.
-    const dataChoiceMenu = $('#data-choice-menu').fadeOut();
-    dataChoiceMenu.remove();
+    $('#data-choice-menu').remove();
+
+    var html = '<div id="text-source-'+num_text_as_source+'">\
+                    <div class="card">\
+                        <div class="card-header"><div class="float-right"><button type="button" id="remove-data-source" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></div>Response - Text Source</div>\
+                        <div class="card-body">\
+                            <div class="form-group">\
+                                <textarea class="form-control" placeholder="JSON" rows="500"></textarea>\
+                            </div>\
+                    </div>\
+                <br/></div><br/>';
+    $('#data-sources').append(html);
 
     num_text_as_source++;
 });
