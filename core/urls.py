@@ -17,4 +17,5 @@ urlpatterns = [
     url(r'^project/edit/(?P<project_id>[0-9]+)$', views.EditProject.as_view(), name='edit-project'),
     url(r'^project/delete/(?P<project_id>[0-9]+)$', views.DeleteProject.as_view(), name='delete-project'),
     url(r'^build-database/(?P<project_id>[0-9]+)$', views.BuildDatabase.as_view(), name='build-database'),
+    url(r'^endpoint/create/(?P<project_id>[0-9]+)$', views.CreateEndpoint.as_view(), name='build-database'),
 ]

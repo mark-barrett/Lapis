@@ -15,7 +15,7 @@ app = Celery('tasks', broker='pyamqp://guest@localhost//', backend='rpc://guest@
 
 from sshtunnel import SSHTunnelForwarder
 import MySQLdb as db
-from core.models import Database, DatabaseTable, Project
+from core.models import Database, DatabaseTable, Project, DatabaseColumn
 
 
 @app.task(name='build_database')
@@ -47,9 +47,12 @@ def build_database(project_id, ssh_address, ssh_user, ssh_password,
                     project=project
                 )
 
+                print("Hello World")
+
                 database.save()
 
                 cursor = conn.cursor()
+                cursor2 = conn.cursor()
 
                 # Get all of the tables in that database
                 cursor.execute("SELECT * FROM information_schema.tables WHERE table_schema='%s'" % database_name)
@@ -61,6 +64,23 @@ def build_database(project_id, ssh_address, ssh_user, ssh_password,
                     )
 
                     database_table.save()
+
+                    # For each row, get the columns in that table
+                    cursor2.execute("SELECT * FROM information_schema.columns WHERE table_name='%s'" % row[2])
+
+                    for inner_row in cursor2:
+                        database_column = DatabaseColumn(
+                            name=inner_row[3],
+                            type=inner_row[7],
+                            table=database_table
+                        )
+
+                        database_column.save()
+
+
+                # Set the "database built" in the project ot true.
+                project.database_built = True
+                project.save()
 
                 return 'Built Database'
 

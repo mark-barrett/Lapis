@@ -20,12 +20,16 @@ class ProjectForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
+        self.edit = kwargs.pop('edit', None)
         # Get the project_id to check if the project we are editing is the same
         self.project_id = kwargs.pop('project_id', None)
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = 'post'
-        self.helper.add_input(Submit('submit', 'Create Project', css_class='btn btn-success btn-block'))
+        if self.edit:
+            self.helper.add_input(Submit('submit', 'Edit Project', css_class='btn btn-success btn-block'))
+        else:
+            self.helper.add_input(Submit('submit', 'Create Project', css_class='btn btn-success btn-block'))
 
 
     def clean(self):
@@ -63,4 +67,31 @@ class DatabaseBuilderForm(forms.Form):
         self.fields['ssh_password'].label = 'SSH Password'
 
     
+class EndpointForm(forms.Form):
+    REQUEST_CHOICES = (
+        ('GET', 'GET'),
+        ('POST', 'POST')
+    )
 
+    RESPONSE_CHOICES = (
+        ('JSON', 'JSON'),
+        ('XML', 'XML')
+    )
+
+    name = forms.CharField(max_length=64)
+    description = forms.CharField(max_length=64)
+
+    request_type = forms.ChoiceField(choices=REQUEST_CHOICES)
+    endpoint_url = forms.CharField(max_length=64)
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        # Get the project_id to check if the project we are editing is the same
+        self.project_id = kwargs.pop('project_id', None)
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.add_input(Submit('submit', 'Create Endpoint', css_class='btn btn-success btn-block'))
+
+        self.fields['request_type'].label = 'Request Type'
+        self.fields['endpoint_url'].label = 'Endpoint URL'

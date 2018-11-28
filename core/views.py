@@ -112,7 +112,7 @@ class CreateProject(LoginRequiredMixin, View):
 
     def get(self, request):
         context = {
-            'form': ProjectForm(request=request),
+            'form': ProjectForm(request=request, edit=False),
             'projects': Project.objects.all().filter(user=request.user),
             'action': 'Create'
         }
@@ -176,7 +176,7 @@ class EditProject(LoginRequiredMixin, View):
             if project.user == request.user:
 
                 context = {
-                    'form': ProjectForm(instance=project),
+                    'form': ProjectForm(instance=project, edit=True),
                     'projects': Project.objects.all().filter(user=request.user),
                     'action': 'Edit'
                 }
@@ -302,3 +302,16 @@ class BuildDatabase(LoginRequiredMixin, View):
                 'message': str(e)
             }
             return HttpResponse(json.dumps(response), content_type='application/json')
+
+
+class CreateEndpoint(LoginRequiredMixin, View):
+    login_url = '/'
+
+    def get(self, request, project_id):
+
+        context = {
+            'form': EndpointForm(request=request),
+            'projects': Project.objects.all().filter(user=request.user)
+        }
+
+        return render(request, 'core/create-endpoint.html', context)
