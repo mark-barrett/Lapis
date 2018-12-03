@@ -1,0 +1,80 @@
+{% extends 'core/nav-bar.html' %}
+
+{# Load static templating tag to be able to use it to get paths to static files #}
+{% load static %}
+
+{# Set the title and background color for the base.html file. #}
+{% block title %}RESTBroker - Dashboard{% endblock %}
+
+{% block page-content %}
+<div class="page-content">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    <div class="float-right">
+        <br/>
+        <a href="/project/edit/{{ project.id }}" class="btn btn-default">Edit Project</a>&nbsp;
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteProject">
+            Delete Project
+        </button>
+        {% if project.database_built %}
+            <a href="/endpoint/create/{{ project.id }}" class="btn btn-success">Create Endpoint</a>
+        {% endif %}
+    </div>
+    <h1 class="title-name">{{ project.name }}</h1>
+    <p class="title-description">{{ project.description }}</p>
+    <hr/>
+
+    {# If the database has been built. If not then say it needs to be built #}
+    {% if project.database_built %}
+        {% if endpoints %}
+        {% else %}
+            <div class="card">
+                <div class="card-body">
+                    <div class="text-center">
+                        <h1><i class="fa fa-frown-o" aria-hidden="true"></i></h1>
+                        <h3>No Endpoints Yet<br/><small>Start your next idea by creating one now!</small></h3>
+                        <a href="/endpoint/create/{{ project.id }}" class="btn btn-success">Create Endpoint</a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% else %}
+        <div class="card">
+            <div class="card-body">
+                <div class="text-center">
+                    <h1><i class="fa fa-database" aria-hidden="true"></i></h1>
+                    <h3>Database has not been built<br/><small class="subtext">Before creating endpoints, RESTBroker needs to contact your database and build a schema.</small></h3>
+                    <a href="/build-database/{{ project.id }}" class="btn btn-success">Build Database</a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <br/><br/>
+    {% include 'core/footer.html' with color="black" %}
+
+    <div class="modal fade" id="deleteProject" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete Project {{ project.name }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    All endpoints, triggers and any other information associated with this project will be deleted.<br/>
+                    Please be sure that you want to delete this project.
+                    <br/><br/>
+                    <a href="/project/delete/{{ project.id }}" class="btn btn-danger btn-block">I understand, Delete this Project</a>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends 'core/nav-bar.html' %}
+
+{# Load static templating tag to be able to use it to get paths to static files #}
+{% load static %}
+
+{# Set the title and background color for the base.html file. #}
+{% block title %}RESTBroker - Create Endpoint{% endblock %}
+
+{# Load Crispy Forms #}
+{% load crispy_forms_tags %}
+
+{% load util %}
+
+{% block page-content %}
+    <div class="page-content">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        <h1 class="title-name">Create Endpoint</h1>
+        <p class="title-description">Build and endpoint.</p>
+
+        {% if request.session.endpoint and request.session.endpoint.project == project_id %}
+            <div class="alert alert-info" role="alert">
+                Request for {{ request.session.endpoint.name }} endpoint is complete. Continue below. Click here to start from scratch?
+            </div>
+
+            <form name="create-endpoint" method="post" action="">
+                <div>
+                    <div class="card">
+                        <div class="card-header">Response: Basic Information</div>
+                        <div class="card-body">
+                            {{ form.response_type|as_crispy_field }}
+                        </div>
+                    </div>
+
+                    <br/>
+
+                    <div id="data-sources">
+
+                    </div>
+
+                    <button type="button" id="add-data-source" class="btn btn-secondary btn-block"><i class="fa fa-plus"></i> Add Data Source</button>
+
+                    <br/>
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success btn-block">Continue <i class="fa fa-arrow-right"></i></button>
+                    <br/>
+                </div>
+            </form>
+
+        {% else %}
+            <form name="create-endpoint" method="post" action="">
+                <div>
+                    <div class="card">
+                        <div class="card-header">Endpoint: Basic Information</div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {{ form.name|as_crispy_field }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ form.description|as_crispy_field }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="card">
+                        <div class="card-header">Request: Data</div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {{ form.request_type|as_crispy_field }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ form.endpoint_url|as_crispy_field }}
+                                </div>
+                            </div>
+                            <strong>Headers</strong>
+                            <div id="headers">
+
+                            </div>
+                            <button type="button" id="add-header" class="btn btn-secondary btn-block btn-sm"><i class="fa fa-plus"></i> Add Header</button>
+                            <br/>
+                            <strong>Parameters</strong>
+                            <div id="parameters">
+
+                            </div>
+                            <button type="button" id="add-parameter" class="btn btn-secondary btn-block btn-sm"><i class="fa fa-plus"></i> Add Parameters</button>
+                        </div>
+                    </div>
+                    <br/>
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success btn-block">Continue <i class="fa fa-arrow-right"></i></button>
+                    <br/>
+                </div>
+            </form>
+        {% endif %}
+        <br/>
+        {% include 'core/footer.html' with color="black" %}
+    </div>
+    {% if request.session.endpoint %}
+        <script id="database-data" type="application/json">
+            {{ database_data|safe }}
+        </script>
+        <script id="endpoint-session-data" type="application/json">
+            {{ request.session.endpoint|to_json|safe }}
+        </script>
+    {% endif %}
+{% endblock %}

@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a3073ac0-bcd7-4484-968e-7f54c22b812e" name="Default" comment="" />
+    <list default="true" id="693ea1cf-17b0-42f8-8355-71d597cd4bad" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RESTBroker/settings.py" afterPath="$PROJECT_DIR$/RESTBroker/settings.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/forms.py" afterPath="$PROJECT_DIR$/core/forms.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/views.py" afterPath="$PROJECT_DIR$/core/views.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/core/js/restbroker-core.js" afterPath="$PROJECT_DIR$/static/core/js/restbroker-core.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/base.html" afterPath="$PROJECT_DIR$/templates/core/base.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/create-endpoint.html" afterPath="$PROJECT_DIR$/templates/core/create-endpoint.html" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -12,44 +20,125 @@
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
-  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" module-name="RESTBroker" is-module-sdk="true">
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
     <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
-    <option name="myUseModuleSdk" value="true" />
-    <option name="myModuleName" value="RESTBroker" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/urls.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="10" column="66" lean-forward="false" selection-start-line="10" selection-start-column="66" selection-end-line="10" selection-end-column="66" />
-              <folding>
-                <element signature="e#93#134#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+            <state relative-caret-position="247">
+              <caret line="354" column="64" lean-forward="false" selection-start-line="354" selection-start-column="64" selection-end-line="354" selection-end-column="64" />
               <folding>
-                <element signature="e#0#35#0" expanded="true" />
+                <element signature="e#0#11#0" expanded="true" />
+                <element signature="e#504#1097#0" expanded="false" />
+                <element signature="e#1125#2641#0" expanded="false" />
+                <element signature="e#2669#2872#0" expanded="false" />
+                <element signature="e#2922#3133#0" expanded="false" />
+                <element signature="e#3188#4076#0" expanded="false" />
+                <element signature="e#4128#4934#0" expanded="false" />
+                <element signature="e#4986#6579#0" expanded="false" />
+                <element signature="e#6633#7087#0" expanded="false" />
+                <element signature="e#7141#10036#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="dashboard.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/core/dashboard.html">
+      <file leaf-file-name="create-endpoint.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/core/create-endpoint.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="61" column="21" lean-forward="false" selection-start-line="61" selection-start-column="21" selection-end-line="61" selection-end-column="21" />
+            <state relative-caret-position="223">
+              <caret line="107" column="20" lean-forward="true" selection-start-line="107" selection-start-column="20" selection-end-line="107" selection-end-column="41" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/RESTBroker/settings.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="330">
+              <caret line="47" column="14" lean-forward="true" selection-start-line="47" selection-start-column="14" selection-end-line="47" selection-end-column="14" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="util.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/templatetags/util.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="135">
+              <caret line="9" column="30" lean-forward="false" selection-start-line="9" selection-start-column="30" selection-end-line="9" selection-end-column="30" />
+              <folding>
+                <element signature="e#93#104#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="restbroker-core.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/static/core/js/restbroker-core.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="250">
+              <caret line="156" column="0" lean-forward="true" selection-start-line="156" selection-start-column="0" selection-end-line="156" selection-end-column="0" />
+              <folding>
+                <marker date="1543858353926" expanded="true" signature="183:1571" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="226:1543" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="278:527" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="336:491" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="580:833" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="638:797" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="886:1151" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="944:1115" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="1204:1510" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="1262:1474" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="2942:3940" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="2982:3911" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="3111:3883" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="3158:3851" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="3226:3482" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="3551:3814" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="5034:6800" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="5074:6771" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="5074:6800" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="5354:5356" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="5354:5384" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="5354:5385" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="5354:5386" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="5354:6743" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="5354:6771" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="5408:5761" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="5630:5725" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="5882:6711" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="5882:6743" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="5938:6488" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="5938:6534" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="5938:6711" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="5940:6450" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="5940:6488" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="6066:6448" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="6545:6674" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="8162:8163" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="8162:8196" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="8162:8246" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="8162:8256" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="8693:9261" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="8733:9256" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="9004:9227" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="9058:9199" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="9428:10649" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="9471:10621" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="9523:9918" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="9581:9882" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="9670:9842" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="9971:10223" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="10029:10187" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="10276:10588" ph="..." />
+                <marker date="1543858353926" expanded="true" signature="10334:10552" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -57,18 +146,40 @@
       <file leaf-file-name="base.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/core/base.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="274">
-              <caret line="26" column="50" lean-forward="false" selection-start-line="26" selection-start-column="50" selection-end-line="26" selection-end-column="50" />
+            <state relative-caret-position="238">
+              <caret line="36" column="7" lean-forward="true" selection-start-line="36" selection-start-column="7" selection-end-line="36" selection-end-column="7" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="restbroker-core.css" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/static/core/css/restbroker-core.css">
+      <file leaf-file-name="create-edit-project.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/core/create-edit-project.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="160">
-              <caret line="88" column="0" lean-forward="true" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
+            <state relative-caret-position="165">
+              <caret line="11" column="24" lean-forward="false" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="admin.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/admin.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="165">
+              <caret line="13" column="44" lean-forward="false" selection-start-line="13" selection-start-column="44" selection-end-line="13" selection-end-column="44" />
+              <folding>
+                <element signature="e#0#32#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tasks.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/tasks.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1110">
+              <caret line="78" column="0" lean-forward="false" selection-start-line="78" selection-start-column="0" selection-end-line="78" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -79,44 +190,43 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
+        <option value="HTML File" />
         <option value="JavaScript File" />
         <option value="CSS File" />
-        <option value="HTML File" />
+        <option value="Python Script" />
       </list>
     </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>document</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/RESTBroker/wsgi.py" />
-        <option value="$PROJECT_DIR$/templates/core/index.html" />
-        <option value="$PROJECT_DIR$/RESTBroker/urls.py" />
-        <option value="$PROJECT_DIR$/core/admin.py" />
-        <option value="$PROJECT_DIR$/core/models.py" />
-        <option value="$PROJECT_DIR$/static/core/css/restbroker.css" />
-        <option value="$PROJECT_DIR$/RESTBroker/settings.py" />
-        <option value="$PROJECT_DIR$/static/core/js/jquery-3.3.1.min.js" />
-        <option value="$PROJECT_DIR$/static/core/js/popper.min.js" />
-        <option value="$PROJECT_DIR$/static/core/css/font-awesome.css" />
-        <option value="$PROJECT_DIR$/templates/core/footer.html" />
+        <option value="$PROJECT_DIR$/core/tasks.py" />
         <option value="$PROJECT_DIR$/core/urls.py" />
+        <option value="$PROJECT_DIR$/core/admin.py" />
+        <option value="$PROJECT_DIR$/templates/core/project.html" />
+        <option value="$PROJECT_DIR$/static/core/js/json-editor.min.js" />
+        <option value="$PROJECT_DIR$/static/core/css/json-editor.min.css" />
+        <option value="$PROJECT_DIR$/core/models.py" />
         <option value="$PROJECT_DIR$/core/views.py" />
-        <option value="$PROJECT_DIR$/templates/core/home.html" />
+        <option value="$PROJECT_DIR$/core/forms.py" />
         <option value="$PROJECT_DIR$/templates/core/base.html" />
-        <option value="$PROJECT_DIR$/templates/core/dashboard.html" />
-        <option value="$PROJECT_DIR$/static/core/css/restbroker-core.css" />
+        <option value="$PROJECT_DIR$/RESTBroker/settings.py" />
+        <option value="$PROJECT_DIR$/core/templatetags/util.py" />
+        <option value="$PROJECT_DIR$/templates/core/create-endpoint.html" />
+        <option value="$PROJECT_DIR$/static/core/js/restbroker-core.js" />
       </list>
     </option>
   </component>
   <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
   <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsFlowSettings">
-    <service-enabled>false</service-enabled>
-    <exe-path />
-    <annotation-enable>false</annotation-enable>
-    <other-services-enabled>false</other-services-enabled>
-  </component>
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
@@ -124,23 +234,7 @@
   <component name="ProjectFrameBounds">
     <option name="y" value="23" />
     <option name="width" value="1280" />
-    <option name="height" value="725" />
-  </component>
-  <component name="ProjectInspectionProfilesVisibleTreeState">
-    <entry key="Project Default">
-      <profile-state>
-        <expanded-state>
-          <State>
-            <id />
-          </State>
-        </expanded-state>
-        <selected-state>
-          <State>
-            <id>AngularJS</id>
-          </State>
-        </selected-state>
-      </profile-state>
-    </entry>
+    <option name="height" value="724" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -157,18 +251,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="RESTBroker" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-          </PATH>
           <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="RESTBroker" />
@@ -207,7 +292,87 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="RESTBroker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="RESTBroker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="RESTBroker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="RESTBroker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="css" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="RESTBroker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="RESTBroker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="RESTBroker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="RESTBroker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="templatetags" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -227,26 +392,19 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="nodejs_interpreter_path" value="/usr/local/bin/node" />
-    <property name="settings.editor.selected.configurable" value="fileTemplates" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="nodejs_interpreter_path" value="/usr/local/bin/node" />
     <property name="js.eslint.eslintPackage" value="" />
-    <property name="js-jscs-nodeInterpreter" value="/usr/local/bin/node" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="js-jscs-nodeInterpreter" value="/usr/local/bin/node" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
+    <property name="settings.editor.selected.configurable" value="fileTemplates" />
   </component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/templates/core" />
-      <recent name="$PROJECT_DIR$/static/core/images" />
-    </key>
-  </component>
-  <component name="RunManager" selected="Django server.RESTBroker">
+  <component name="RunManager" selected="Django server.Fourth Year Project">
     <configuration default="true" type="DjangoTestsConfigurationType" factoryName="Django tests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -359,6 +517,12 @@
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.npm" factoryName="npm">
@@ -478,16 +642,16 @@
       <option name="USE_KEYWORD" value="false" />
       <method />
     </configuration>
-    <configuration default="false" name="RESTBroker" type="Python.DjangoServer" factoryName="Django server">
+    <configuration default="false" name="Fourth Year Project" type="Python.DjangoServer" factoryName="Django server">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
         <env name="DJANGO_SETTINGS_MODULE" value="RESTBroker.settings" />
       </envs>
-      <option name="SDK_HOME" value="" />
+      <option name="SDK_HOME" value="/usr/local/Cellar/python3/3.6.1/Frameworks/Python.framework/Versions/3.6/bin/python3.6" />
       <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="RESTBroker" />
@@ -503,7 +667,7 @@
       <method />
     </configuration>
     <list size="1">
-      <item index="0" class="java.lang.String" itemvalue="Django server.RESTBroker" />
+      <item index="0" class="java.lang.String" itemvalue="Django server.Fourth Year Project" />
     </list>
   </component>
   <component name="ShelveChangesManager" show_recycled="false">
@@ -511,36 +675,36 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="a3073ac0-bcd7-4484-968e-7f54c22b812e" name="Default" comment="" />
-      <created>1540925027372</created>
+      <changelist id="693ea1cf-17b0-42f8-8355-71d597cd4bad" name="Default" comment="" />
+      <created>1541668635935</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1540925027372</updated>
+      <updated>1541668635935</updated>
     </task>
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1280" height="725" extended-state="6" />
+    <frame x="0" y="23" width="1280" height="724" extended-state="1" />
     <editor active="true" />
     <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22778675" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32961783" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3280255" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32961783" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="manage.py@RESTBroker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32961783" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25282714" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290938" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32854864" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32216907" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32854864" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="manage.py@RESTBroker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32750398" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290938" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -551,234 +715,614 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="3" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/RESTBroker/settings.py">
+    <entry file="file://$PROJECT_DIR$/static/core/js/restbroker-core.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="2250">
+          <caret line="150" column="91" lean-forward="false" selection-start-line="150" selection-start-column="91" selection-end-line="150" selection-end-column="91" />
+          <folding>
+            <marker date="1543858353926" expanded="true" signature="183:1571" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="226:1543" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="278:527" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="336:491" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="580:833" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="638:797" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="886:1151" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="944:1115" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="1204:1510" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="1262:1474" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="2942:3940" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="2982:3911" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="3111:3883" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="3158:3851" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="3226:3482" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="3551:3814" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5034:6800" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5074:6771" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5074:6800" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5354:5356" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5354:5384" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5354:5385" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5354:5386" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5354:6743" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5354:6771" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5408:5761" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5630:5725" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5882:6711" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5882:6743" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5938:6488" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5938:6534" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5938:6711" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5940:6450" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5940:6488" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="6066:6448" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="6545:6674" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="8162:8163" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="8162:8196" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="8162:8246" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="8162:8256" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="8693:9261" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="8733:9256" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="9004:9227" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="9058:9199" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="9428:10649" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="9471:10621" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="9523:9918" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="9581:9882" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="9670:9842" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="9971:10223" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="10029:10187" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="10276:10588" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="10334:10552" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/core/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
+    <entry file="file://$PROJECT_DIR$/templates/core/create-edit-project.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/manage.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RESTBroker/wsgi.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/local/Cellar/python3/3.6.1/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/forms/forms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7151">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/core/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="6" lean-forward="true" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../DonationStoreV2/DonationStoreV2/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../Ticketr/Ticketr/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="139">
-          <caret line="22" column="4" lean-forward="false" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="56" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../DonationStoreV2/controlpanel/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="26" column="4" lean-forward="true" selection-start-line="26" selection-start-column="4" selection-end-line="26" selection-end-column="57" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../oop3/oop3/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="22" column="4" lean-forward="false" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../oop3/ticketr/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="21" column="4" lean-forward="true" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="42" />
+        <state relative-caret-position="165">
+          <caret line="11" column="24" lean-forward="true" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="28" column="0" lean-forward="true" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+        <state relative-caret-position="2010">
+          <caret line="134" column="62" lean-forward="false" selection-start-line="134" selection-start-column="62" selection-end-line="134" selection-end-column="62" />
           <folding>
             <element signature="e#0#43#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/RESTBroker/urls.py">
+    <entry file="file://$PROJECT_DIR$/core/forms.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+        <state relative-caret-position="1200">
+          <caret line="85" column="62" lean-forward="false" selection-start-line="85" selection-start-column="62" selection-end-line="85" selection-end-column="62" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/admin.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="25" lean-forward="false" selection-start-line="2" selection-start-column="25" selection-end-line="2" selection-end-column="25" />
+        <state relative-caret-position="195">
+          <caret line="13" column="44" lean-forward="false" selection-start-line="13" selection-start-column="44" selection-end-line="13" selection-end-column="44" />
           <folding>
-            <element signature="e#0#32#0" expanded="false" />
+            <element signature="e#0#32#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/tasks.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1110">
+          <caret line="78" column="0" lean-forward="true" selection-start-line="78" selection-start-column="0" selection-end-line="78" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#504#1097#0" expanded="false" />
+            <element signature="e#1125#2641#0" expanded="false" />
+            <element signature="e#2669#2872#0" expanded="false" />
+            <element signature="e#2922#3133#0" expanded="false" />
+            <element signature="e#3188#4076#0" expanded="false" />
+            <element signature="e#4128#4934#0" expanded="false" />
+            <element signature="e#4986#6579#0" expanded="false" />
+            <element signature="e#6633#7087#0" expanded="false" />
+            <element signature="e#7141#10036#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../College/Year 4/Semester 1/Advanced Security 1/Labs/Lab 4/rsa.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/core/css/restbroker-core.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="365">
+          <caret line="179" column="22" lean-forward="true" selection-start-line="179" selection-start-column="22" selection-end-line="179" selection-end-column="22" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/RESTBroker/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="126" column="1" lean-forward="false" selection-start-line="126" selection-start-column="1" selection-end-line="126" selection-end-column="1" />
+        <state relative-caret-position="285">
+          <caret line="102" column="5" lean-forward="true" selection-start-line="102" selection-start-column="5" selection-end-line="102" selection-end-column="5" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/core/js/jquery-3.3.1.min.js">
+    <entry file="file://$PROJECT_DIR$/RESTBroker/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/tasks.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1110">
+          <caret line="78" column="0" lean-forward="true" selection-start-line="78" selection-start-column="0" selection-end-line="78" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/admin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" column="44" lean-forward="false" selection-start-line="13" selection-start-column="44" selection-end-line="13" selection-end-column="44" />
           <folding>
-            <element signature="n#!!doc" expanded="false" />
+            <element signature="e#0#32#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/core/build-database.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-420">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/static/core/js/popper.min.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/core/css/font-awesome.css">
-      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
-          <caret line="3" column="30837" lean-forward="false" selection-start-line="3" selection-start-column="30837" selection-end-line="3" selection-end-column="30837" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/core/home.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="37" lean-forward="false" selection-start-line="7" selection-start-column="37" selection-end-line="7" selection-end-column="37" />
-          <folding>
-            <element signature="e#1033#1058#0#HTML" expanded="true" />
-            <element signature="e#1176#1208#0#HTML" expanded="true" />
-            <element signature="e#1584#1609#0#HTML" expanded="true" />
-            <element signature="e#1727#1759#0#HTML" expanded="true" />
-          </folding>
+          <caret line="3" column="326" lean-forward="false" selection-start-line="3" selection-start-column="326" selection-end-line="3" selection-end-column="326" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="66" lean-forward="false" selection-start-line="10" selection-start-column="66" selection-end-line="10" selection-end-column="66" />
+        <state relative-caret-position="225">
+          <caret line="19" column="73" lean-forward="false" selection-start-line="19" selection-start-column="73" selection-end-line="19" selection-end-column="73" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2010">
+          <caret line="134" column="62" lean-forward="false" selection-start-line="134" selection-start-column="62" selection-end-line="134" selection-end-column="62" />
           <folding>
-            <element signature="e#93#134#0" expanded="true" />
+            <element signature="e#0#43#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/core/dashboard.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/core/create-edit-project.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="24" lean-forward="true" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1650">
+          <caret line="369" column="46" lean-forward="false" selection-start-line="369" selection-start-column="46" selection-end-line="369" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#504#1097#0" expanded="false" />
+            <element signature="e#1125#2641#0" expanded="false" />
+            <element signature="e#2669#2872#0" expanded="false" />
+            <element signature="e#2922#3133#0" expanded="false" />
+            <element signature="e#3188#4076#0" expanded="false" />
+            <element signature="e#4128#4934#0" expanded="false" />
+            <element signature="e#4986#6579#0" expanded="false" />
+            <element signature="e#6633#7087#0" expanded="false" />
+            <element signature="e#7141#10036#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1200">
+          <caret line="85" column="62" lean-forward="false" selection-start-line="85" selection-start-column="62" selection-end-line="85" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/core/project.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="22" column="38" lean-forward="false" selection-start-line="22" selection-start-column="38" selection-end-line="22" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/core/js/json-editor.min.js" />
+    <entry file="file://$PROJECT_DIR$/static/core/css/json-editor.min.css" />
+    <entry file="file://$PROJECT_DIR$/templates/core/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/core/create-endpoint.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="38" column="0" lean-forward="false" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/core/js/restbroker-core.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="150" column="91" lean-forward="false" selection-start-line="150" selection-start-column="91" selection-end-line="150" selection-end-column="91" />
+          <folding>
+            <marker date="1543858353926" expanded="true" signature="183:1571" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="226:1543" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="278:527" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="336:491" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="580:833" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="638:797" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="886:1151" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="944:1115" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="1204:1510" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="1262:1474" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="2942:3940" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="2982:3911" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="3111:3883" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="3158:3851" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="3226:3482" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="3551:3814" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5034:6800" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5074:6771" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5074:6800" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5354:5356" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5354:5384" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5354:5385" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5354:5386" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5354:6743" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5354:6771" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5408:5761" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5630:5725" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5882:6711" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5882:6743" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5938:6488" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5938:6534" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5938:6711" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5940:6450" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5940:6488" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="6066:6448" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="6545:6674" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="8162:8163" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="8162:8196" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="8162:8246" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="8162:8256" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="8693:9261" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="8733:9256" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="9004:9227" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="9058:9199" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="9428:10649" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="9471:10621" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="9523:9918" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="9581:9882" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="9670:9842" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="9971:10223" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="10029:10187" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="10276:10588" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="10334:10552" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#35#0" expanded="true" />
+            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#504#1097#0" expanded="false" />
+            <element signature="e#1125#2641#0" expanded="false" />
+            <element signature="e#2669#2872#0" expanded="false" />
+            <element signature="e#2922#3133#0" expanded="false" />
+            <element signature="e#3188#4076#0" expanded="false" />
+            <element signature="e#4128#4934#0" expanded="false" />
+            <element signature="e#4986#6579#0" expanded="false" />
+            <element signature="e#6633#7087#0" expanded="false" />
+            <element signature="e#7141#10036#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/core/footer.html">
+    <entry file="file://$PROJECT_DIR$/../College/Year 4/Semester 1/Advanced Security 1/Labs/Lab 4/rsa.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="19" lean-forward="false" selection-start-line="0" selection-start-column="19" selection-end-line="0" selection-end-column="19" />
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/core/css/restbroker-core.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="365">
+          <caret line="179" column="22" lean-forward="true" selection-start-line="179" selection-start-column="22" selection-end-line="179" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RESTBroker/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/core/build-database.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-420">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/core/js/popper.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="326" lean-forward="false" selection-start-line="3" selection-start-column="326" selection-end-line="3" selection-end-column="326" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="19" column="73" lean-forward="false" selection-start-line="19" selection-start-column="73" selection-end-line="19" selection-end-column="73" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/core/dashboard.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="61" column="21" lean-forward="false" selection-start-line="61" selection-start-column="21" selection-end-line="61" selection-end-column="21" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/core/project.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="22" column="38" lean-forward="false" selection-start-line="22" selection-start-column="38" selection-end-line="22" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/core/js/json-editor.min.js" />
+    <entry file="file://$PROJECT_DIR$/static/core/css/json-editor.min.css" />
+    <entry file="file://$PROJECT_DIR$/core/admin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="13" column="44" lean-forward="false" selection-start-line="13" selection-start-column="44" selection-end-line="13" selection-end-column="44" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/tasks.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1110">
+          <caret line="78" column="0" lean-forward="false" selection-start-line="78" selection-start-column="0" selection-end-line="78" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="354" column="64" lean-forward="false" selection-start-line="354" selection-start-column="64" selection-end-line="354" selection-end-column="64" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#504#1097#0" expanded="false" />
+            <element signature="e#1125#2641#0" expanded="false" />
+            <element signature="e#2669#2872#0" expanded="false" />
+            <element signature="e#2922#3133#0" expanded="false" />
+            <element signature="e#3188#4076#0" expanded="false" />
+            <element signature="e#4128#4934#0" expanded="false" />
+            <element signature="e#4986#6579#0" expanded="false" />
+            <element signature="e#6633#7087#0" expanded="false" />
+            <element signature="e#7141#10036#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/core/base.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="274">
-          <caret line="26" column="50" lean-forward="false" selection-start-line="26" selection-start-column="50" selection-end-line="26" selection-end-column="50" />
+        <state relative-caret-position="238">
+          <caret line="36" column="7" lean-forward="true" selection-start-line="36" selection-start-column="7" selection-end-line="36" selection-end-column="7" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/core/css/restbroker-core.css">
+    <entry file="file://$PROJECT_DIR$/core/apps.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="88" column="0" lean-forward="true" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/core/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="367">
+          <caret line="99" column="74" lean-forward="false" selection-start-line="99" selection-start-column="62" selection-end-line="99" selection-end-column="74" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-376">
+          <caret line="109" column="22" lean-forward="true" selection-start-line="109" selection-start-column="22" selection-end-line="109" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#43#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/core/create-edit-project.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="24" lean-forward="false" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/templatetags/util.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="30" lean-forward="false" selection-start-line="9" selection-start-column="30" selection-end-line="9" selection-end-column="30" />
+          <folding>
+            <element signature="e#93#104#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/core/create-endpoint.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="223">
+          <caret line="107" column="20" lean-forward="true" selection-start-line="107" selection-start-column="20" selection-end-line="107" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RESTBroker/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="47" column="14" lean-forward="true" selection-start-line="47" selection-start-column="14" selection-end-line="47" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/core/js/restbroker-core.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="250">
+          <caret line="156" column="0" lean-forward="true" selection-start-line="156" selection-start-column="0" selection-end-line="156" selection-end-column="0" />
+          <folding>
+            <marker date="1543858353926" expanded="true" signature="183:1571" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="226:1543" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="278:527" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="336:491" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="580:833" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="638:797" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="886:1151" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="944:1115" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="1204:1510" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="1262:1474" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="2942:3940" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="2982:3911" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="3111:3883" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="3158:3851" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="3226:3482" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="3551:3814" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5034:6800" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5074:6771" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5074:6800" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5354:5356" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5354:5384" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5354:5385" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5354:5386" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5354:6743" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5354:6771" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5408:5761" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5630:5725" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5882:6711" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5882:6743" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5938:6488" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5938:6534" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5938:6711" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5940:6450" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="5940:6488" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="6066:6448" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="6545:6674" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="8162:8163" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="8162:8196" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="8162:8246" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="8162:8256" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="8693:9261" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="8733:9256" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="9004:9227" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="9058:9199" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="9428:10649" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="9471:10621" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="9523:9918" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="9581:9882" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="9670:9842" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="9971:10223" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="10029:10187" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="10276:10588" ph="..." />
+            <marker date="1543858353926" expanded="true" signature="10334:10552" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
   </component>
 </project>

@@ -1,0 +1,27 @@
+{% extends 'core/nav-bar.html' %}
+
+{# Load static templating tag to be able to use it to get paths to static files #}
+{% load static %}
+
+{# Set the title and background color for the base.html file. #}
+{% block title %}RESTBroker - {{ action }} Project{% endblock %}
+
+{# Load Crispy Forms #}
+{% load crispy_forms_tags %}
+
+{% block page-content %}
+<div class="page-content">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    <h1 class="title-name">{{ action }} Project</h1>
+    <p class="title-description">{% if action == 'Create' %}Launch your next idea.{% else %} Change some details about your project. {% endif %}</p>
+    <div class="inside-padding">
+        {% crispy form %}
+    </div>
+    <br/>
+    {% include 'core/footer.html' with color="black" %}
+</div>
+{% endblock %}
