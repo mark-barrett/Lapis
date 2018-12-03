@@ -152,10 +152,7 @@ $('body').on('click', '#choose-database-as-source', function() {
         var choice = e.target.value;
 
         // It has changed, so we need to get the filter-num_databases_as_source and change it
-        console.log('filter-'+(num_databases_as_source-1));
         var filterBy = document.getElementById('filter-'+(num_databases_as_source-1));
-
-        console.log(filterBy);
 
         // Get the parameters from the session
         const parameters = sessionData.request.parameters;
