@@ -9,6 +9,7 @@
     {# Include neccessary Boostrap CSS files from static #}
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/bootstrap.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/restbroker-core.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'core/css/bootstrap-select.min.css' %}">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
     {# Include Google Font #}
@@ -29,5 +30,11 @@
 <script src="{% static 'core/js/popper.min.js' %}"></script>
 <script src="{% static 'core/js/bootstrap.bundle.js' %}"></script>
 <script src="{% static 'core/js/restbroker-core.js' %}"></script>
+<script src="{% static 'core/js/bootstrap-select.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        $('.selectpicker').selectpicker();
+    });
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </html>

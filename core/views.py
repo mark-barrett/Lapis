@@ -315,6 +315,45 @@ class CreateEndpoint(LoginRequiredMixin, View):
             'projects': Project.objects.all().filter(user=request.user)
         }
 
+        # If its the second step
+        if 'endpoint' in request.session:
+
+            database_data = {
+                'tables': []
+            }
+
+            # Get the database using the project_id
+            database = Database.objects.get(project=Project.objects.get(id=project_id))
+
+            # Add the database tables and columns to the context
+            tables = DatabaseTable.objects.all().filter(database=database)
+
+            # Loop through all tables
+            for table in tables:
+                table_obj = {
+                    'id': table.id,
+                    'name': table.name,
+                    'columns': []
+                }
+
+                columns = DatabaseColumn.objects.all().filter(table=table)
+
+                # Loop through all columns
+                for column in columns:
+                    column_obj = {
+                        'id': column.id,
+                        'name': column.name,
+                        'type': column.type
+                    }
+
+                    # Append it
+                    table_obj['columns'].append(column_obj)
+
+                # Append the table to the database_data
+                database_data['tables'].append(table_obj)
+
+            context['database_data'] = json.dumps(database_data)
+
         return render(request, 'core/create-endpoint.html', context)
 
 
@@ -366,5 +405,6 @@ class CreateEndpoint(LoginRequiredMixin, View):
             # Set this as a session variable.
             request.session['endpoint'] = endpoint
 
+            print("Here")
             # Now that the session is set, redirect back to create an endpoint to create the response
             return redirect('/endpoint/create/'+project_id)

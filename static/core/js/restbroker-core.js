@@ -96,36 +96,48 @@ $('body').on('click', '#choose-database-as-source', function() {
     // Fade out the data source choice menu and then create the new menu for the form.
     $('#data-choice-menu').remove();
 
+    // Get the database data
+    const databaseData = JSON.parse($('#database-data').text());
+
+    const sessionData = JSON.parse($('#endpoint-session-data').text());
+
+    var columnData = '';
+
+    // Loop through the databaseData and construct the tableData
+    for(var i=0; i<databaseData.tables.length; i++) {
+        columnData += '<optgroup label="Table: '+databaseData.tables[i].name+'">';
+
+        // Loop through the columns
+        for(var j=0; j<databaseData.tables[i].columns.length; j++) {
+            columnData += '<option data-subtext="'+databaseData.tables[i].columns[j].type+'" value="'+databaseData.tables[i].columns[j].id+'">'+databaseData.tables[i].columns[j].name+'</option>';
+        }
+
+        columnData += '</optgroup>';
+    }
+
     var html = '<div id="database-source-'+num_databases_as_source+'">\
                     <div class="card">\
                         <div class="card-header"><div class="float-right"><button type="button" id="remove-data-source" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></div>Response - Database Data Source</div>\
                         <div class="card-body">\
                             <div class="form-group">\
-                                <label for="table-select">Table:</label>\
-                                <select class="form-control" id="table-select" name="table">\
-                                    <option>Profile</option>\
-                                    <option>Users</option>\
-                                    <option>3</option>\
-                                    <option>4</option>\
-                                    <option>5</option>\
+                                <label for="table-select">Columns:</label><br/>\
+                                <select name="table" class="selectpicker" multiple data-width="50%" id="table-'+num_databases_as_source+'">\
+                                    '+columnData+'\
                                 </select>\
                             </div>\
-                            Columns Here<br/><br/>\
+                            <br/>\
                             Filter By\
                             <div class="row">\
-                                <div class="col-md-6 text-center">\
-                                    <select class="form-control" id="table-select">\
-                                        <option>GET Parameter</option>\
-                                        <option>POST Parameter</option>\
-                                        <option>Previous Data Source Result</option>\
+                                <div class="col-md-6">\
+                                    <select class="selectpicker" data-width="100%" id="filter-by-'+num_databases_as_source+'">\
+                                        <option>Nothing</option>\
+                                        <option value="GET">GET Parameter</option>\
+                                        <option value="POST">POST Parameter</option>\
+                                        <option value="PDSR">Previous Data Source Result</option>\
                                     </select>\
                                 </div> \
-                                <div class="col-md-6 text-center">\
-                                    <select class="form-control" id="table-select">\
-                                        <option>profile_id</option>\
-                                        <option>Content-Type</option>\
-                                        <option>user_id</option>\
-                                    </select>\
+                                <div class="col-md-6">\
+                                    <div id="filter-'+num_databases_as_source+'"></div>\
                                 </div> \
                             </div>\
                         </div>\
@@ -133,6 +145,45 @@ $('body').on('click', '#choose-database-as-source', function() {
                 <br/></div>';
 
     $('#data-sources').append(html);
+
+    // Now that the above is part of the dom, we need to add an event listener to the (filter-num_databases_as_source)
+    // So that when it changes we can update the filter-by-num_databases_as_source
+    document.getElementById('filter-by-'+num_databases_as_source).addEventListener('change', function(e) {
+        var choice = e.target.value;
+
+        // It has changed, so we need to get the filter-num_databases_as_source and change it
+        console.log('filter-'+(num_databases_as_source-1));
+        var filterBy = document.getElementById('filter-'+(num_databases_as_source-1));
+
+        console.log(filterBy);
+
+        // Get the parameters from the session
+        const parameters = sessionData.request.parameters;
+
+        // The options that can be chosen from
+        var selectedOptions = '';
+
+        if(choice == 'GET') {
+            // Get the GET parameters from above
+            for(var i=0; i<parameters.length; i++) {
+                if(parameters[i].type == 'GET') {
+                    selectedOptions += '<option data-subtext="'+parameters[i].type+'">'+parameters[i].key+'</option>';
+                }
+            }
+
+        } else if(choice == "POST") {
+            // Get the POST parameters from above
+        }
+
+        filterBy.innerHTML = '<select class="selectpicker" data-width="100%">\
+                                '+selectedOptions+'\
+                              </select>';
+
+        // Get the div by ID
+        $('.selectpicker').selectpicker();
+    });
+
+    $('.selectpicker').selectpicker();
 
     num_databases_as_source++;
 });
@@ -148,7 +199,7 @@ $('body').on('click', '#choose-text-as-source', function() {
                         <div class="card-header"><div class="float-right"><button type="button" id="remove-data-source" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></div>Response - Text Source</div>\
                         <div class="card-body">\
                             <div class="form-group">\
-                                <textarea class="form-control" placeholder="JSON" rows="500"></textarea>\
+                                <textarea class="form-control" placeholder="JSON" rows="10"></textarea>\
                             </div>\
                     </div>\
                 <br/></div><br/>';
@@ -161,7 +212,7 @@ $('body').on('click', '#choose-text-as-source', function() {
 $('#add-parameter').click(function() {
     var html = '<div id="parameter-'+num_parameters+'">\
                         <div class="row">\
-                            <div class="col-md-4">\
+                            <div class="col-md-5">\
                                 <div class="form-group">\
                                     <select class="form-control" name="parameter-type">\
                                         <option>GET</option>\
@@ -169,12 +220,12 @@ $('#add-parameter').click(function() {
                                     </select>\
                                 </div>\
                             </div> \
-                            <div class="col-md-4">\
+                            <div class="col-md-5">\
                                 <div class="form-group">\
                                     <input type="text" placeholder="Key" name="parameter-key" class="form-control"/>\
                                 </div>\
                             </div> \
-                            <div class="col-md-4">\
+                            <div class="col-md-2">\
                                 <div class="form-group">\
                                     <button type="button" value="'+num_parameters+'" class="btn btn-danger btn-block" id="remove-parameter"><i class="fa fa-trash"></i></button>\
                                 </div>\

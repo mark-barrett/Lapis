@@ -9,6 +9,8 @@
 {# Load Crispy Forms #}
 {% load crispy_forms_tags %}
 
+{% load util %}
+
 {% block page-content %}
     <div class="page-content">
         {% if messages %}
@@ -99,4 +101,12 @@
         <br/>
         {% include 'core/footer.html' with color="black" %}
     </div>
+    {% if request.session.endpoint %}
+        <script id="database-data" type="application/json">
+            {{ database_data|safe }}
+        </script>
+        <script id="endpoint-session-data" type="application/json">
+            {{ request.session.endpoint|to_json|safe }}
+        </script>
+    {% endif %}
 {% endblock %}

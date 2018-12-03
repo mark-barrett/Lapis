@@ -83,7 +83,7 @@ class EndpointForm(forms.Form):
     request_type = forms.ChoiceField(choices=REQUEST_CHOICES)
     endpoint_url = forms.CharField(max_length=64)
 
-    response_type = forms.ChoiceField(choices=RESPONSE_CHOICES)
+    response_type = forms.ChoiceField(choices=RESPONSE_CHOICES, required=False)
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
@@ -96,3 +96,5 @@ class EndpointForm(forms.Form):
 
         self.fields['request_type'].label = 'Request Type'
         self.fields['endpoint_url'].label = 'Endpoint URL'
+
+        self.fields['response_type'].widget.attrs['class'] = 'selectpicker'
