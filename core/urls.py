@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'sign-up', views.SignUp.as_view(), name='sign-up'),
     url(r'logout', views.Logout.as_view(), name='logout'),
     url(r'dashboard', views.Dashboard.as_view(), name='dashboard'),
+    url(r'account', views.Account.as_view(), name='account'),
     url(r'^project/(?P<project_id>[0-9]+)$', views.ViewProject.as_view(), name='view-project'),
     url(r'project/create', views.CreateProject.as_view(), name='create-project'),
     url(r'^project/edit/(?P<project_id>[0-9]+)$', views.EditProject.as_view(), name='edit-project'),

@@ -8,52 +8,55 @@
 
 {% block page-content %}
 <div class="page-content">
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-        {% endfor %}
-    {% endif %}
-    <div class="float-right">
-        <br/>
-        <a href="/project/edit/{{ project.id }}" class="btn btn-default">Edit Project</a>&nbsp;
-        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteProject">
-            Delete Project
-        </button>
-        {% if project.database_built %}
-            <a href="/endpoint/create/{{ project.id }}" class="btn btn-success">Create Endpoint</a>
-        {% endif %}
-    </div>
-    <h1 class="title-name">{{ project.name }}</h1>
-    <p class="title-description">{{ project.description }}</p>
-    <hr/>
 
-    {# If the database has been built. If not then say it needs to be built #}
-    {% if project.database_built %}
-        {% if endpoints %}
+    <h2 class="title-name">{{ project.name }}</h2>
+    <p class="title-description">{{ project.description }}</p>
+
+    <div class="inner-page-content">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        {# If the database has been built. If not then say it needs to be built #}
+        {% if project.database_built %}
+            {% if endpoints %}
+            {% else %}
+                <div class="card">
+                    <div class="card-header">Endpoints
+                        <div class="float-right">
+                            <a href="/project/edit/{{ project.id }}" class="btn btn-default btn-sm">Edit Project</a>&nbsp;
+                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteProject">
+                                Delete Project
+                            </button>
+                            {% if project.database_built %}
+                                <a href="/endpoint/create/{{ project.id }}" class="btn btn-success btn-sm">Create Endpoint</a>
+                            {% endif %}
+                        </div></div>
+                    <div class="card-body">
+                        <div class="text-center">
+                            <h1><i class="fa fa-frown-o" aria-hidden="true"></i></h1>
+                            <h3>No Endpoints Yet<br/><small>Start your next idea by creating one now!</small></h3>
+                            <a href="/endpoint/create/{{ project.id }}" class="btn btn-success">Create Endpoint</a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
         {% else %}
             <div class="card">
+                <div class="card-header">Endpoints</div>
                 <div class="card-body">
                     <div class="text-center">
-                        <h1><i class="fa fa-frown-o" aria-hidden="true"></i></h1>
-                        <h3>No Endpoints Yet<br/><small>Start your next idea by creating one now!</small></h3>
-                        <a href="/endpoint/create/{{ project.id }}" class="btn btn-success">Create Endpoint</a>
+                        <h1><i class="fa fa-database" aria-hidden="true"></i></h1>
+                        <h3>Database has not been built<br/><small class="subtext">Before creating endpoints, RESTBroker needs to contact your database and build a schema.</small></h3>
+                        <a href="/build-database/{{ project.id }}" class="btn btn-success">Build Database</a>
                     </div>
                 </div>
             </div>
         {% endif %}
-    {% else %}
-        <div class="card">
-            <div class="card-body">
-                <div class="text-center">
-                    <h1><i class="fa fa-database" aria-hidden="true"></i></h1>
-                    <h3>Database has not been built<br/><small class="subtext">Before creating endpoints, RESTBroker needs to contact your database and build a schema.</small></h3>
-                    <a href="/build-database/{{ project.id }}" class="btn btn-success">Build Database</a>
-                </div>
-            </div>
-        </div>
-    {% endif %}
-    <br/><br/>
-    {% include 'core/footer.html' with color="black" %}
+
+    </div>
 
     <div class="modal fade" id="deleteProject" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -75,6 +78,16 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+<div class="slant-end">
+    <svg x="0" y="0" viewBox="0 0 2560 200" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+        <polygon class="fill-back" points="2560 0 2560 300 0 200"></polygon>
+    </svg>
+</div>
+<div class="other-half">
+    <div class="container">
+        {% include 'core/footer.html' %}
     </div>
 </div>
 {% endblock %}

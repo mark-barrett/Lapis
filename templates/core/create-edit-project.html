@@ -16,12 +16,27 @@
             <div class="alert alert-{{ message.tags }}">{{ message }}</div>
         {% endfor %}
     {% endif %}
-    <h1 class="title-name">{{ action }} Project</h1>
+    <h2 class="title-name">{{ action }} Project</h2>
     <p class="title-description">{% if action == 'Create' %}Launch your next idea.{% else %} Change some details about your project. {% endif %}</p>
-    <div class="inside-padding">
-        {% crispy form %}
+
+    <div class="inner-page-content">
+        <div class="card">
+            <div class="card-body">
+                <div class="inside-padding">
+                    {% crispy form %}
+                </div>
+            </div>
+        </div>
     </div>
-    <br/>
-    {% include 'core/footer.html' with color="black" %}
+</div>
+<div class="slant-end">
+    <svg x="0" y="0" viewBox="0 0 2560 200" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+        <polygon class="fill-back" points="2560 0 2560 300 0 200"></polygon>
+    </svg>
+</div>
+<div class="other-half">
+    <div class="container">
+        {% include 'core/footer.html' %}
+    </div>
 </div>
 {% endblock %}

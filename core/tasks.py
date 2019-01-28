@@ -65,8 +65,10 @@ def build_database(project_id, ssh_address, ssh_user, ssh_password,
 
                     database_table.save()
 
+                    query = "SELECT * FROM information_schema.columns WHERE table_name='{0}' AND table_schema='{1}'".format(row[2], database_name)
+
                     # For each row, get the columns in that table
-                    cursor2.execute("SELECT * FROM information_schema.columns WHERE table_name='%s'" % row[2])
+                    cursor2.execute(query)
 
                     for inner_row in cursor2:
                         database_column = DatabaseColumn(

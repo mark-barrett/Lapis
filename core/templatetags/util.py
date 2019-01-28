@@ -10,3 +10,9 @@ register = template.Library()
 @register.filter(name='to_json')
 def to_json(value):
     return json.dumps(value)
+
+
+@register.simple_tag(name='check_if_project_active_nav')
+def check_if_project_active_nav(url, project):
+    if url == '/project/'+str(project.id):
+        return "active"

@@ -14,8 +14,66 @@
             <div class="alert alert-{{ message.tags }}">{{ message }}</div>
         {% endfor %}
     {% endif %}
-    <h1>Dashboard</h1>
+    <h2>Dashboard</h2>
+
+    <div class="inner-page-content">
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="float-right">
+                            <div class="stat-icon-orange">
+                                <i class="fa fa-pie-chart" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <p class="stat-title">Requests</p>
+                        <p class="stat-value">31,259</p>
+                        <p class="stat-subtitle"><i class="fa fa-arrow-up green" aria-hidden="true"></i> 25.0% since last month</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="float-right">
+                            <div class="stat-icon-blue">
+                                <i class="fa fa-bar-chart" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <p class="stat-title">Projects</p>
+                        <p class="stat-value">2</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="float-right">
+                            <div class="stat-icon-yellow">
+                                <i class="fa fa-key" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <p class="stat-title">API Keys</p>
+                        <p class="stat-value">21</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 
 </div>
+<div class="slant-end">
+    <svg x="0" y="0" viewBox="0 0 2560 200" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+        <polygon class="fill-back" points="2560 0 2560 300 0 200"></polygon>
+    </svg>
+</div>
+<div class="other-half">
+    <div class="container">
+        {% include 'core/footer.html' %}
+    </div>
+</div>
+
     {% include 'core/footer.html' %}
 {% endblock %}

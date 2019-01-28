@@ -7,7 +7,7 @@ html {
 }
 
 body {
-    font-family: 'Titillium Web', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     height: 100%;
     overflow: auto;
 }
@@ -44,10 +44,9 @@ body {
 }
 
 .footer {
-    text-align: center;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
+    padding-top: 20px;
+    padding-left: 7px;
+    padding-right: 7px;
 }
 
 .sidebar-wrapper {
@@ -57,14 +56,19 @@ body {
 
 .page-wrapper {
     padding-left: 0px;
+    overflow-y: scroll;
+    float:left;
+    width:50%;
+    height:calc(100vh);
 }
 
 .sidebar-brand {
     padding: 10px;
+    text-align: center;
 }
 
 .sidebar {
-    background-color: #29C761;
+    background-color: #ffffff;
     height: 100%;
     width: 100%;
     padding-left: 20px;
@@ -72,32 +76,135 @@ body {
 
 .sidebar .nav-item .nav-link {
     padding: 15px;
-    color: white;
-    font-size: 20px;
+    color: #808080;
+    font-size: 15px;
     padding-top: 10px;
     margin-top: 3px;
     padding-bottom: 10px;
-    border-radius: 5px;
+}
+
+.nav-item i {
+    font-size: 20px;
+    padding-right: 10px;
+    color: #29C761;
+}
+
+.active {
+    border-left: 4px solid #29C761;
 }
 
 .sidebar .nav-item .nav-link:hover {
     background: rgba(255, 255, 255, 0.2);
+    color: #4d4d4d;
 }
 
 .separator {
-    padding-left: 15px;
-    color: white;
-    font-size: 20px;
+    border-top: 1px solid rgba(0, 0, 0, .1);
+    font-size: 15px;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
     padding-top: 10px;
     padding-bottom: 10px;
+    color: #808080;
+    text-transform: uppercase;
+    font-weight: bold;
 }
 
-.project {
-    padding-left: 20px;
+.text-muted {
+    color: #8898aa !important;
+}
+
+.login-dropdown {
+    padding-top: 20px;
+    padding-right: 20px;
 }
 
 .page-content {
     padding: 20px;
+    background: linear-gradient(87deg, #34C464 0, #29C761 100%) !important;
+    height: 400px;
+}
+
+.inner-page-content {
+    padding-top: 50px;
+}
+
+.slant-end {
+    margin-top: -85px;
+}
+
+.fill-back {
+    fill: #F8F9FE;
+}
+
+.page-content h2 {
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #ffffff;
+    font-size: 22px;
+}
+
+.page-content h1 {
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.account-subtitle {
+    color: white;
+}
+
+.stat-title {
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #808080;
+    margin-bottom: 0px;
+}
+
+.stat-icon-blue {
+    background-color: #12CDEF;
+    padding: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 35px;
+    color: #FFFFFF;
+    border-radius: 20px;
+}
+
+.stat-icon-orange {
+    background-color: #FA6340;
+    padding: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 35px;
+    color: #FFFFFF;
+    border-radius: 20px;
+}
+
+.stat-icon-yellow {
+    background-color: #FFD500;
+    padding: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 35px;
+    color: #FFFFFF;
+    border-radius: 20px;
+}
+
+.stat-value {
+    font-size: 30px;
+    color: #29C761;
+    margin-bottom: 0px;
+}
+
+.stat-subtitle {
+    margin: 0px;
+    font-size: 10px;
+}
+
+.green {
+    color: #29C761;
 }
 
 .request {
@@ -150,9 +257,13 @@ body {
 
 .title-description {
     font-size: 15px;
-    padding-left: 5px;
-    color: #7C7C7D;
+    color: #ffffff;
     padding-top: 0px;
+}
+
+.other-half {
+    background-color: #F8F9FE;
+    height: 100%;
 }
 
 .inside-padding {

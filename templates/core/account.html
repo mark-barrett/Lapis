@@ -1,0 +1,103 @@
+{% extends 'core/nav-bar.html' %}
+
+{# Load static templating tag to be able to use it to get paths to static files #}
+{% load static %}
+
+{# Set the title and background color for the base.html file. #}
+{% block title %}RESTBroker - Dashboard{% endblock %}
+
+
+{% block page-content %}
+
+<div class="page-content">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    <h2>Account</h2>
+
+    <div class="inner-page-content">
+        <h1>Hello {{ request.user.first_name }}</h1>
+        <p class="account-subtitle">This is your account section where you can change details about yourself.</p>
+
+        <div class="inner-page-content">
+            <div class="card">
+                <div class="card-header">My Account</div>
+                <div class="card-body">
+                    <form name="account-information">
+                        User Information
+                        <br/><br/>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="first_name">First Name</label>
+                                    <input id="first_name" type="text" name="first_name" class="form-control" value="{{ request.user.first_name }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="last_name">Last Name</label>
+                                    <input id="last_name" type="text" name="last_name" class="form-control" value="{{ request.user.last_name }}">
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="username">Username</label>
+                                    <input id="username" type="text" name="username" class="form-control" value="{{ request.user.username }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input id="email" type="email" name="email" class="form-control" value="{{ request.user.email }}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-success btn-block">Change User Information</button>
+                    </form>
+                    <hr/>
+                    Change Password
+                    <br/><br/>
+                    <form name="change-password">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input id="password" type="password" name="password" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="confirm_password">Confirm Password</label>
+                                    <input id="confirm_password" type="password" name="confirm_password" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-success btn-block">Change Password</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div class="slant-end">
+    <svg x="0" y="0" viewBox="0 0 2560 200" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+        <polygon class="fill-back" points="2560 0 2560 300 0 200"></polygon>
+    </svg>
+</div>
+<div class="other-half">
+    <div class="container">
+        {% include 'core/footer.html' %}
+    </div>
+</div>
+
+    {% include 'core/footer.html' %}
+{% endblock %}

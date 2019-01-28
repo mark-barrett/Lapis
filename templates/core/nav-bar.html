@@ -3,6 +3,9 @@
 {# Load static templating tag to be able to use it to get paths to static files #}
 {% load static %}
 
+{# Load custom utility template tags #}
+{% load util %}
+
 {# Set the title and background color for the base.html file. #}
 {% block background-color %}main-background{% endblock %}
 
@@ -12,54 +15,43 @@
         <div class="col-md-2 sidebar-wrapper">
             <div class="sidebar">
                 <div class="sidebar-brand">
-                    <img src="{% static 'core/images/logo-white.png' %}" width="94%">
+                    <img src="{% static 'core/images/logo-green.png' %}" width="100%">
                 </div>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'dashboard' %}"><i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard</a>
+                        <a class="nav-link {% if 'dashboard' in request.get_full_path %}active{% endif %}" href="{% url 'dashboard' %}"><i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard</a>
                     </li>
 
-                    <li class="separator"><i class="fa fa-archive" aria-hidden="true"></i> Projects</li>
+                    <li class="separator text-muted">Projects</li>
 
                     {% if projects %}
                         {% for project in projects %}
                             <li class="nav-item project">
-                                <a class="nav-link" href="/project/{{ project.id }}">{{ project.name }}</a>
+                                <a class="nav-link {% check_if_project_active_nav request.get_full_path project %}" href="/project/{{ project.id }}"><i class="fa fa-archive" aria-hidden="true"></i> {{ project.name }}</a>
                             </li>
                         {% endfor %}
                     {% else %}
                         <p class="project text-white">No projects yet.</p>
                     {% endif %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'create-project' %}"><i class="fa fa-plus" aria-hidden="true"></i> New Project</a>
+                        <a class="nav-link" href="{% url 'create-project' %}"><i class="fa fa-plus" aria-hidden="true"></i> Create New Project</a>
                     </li>
                 </ul>
             </div>
         </div>
         <div class="col-md-10 page-wrapper">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-
-                    </ul>
-                    <ul class="navbar-nav my-2 my-lg-0">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-user" aria-hidden="true"></i> Logged in as {{ request.user.username }}
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="#">Account</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
-                            </div>
-                        </li>
-                    </ul>
+            <div class="float-right login-dropdown">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-user" aria-hidden="true"></i> Logged in as {{ request.user.username }}
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="{% url 'account' %}">Account</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> Logout</a>
+                    </div>
                 </div>
-            </nav>
+            </div>
             {% block page-content %}{% endblock %}
         </div>
     </div>
