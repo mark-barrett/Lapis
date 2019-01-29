@@ -23,7 +23,36 @@
         <div class="card">
             <div class="card-body">
                 <div class="inside-padding">
-                    {% crispy form %}
+
+                    <form name="create-endpoint" method="post" action="">
+
+                        {{ form.name|as_crispy_field }}
+
+                        {{ form.description|as_crispy_field }}
+
+                        <hr/>
+
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" id="private" name="type" class="custom-control-input" value="private" {% if action == 'Edit' and project.type == 'private' %} checked {% endif %} required>
+                            <label class="custom-control-label" for="private">
+                                <i class="fa fa-lock"></i> <strong>Private</strong><br/>
+                                <small>The API will require an API key for requests which can be generated.</small></label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" id="public" name="type" class="custom-control-input" value="public" {% if action == 'Edit' and project.type == 'public' %} checked {% endif %} required>
+                            <label class="custom-control-label" for="public">
+                                <i class="fa fa-users" aria-hidden="true"></i> <strong>Public</strong><br/>
+                                <small>The API will be open to requests by anyone and will not require an API key.</small>
+                            </label>
+                        </div>
+                        <br/><br/>
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success btn-block">Create Project <i class="fa fa-arrow-right"></i></button>
+                    </form>
+
+
+
+                    {# {% crispy form %} #}
                 </div>
             </div>
         </div>

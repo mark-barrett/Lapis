@@ -9,9 +9,15 @@
 {% block page-content %}
 <div class="page-content">
 
-    <h2 class="title-name">{{ project.name }}</h2>
-    <p class="title-description">{{ project.description }}</p>
-
+    <h2 class="title-name">{{ project.name }} </h2>
+    <p class="title-description">
+        {{ project.description }}
+        {% if project.type == 'public' %}
+            <span class="badge badge-light"><i class="fa fa-users"></i> Public</span>
+        {% else %}
+            <span class="badge badge-light"><i class="fa fa-lock"></i> Private</span>
+        {% endif %}
+    </p>
     <div class="inner-page-content">
         {% if messages %}
             {% for message in messages %}
@@ -19,24 +25,21 @@
             {% endfor %}
         {% endif %}
 
+
         {# If the database has been built. If not then say it needs to be built #}
         {% if project.database_built %}
             {% if endpoints %}
             {% else %}
-                <div class="card">
-                    <div class="card-header">Endpoints
-                        <div class="float-right">
-                            <a href="/project/edit/{{ project.id }}" class="btn btn-default btn-sm">Edit Project</a>&nbsp;
-                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteProject">
-                                Delete Project
-                            </button>
-                            {% if project.database_built %}
-                                <a href="/endpoint/create/{{ project.id }}" class="btn btn-success btn-sm">Create Endpoint</a>
-                            {% endif %}
-                        </div></div>
+                <nav class="nav nav-pills nav-fill">
+                    <a class="nav-item nav-link nav-pills-active" href="#"><i class="fas fa-table" aria-hidden="true"></i> Resources</a>
+                    <a class="nav-item nav-link nav-pills-hover" href="#"><i class="fa fa-bolt text-white" aria-hidden="true"></i> Triggers</a>
+                    <a class="nav-item nav-link nav-pills-hover" href="#"><i class="fa fa-cogs text-white" aria-hidden="true"></i> Settings</a>
+                    <a class="nav-item nav-link nav-pills-hover" href="#"><i class="fa fa-chart-bar text-white" aria-hidden="true"></i> Statistics</a>
+                </nav>
+                <div class="card card-no-top-radius">
                     <div class="card-body">
                         <div class="text-center">
-                            <h1><i class="fa fa-frown-o" aria-hidden="true"></i></h1>
+                            <h1><i class="far fa-frown fa-2x" aria-hidden="true"></i></h1>
                             <h3>No Endpoints Yet<br/><small>Start your next idea by creating one now!</small></h3>
                             <a href="/endpoint/create/{{ project.id }}" class="btn btn-success">Create Endpoint</a>
                         </div>
@@ -44,8 +47,7 @@
                 </div>
             {% endif %}
         {% else %}
-            <div class="card">
-                <div class="card-header">Endpoints</div>
+            <div class="card card-no-top-radius">
                 <div class="card-body">
                     <div class="text-center">
                         <h1><i class="fa fa-database" aria-hidden="true"></i></h1>

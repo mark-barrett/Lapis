@@ -98,6 +98,18 @@ body {
     color: #4d4d4d;
 }
 
+.green-primary {
+    color: #29C761;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+    background-color: #29C761 !important;
+}
+
+.custom-control-input:active~.custom-control-label::before{
+    background-color: #34C464;
+}
+
 .separator {
     border-top: 1px solid rgba(0, 0, 0, .1);
     font-size: 15px;
@@ -115,9 +127,44 @@ body {
     color: #8898aa !important;
 }
 
+.nav-crumb {
+    color: #FFFFFF;
+}
+
 .login-dropdown {
     padding-top: 20px;
     padding-right: 20px;
+}
+
+.nav-link {
+    color: white;
+}
+
+.card-no-top-radius {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border: none;
+}
+
+.nav-pills-active {
+    background-color: #FFFFFF;
+    color: #808080;
+    border-top: 8px solid  #49d076;
+    border-top-left-radius: 5px;
+}
+
+.nav-pills-active:hover {
+    color: #2FC663;
+}
+
+.nav-pills-hover:hover {
+    background-color: #49d076;
+    transition: all .4s ease;
+    color: white;
+}
+
+.nav-link {
+    border-radius: 0px !important;
 }
 
 .page-content {
@@ -145,7 +192,7 @@ body {
     font-size: 22px;
 }
 
-.page-content h1 {
+.account-title {
     text-transform: uppercase;
     font-weight: bold;
     color: #ffffff;

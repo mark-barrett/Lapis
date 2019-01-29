@@ -29,10 +29,17 @@ def save_user_profile(sender, instance, **kwargs):
 
 
 class Project(models.Model):
+
+    TYPE_CHOICES = (
+        ('private', 'Private'),
+        ('public', 'Public')
+    )
+
     name = models.CharField(max_length=64)
-    description = models.TextField()
+    description = models.TextField(null=True, default='No description')
     user = models.ForeignKey(User)
     database_built = models.BooleanField(default=False)
+    type = models.CharField(max_length=25, choices=TYPE_CHOICES, null=True, default='private')
 
     class Meta:
         unique_together = (('name', 'user'))
@@ -40,6 +47,20 @@ class Project(models.Model):
 
     def __str__(self):
         return 'User: '+self.user.username+' Project:'+self.name
+
+
+# Projects can have API Keys
+class APIKey(models.Model):
+    # In form, the available column names are received when building the table but filtered by the selected table.
+    key = models.CharField(max_length=64)
+    user = models.ForeignKey(User)
+    project = models.ForeignKey(Project)
+
+    class Meta:
+        verbose_name_plural = 'API Keys'
+
+    def __str__(self):
+        return 'Key: '+self.key+ ' For: '+ self.project.name
 
 
 class Database(models.Model):

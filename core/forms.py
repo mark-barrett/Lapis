@@ -11,8 +11,13 @@ from core.models import *
 
 
 class ProjectForm(ModelForm):
+    TYPE_CHOICES = (
+        ('private', 'Private'),
+        ('public', 'Public')
+    )
+
     name = forms.CharField(max_length=64)
-    description = forms.CharField(widget=forms.Textarea)
+    description = forms.CharField(required=False)
 
     class Meta:
         model = Project
@@ -26,6 +31,7 @@ class ProjectForm(ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = 'post'
+
         if self.edit:
             self.helper.add_input(Submit('submit', 'Edit Project', css_class='btn btn-success btn-block'))
         else:

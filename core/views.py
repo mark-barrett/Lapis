@@ -1,4 +1,6 @@
 import json
+import random
+import string
 
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -121,14 +123,54 @@ class CreateProject(LoginRequiredMixin, View):
 
     def post(self, request):
         form = ProjectForm(request.POST, request=request)
+
         if form.is_valid():
             project = form.save(commit=False)
 
             project.user = request.user
 
+            if 'type' not in request.POST:
+                context = {
+                    'form': form,
+                    'projects': Project.objects.all().filter(user=request.user)
+                }
+
+                messages.error(request, 'Please choose a project type.')
+
+                return render(request, 'core/create-edit-project.html', context)
+            else:
+                project.type = request.POST['type']
+
             project.save()
 
-            messages.success(request, 'Project created successfully.')
+            if project.type == 'private':
+                # Now that a project has been created lets generate an API key for it.
+                api_key_not_found = True
+
+                key = ''
+
+                while api_key_not_found:
+                    key = ''.join(random.choices(string.ascii_uppercase + string.digits, k=32))
+
+                    key = 'rb_key_'+key
+
+                    try:
+                        api_key = APIKey.objects.get(key=key)
+                    except:
+                        api_key_not_found = False
+
+                api_key = APIKey(
+                    key=key,
+                    user=request.user,
+                    project=project
+                )
+
+                api_key.save()
+
+                messages.success(request, 'Project and API Key created successfully.')
+            else:
+                messages.success(request, 'Project created successfully.')
+
             return redirect('/project/'+str(project.id))
         else:
             context = {
@@ -178,7 +220,8 @@ class EditProject(LoginRequiredMixin, View):
                 context = {
                     'form': ProjectForm(instance=project, edit=True),
                     'projects': Project.objects.all().filter(user=request.user),
-                    'action': 'Edit'
+                    'action': 'Edit',
+                    'project': project
                 }
 
                 return render(request, 'core/create-edit-project.html', context)
