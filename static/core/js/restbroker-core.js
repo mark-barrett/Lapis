@@ -84,7 +84,7 @@ $('#add-data-source').click(function() {
                                 <div class="card border-dark mb-3">\
                                 <div class="card-body text-dark">\
                                 <h1><i class="fa fa-code" aria-hidden="true"></i> Text</h1>\
-                                <p><small>You can provide a static data structure in the above selected format to be sent with the response.</small></p>\
+                                <p><small>You can provide a static data structure in the above selected format  to be sent with the response.</small></p>\
                                 <button type="button" class="btn btn-dark btn-block" id="choose-text-as-source">Choose</button>\
                                 </div>\
                                 </div>\
@@ -111,50 +111,74 @@ $('body').on('click', '#choose-database-as-source', function() {
 
     // Loop through the databaseData and construct the tableData
     for(var i=0; i<databaseData.tables.length; i++) {
-        columnData += '<optgroup label="Table: '+databaseData.tables[i].name+'">';
-
-        // Loop through the columns
-        for(var j=0; j<databaseData.tables[i].columns.length; j++) {
-            columnData += '<option data-subtext="'+databaseData.tables[i].columns[j].type+'" value="'+databaseData.tables[i].columns[j].id+'">'+databaseData.tables[i].columns[j].name+'</option>';
-        }
-
-        columnData += '</optgroup>';
+        columnData += '<option value="'+databaseData.tables[i].id+'">'+databaseData.tables[i].name+'</option>';
     }
 
     var html = '<div id="database-source-'+num_databases_as_source+'">\
-                    <div class="card">\
-                        <div class="card-header"><div class="float-right"><button type="button" id="remove-data-source" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></div>Response - Database Data Source</div>\
-                        <div class="card-body">\
-                            <div class="form-group">\
-                                <label for="table-select">Columns:</label><br/>\
-                                <select name="table" class="selectpicker" multiple data-width="50%" id="table-'+num_databases_as_source+'">\
-                                    '+columnData+'\
-                                </select>\
-                            </div>\
-                            <br/>\
-                            Filter By\
-                            <div class="row">\
-                                <div class="col-md-6">\
-                                    <select class="selectpicker" data-width="100%" id="filter-by-'+num_databases_as_source+'">\
-                                        <option>Nothing</option>\
-                                        <option value="GET">GET Parameter</option>\
-                                        <option value="POST">POST Parameter</option>\
-                                        <option value="PDSR">Previous Data Source Result</option>\
-                                    </select>\
-                                </div> \
-                                <div class="col-md-6">\
-                                    <div id="filter-'+num_databases_as_source+'"></div>\
-                                </div> \
-                            </div>\
+                    <div class="float-right"><button type="button" id="remove-data-source" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></div>\
+                    <p class="form-instruction"><i class="fa fa-database"></i> Database Data Source</p>\
+                        <div class="form-group">\
+                            <label for="table-select">Add Columns:</label><br/>\
+                            <select name="table" class="selectpicker" multiple data-width="100%" id="table-'+num_databases_as_source+'">\
+                                '+columnData+'\
+                            </select>\
                         </div>\
                     </div>\
-                <br/></div>';
+                <div id="column-choices-'+num_databases_as_source+'"></div>\
+                <hr/>';
 
     $('#data-sources').append(html);
 
+    // Now that the user can choose what table they want, we have to have a listener on it
+    // that will basically listen out for changes and update the displayed tables as necessary.
+    document.getElementById('table-'+num_databases_as_source).addEventListener('change', function(e) {
+
+        // Get the selected options
+        var selectedOptions = getSelectedOptions(e.target);
+
+        // Selected columns for rendering
+        var selectedColumns = '';
+
+        // Now take these options and tailor what is displayed to them.
+        // Loop through each option, take it's id as the column, display those columns
+        // using the word "option" as the index
+        for(var option = 0; option < selectedOptions.length; option++) {
+            var tableObj;
+
+            // Loop through the databaseData structure to find the table that is correct.
+            // using the word "table" as the index
+            for(var table = 0; table < databaseData.tables.length; table++) {
+                if(databaseData.tables[table].id == selectedOptions[option].value) {
+                    // Found the object so assign it.
+                    tableObj = databaseData.tables[table];
+                }
+            }
+
+            selectedColumns += '<p class="form-instruction">'+tableObj.name+'</p>'
+            selectedColumns += '<ul class="list-group">';
+
+            // Now loop through all columns
+            for(var i = 0; i < tableObj.columns.length; i++) {
+                selectedColumns += '<li class="list-group-item">';
+                selectedColumns += '<div class="row"><div class="col-md-3">';
+                selectedColumns += '<input type="checkbox" value="'+tableObj.columns[i].id+'"> '+tableObj.columns[i].name+' ('+tableObj.columns[i].type+')';
+
+                selectedColumns += '</div><div class="col-md-9">';
+                selectedColumns += '<button class="btn btn-success btn-sm"><i class="fa fa-filter"></i> Add Filter</button>';
+                selectedColumns += '</div></div>';
+                selectedColumns += '</li>';
+            }
+
+            selectedColumns += '</ul><br/>';
+        }
+
+        $('#column-choices-0').html(selectedColumns);
+    });
+
+
     // Now that the above is part of the dom, we need to add an event listener to the (filter-num_databases_as_source)
     // So that when it changes we can update the filter-by-num_databases_as_source
-    document.getElementById('filter-by-'+num_databases_as_source).addEventListener('change', function(e) {
+    /* document.getElementById('filter-by-'+num_databases_as_source).addEventListener('change', function(e) {
         var choice = e.target.value;
 
         // It has changed, so we need to get the filter-num_databases_as_source and change it
@@ -185,6 +209,7 @@ $('body').on('click', '#choose-database-as-source', function() {
         // Get the div by ID
         $('.selectpicker').selectpicker();
     });
+    */
 
     $('.selectpicker').selectpicker();
 
@@ -198,14 +223,11 @@ $('body').on('click', '#choose-text-as-source', function() {
     $('#data-choice-menu').remove();
 
     var html = '<div id="text-source-'+num_text_as_source+'">\
-                    <div class="card">\
-                        <div class="card-header"><div class="float-right"><button type="button" id="remove-data-source" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></div>Response - Text Source</div>\
-                        <div class="card-body">\
+                  <div class="float-right"><button type="button" id="remove-data-source" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></div>\
+                    <p class="form-instruction"><i class="fa fa-code"></i> Text Data Source</p>\
                             <div class="form-group">\
                                 <textarea class="form-control" placeholder="JSON" rows="10"></textarea>\
-                            </div>\
-                    </div>\
-                <br/></div><br/>';
+                            </div>';
     $('#data-sources').append(html);
 
     num_text_as_source++;
@@ -322,3 +344,19 @@ $('#build-database').click(function() {
         });
     }
 });
+
+// Function that takes a select and returns the selected options as an array
+function getSelectedOptions(sel) {
+    var opts = [],
+        opt;
+    var len = sel.options.length;
+    for (var i = 0; i < len; i++) {
+        opt = sel.options[i];
+
+        if (opt.selected) {
+            opts.push(opt);
+        }
+    }
+
+    return opts;
+}
