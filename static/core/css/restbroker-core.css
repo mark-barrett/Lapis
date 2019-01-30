@@ -177,6 +177,15 @@ body {
     display: none;
 }
 
+.collapse-data-link {
+    color: #29C761;
+}
+
+.collapse-data-link:hover {
+    color: #808080;
+    text-decoration: none;
+}
+
 .dropdown-item.active, .dropdown-item:active {
     background-color: #ffffff;
     color: #29C761;

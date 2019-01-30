@@ -154,8 +154,8 @@ $('body').on('click', '#choose-database-as-source', function() {
                 }
             }
 
-            selectedColumns += '<p class="form-instruction">'+tableObj.name+'</p>'
-            selectedColumns += '<ul class="list-group">';
+            selectedColumns += '<p class="form-instruction">'+tableObj.name+' <small><a class="collapse-data-link" data-toggle="collapse" data-target="#'+tableObj.name+'" href="#collapse1"><i class="fa fa-eye-slash"></i> (Show/Hide)</a></small></p>'
+            selectedColumns += '<ul id="'+tableObj.name+'" class="list-group collapse show">';
 
             // Now loop through all columns
             for(var i = 0; i < tableObj.columns.length; i++) {
