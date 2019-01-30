@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/restbroker-core.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/bootstrap-select.min.css' %}">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
 
     {# Include Google Font #}
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
@@ -27,6 +28,8 @@
     {% block content %}{% endblock content %}
 </body>
 <script src="{% static 'core/js/jquery-3.3.1.min.js' %}"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 <script src="{% static 'core/js/popper.min.js' %}"></script>
 <script src="{% static 'core/js/bootstrap.bundle.js' %}"></script>
 <script src="{% static 'core/js/restbroker-core.js' %}"></script>
@@ -35,6 +38,11 @@
     $(document).ready(function () {
         $('.selectpicker').selectpicker();
     });
+</script>
+<script>
+    $(document).ready(function() {
+        $('#example').DataTable();
+    } );
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </html>

@@ -69,21 +69,27 @@ $('#id_endpoint_url').bind('input', function() {
 $('#add-data-source').click(function() {
     // This will just present an option window of which the user can choose
     var html = '<div id="data-choice-menu">\
-                    <div class="card">\
-                        <div class="card-header">Choose Data Source Type</div>\
-                        <div class="card-body">\
-                            <div class="row">\
-                                <div class="col-md-6 text-center">\
-                                    <h1><i class="fa fa-database"></i> Database</h1>\
-                                    <button type="button" class="btn btn-success" id="choose-database-as-source">Choose</button>\
-                                </div> \
-                                <div class="col-md-6 text-center">\
-                                    <h1><i class="fa fa-code" aria-hidden="true"></i> Text</h1>\
-                                    <button type="button" class="btn btn-success" id="choose-text-as-source">Choose</button>\
-                                </div> \
-                            </div>\
+                        <p class="form-instruction">Choose a data source</p>\
+                        <div class="row">\
+                            <div class="col-md-6">\
+                                <div class="card border-info mb-3">\
+                                <div class="card-body text-info">\
+                                <h1><i class="fa fa-database"></i> Database</h1>\
+                                <p><small>You will be able to access the parsed columns when the database was built.</small></p>\
+                                <button type="button" class="btn btn-block btn-info" id="choose-database-as-source">Choose</button>\
+                                </div>\
+                                </div>\
+                            </div> \
+                            <div class="col-md-6">\
+                                <div class="card border-dark mb-3">\
+                                <div class="card-body text-dark">\
+                                <h1><i class="fa fa-code" aria-hidden="true"></i> Text</h1>\
+                                <p><small>You can provide a static data structure in the above selected format to be sent with the response.</small></p>\
+                                <button type="button" class="btn btn-dark btn-block" id="choose-text-as-source">Choose</button>\
+                                </div>\
+                                </div>\
+                            </div> \
                         </div>\
-                    </div>\
                 <br/></div>';
 
     $('#data-sources').append(html);

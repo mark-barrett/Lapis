@@ -55,6 +55,7 @@ class APIKey(models.Model):
     key = models.CharField(max_length=64)
     user = models.ForeignKey(User)
     project = models.ForeignKey(Project)
+    master = models.BooleanField(default=True)
 
     class Meta:
         verbose_name_plural = 'API Keys'

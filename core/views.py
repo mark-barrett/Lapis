@@ -244,6 +244,18 @@ class EditProject(LoginRequiredMixin, View):
 
             project.user = request.user
 
+            if 'type' not in request.POST:
+                context = {
+                    'form': form,
+                    'projects': Project.objects.all().filter(user=request.user)
+                }
+
+                messages.error(request, 'Please choose a project type.')
+
+                return render(request, 'core/create-edit-project.html', context)
+            else:
+                project.type = request.POST['type']
+
             project.save()
 
             messages.success(request, 'Project edited successfully.')
@@ -465,3 +477,32 @@ class Account(LoginRequiredMixin, View):
         }
 
         return render(request, 'core/account.html', context)
+
+
+class ProjectSettings(LoginRequiredMixin, View):
+    login_url = '/'
+
+    def get(self, request, project_id):
+
+        context = {
+            'projects': Project.objects.all().filter(user=request.user),
+            'project': Project.objects.get(id=project_id)
+        }
+
+        return render(request, 'core/project-settings.html', context)
+
+
+class APIKeys(LoginRequiredMixin, View):
+    login_url = '/'
+
+    def get(self, request, project_id):
+
+        project = Project.objects.get(id=project_id)
+
+        context = {
+            'projects': Project.objects.all().filter(user=request.user),
+            'project': project,
+            'api_keys': APIKey.objects.all().filter(project=project)
+        }
+
+        return render(request, 'core/api-keys.html', context)

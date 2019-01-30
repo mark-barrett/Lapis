@@ -14,5 +14,5 @@ def to_json(value):
 
 @register.simple_tag(name='check_if_project_active_nav')
 def check_if_project_active_nav(url, project):
-    if url == '/project/'+str(project.id):
+    if '/project/'+str(project.id) in url:
         return "active"

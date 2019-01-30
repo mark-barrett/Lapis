@@ -163,8 +163,18 @@ body {
     color: white;
 }
 
+.form-instruction {
+    color: #8898aa;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
 .nav-link {
     border-radius: 0px !important;
+}
+
+.asteriskField {
+    display: none;
 }
 
 .page-content {

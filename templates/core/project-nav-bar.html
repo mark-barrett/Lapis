@@ -1,0 +1,33 @@
+<nav class="nav nav-pills nav-fill">
+    {% if page == 'resources' %}
+        <a class="nav-item nav-link nav-pills-active" href="/project/{{ project.id }}"><i class="fas fa-table" aria-hidden="true"></i> Resources</a>
+    {% else %}
+        <a class="nav-item nav-link nav-pills-hover" href="/project/{{ project.id }}"><i class="fas fa-table text-white" aria-hidden="true"></i> Resources</a>
+    {% endif %}
+
+    {% if page == 'triggers' %}
+        <a class="nav-item nav-link nav-pills-active" href="/project/{{ project.id }}"><i class="fas fa-bolt" aria-hidden="true"></i> Triggers</a>
+    {% else %}
+        <a class="nav-item nav-link nav-pills-hover" href="/project/{{ project.id }}"><i class="fas fa-bolt text-white" aria-hidden="true"></i> Triggers</a>
+    {% endif %}
+
+    {% if page == 'settings' %}
+        <a class="nav-item nav-link nav-pills-active" href="/project/{{ project.id }}/settings"><i class="fas fa-cogs" aria-hidden="true"></i> Settings</a>
+    {% else %}
+        <a class="nav-item nav-link nav-pills-hover" href="/project/{{ project.id }}/settings"><i class="fas fa-cogs text-white" aria-hidden="true"></i> Settings</a>
+    {% endif %}
+
+    {% if project.type == 'private' %}
+        {% if page == 'api-keys' %}
+            <a class="nav-item nav-link nav-pills-active" href="/project/{{ project.id }}/api-keys"><i class="fas fa-key" aria-hidden="true"></i> API Keys</a>
+        {% else %}
+            <a class="nav-item nav-link nav-pills-hover" href="/project/{{ project.id }}/api-keys"><i class="fas fa-key text-white" aria-hidden="true"></i> API Keys</a>
+        {% endif %}
+    {% endif %}
+
+    {% if page == 'statistics' %}
+        <a class="nav-item nav-link nav-pills-active" href="/project/{{ project.id }}/statistics"><i class="fas fa-chart-bar" aria-hidden="true"></i> Statistics</a>
+    {% else %}
+        <a class="nav-item nav-link nav-pills-hover" href="/project/{{ project.id }}/statistics"><i class="fas fa-chart-bar text-white" aria-hidden="true"></i> Statistics</a>
+    {% endif %}
+</nav>
