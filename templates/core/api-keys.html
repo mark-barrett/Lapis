@@ -35,7 +35,7 @@
             <div class="card card-no-top-radius">
                 <div class="card-body">
                 <div class="float-right">
-                    <a href="" class="btn btn-success">Generate API Key</a>
+                    <a href="/project/{{ project.id }}/api-keys/generate" class="btn btn-success"><i class="fa fa-sync"></i> Generate API Key</a>
                 </div>
                     <table id="example" class="table table-striped table-bordered" style="width:100%">
                         <thead>
@@ -43,14 +43,17 @@
                             <th>API Key</th>
                             <th>User</th>
                             <th>Type</th>
-                            <th>Last Request From</th>
+                            <th>Last Used</th>
+                            <th>Created At</th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody>
                         {% for api_key in api_keys %}
                             <tr>
-                                <td>{{ api_key.key }}</td>
+                                <td>
+                                   {{ api_key.key }}
+                                </td>
                                 <td>{{ api_key.user.username }}</td>
                                 <td>
                                     {% if api_key.master %}
@@ -60,9 +63,59 @@
                                     {% endif %}
                                 </td>
                                 <td>null</td>
+                                <td>{{ api_key.created_at }}</td>
                                 <td>
-                                    <a href="" class="btn btn-primary btn-sm"><i class="fa fa-sync"></i></a>
-                                    <a href="" class="btn btn-success btn-sm">View Statistics</a>
+                                    <button type="button" class="btn btn-light" data-toggle="popover"
+                                            title="Options" data-html="true"
+                                            data-content="<a href='' data-toggle='modal' data-target='#regenerate_api_key_{{ api_key.id }}'>Regenerate API Key</a><br/>
+                                            {% if not api_key.master %}
+                                            <a href='' data-toggle='modal' data-target='#delete_api_key_{{ api_key.id }}'>Delete API Key</a><br/>
+                                            {% endif %}
+                                            <a href='/projects/{{ project.id }}/requests/{{ api_key.id }}'>View Requests</a>">
+                                        <i class="fas fa-ellipsis-h"></i>
+                                    </button>
+                                    <div class="modal fade" id="delete_api_key_{{ api_key.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Delete API Key</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    All requests made by this API key will be deleted and it will no longer be able to make
+                                                    requests to this project.
+                                                    <br/><br/>
+                                                    <a href="/project/{{ project.id }}/api-keys/delete/{{ api_key.id }}" class="btn btn-danger btn-block">I understand, Delete this API Key</a>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal fade" id="regenerate_api_key_{{ api_key.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Regenerate API Key</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    This API key will be regenerated and the previous API Key value will be overwritten. The new API Key will be displayed
+                                                    at the top of the next page.
+                                                    <br/><br/>
+                                                    <a href="/project/{{ project.id }}/api-keys/regenerate/{{ api_key.id }}" class="btn btn-success btn-block">I understand, Regenerate this API Key</a>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         {% endfor %}

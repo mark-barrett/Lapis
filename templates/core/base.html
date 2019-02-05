@@ -38,6 +38,13 @@
     $(document).ready(function () {
         $('.selectpicker').selectpicker();
     });
+    $(function () {
+        $('[data-toggle="popover"]').popover()
+    })
+    $('[data-toggle="popover"]').on('click', function(){
+        $('[data-toggle="popover"]').not(this).popover('hide');
+    });
+
 </script>
 <script>
     $(document).ready(function() {

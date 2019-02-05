@@ -5,6 +5,9 @@ from django.dispatch import receiver
 
 
 # Extend the user model to add extra features to it
+from django.utils import timezone
+
+
 class Account(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     endpoint_limit = models.IntegerField(default=10)
@@ -55,6 +58,7 @@ class APIKey(models.Model):
     key = models.CharField(max_length=64)
     user = models.ForeignKey(User)
     project = models.ForeignKey(Project)
+    created_at = models.DateField(default=timezone.now)
     master = models.BooleanField(default=True)
 
     class Meta:

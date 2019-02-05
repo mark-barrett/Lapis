@@ -152,7 +152,7 @@ class CreateProject(LoginRequiredMixin, View):
                 while api_key_not_found:
                     key = ''.join(random.choices(string.ascii_uppercase + string.digits, k=32))
 
-                    key = 'rb_key_'+key
+                    key = 'rb_mstr_key_'+key
 
                     try:
                         api_key = APIKey.objects.get(key=key)
@@ -503,3 +503,106 @@ class APIKeys(LoginRequiredMixin, View):
         }
 
         return render(request, 'core/api-keys.html', context)
+
+
+class GenerateAPIKey(LoginRequiredMixin, View):
+    login_url = '/'
+
+    def get(self, request, project_id):
+
+        project = Project.objects.get(id=project_id)
+
+        # Generate an API key
+        if project.type == 'private':
+            # Now that a project has been created lets generate an API key for it.
+            api_key_not_found = True
+
+            key = ''
+
+            while api_key_not_found:
+                key = ''.join(random.choices(string.ascii_uppercase + string.digits, k=32))
+
+                key = 'rb_nrm_key_' + key
+
+                try:
+                    api_key = APIKey.objects.get(key=key)
+                except:
+                    api_key_not_found = False
+
+            api_key = APIKey(
+                key=key,
+                user=request.user,
+                project=project,
+                master=False
+            )
+
+            api_key.save()
+
+            messages.success(request, 'API Key successfully generated.')
+            return redirect('/project/'+str(project.id)+'/api-keys')
+        else:
+            return redirect('/project/'+str(project.id))
+
+
+class DeleteAPIKey(LoginRequiredMixin, View):
+    login_url = '/'
+
+    def get(self, request, project_id, id):
+
+        project = Project.objects.get(id=project_id)
+
+        try:
+            api_key = APIKey.objects.get(id=id, project=project)
+
+            # Check if the master key. Prevent deletion of it
+            if api_key.master:
+                messages.success(request, 'Cannot delete the master API Key.')
+            else:
+                api_key.delete()
+
+            messages.success(request, 'API Key successfully deleted.')
+        except:
+            messages.error(request, 'API Key does not exist.')
+
+        return redirect('/project/'+str(project.id)+'/api-keys')
+
+
+class RegenerateAPIKey(LoginRequiredMixin, View):
+    login_url = '/'
+
+    def get(self, request, project_id, id):
+
+        project = Project.objects.get(id=project_id)
+
+        try:
+            api_key = APIKey.objects.get(id=id, project=project)
+
+            # Now that a project has been created lets generate an API key for it.
+            api_key_not_found = True
+
+            key = ''
+
+            while api_key_not_found:
+                key = ''.join(random.choices(string.ascii_uppercase + string.digits, k=32))
+
+                # If it is the master key then use the master key prefix string
+                if api_key.master:
+                    key = 'rb_mstr_key_' + key
+                else:
+                # If not use the normal one
+                    key = 'rb_nrm_key_' + key
+
+                try:
+                    api_key = APIKey.objects.get(key=key)
+                except:
+                    api_key_not_found = False
+
+            api_key.key = key
+
+            api_key.save()
+
+            messages.success(request, 'API Key successfully regenerated. New API Key: '+key)
+        except:
+            messages.error(request, 'API Key does not exist.')
+
+        return redirect('/project/'+str(project.id)+'/api-keys')
