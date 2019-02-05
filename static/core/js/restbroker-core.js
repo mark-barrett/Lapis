@@ -164,7 +164,7 @@ $('body').on('click', '#choose-database-as-source', function() {
                 selectedColumns += '<input type="checkbox" value="'+tableObj.columns[i].id+'" name="chosen-column"> '+tableObj.columns[i].name+' ('+tableObj.columns[i].type+')';
 
                 selectedColumns += '</div><div class="col-md-9">';
-                selectedColumns += '<div id="filter_'+tableObj.columns[i].id+'"><button type="button" class="btn btn-success btn-sm" onClick="addFilter('+tableObj.columns[i].id+'); return false;"><i class="fa fa-filter"></i> Add Filter</button></div>';
+                selectedColumns += '<div id="filter_'+tableObj.columns[i].id+'"><button type="button" class="btn btn-success btn-sm" onClick="addFilter('+tableObj.columns[i].id+','+tableObj.id+'); return false;"><i class="fa fa-filter"></i> Add Filter</button></div>';
                 selectedColumns += '</div></div>';
                 selectedColumns += '</li>';
             }
@@ -362,12 +362,14 @@ function getSelectedOptions(sel) {
 }
 
 // Function that takes the value of the column and adds a filter field
-function addFilter(columnID) {
+function addFilter(columnID, tableID) {
     // Now get that element and add the form filter
     // The filter options are taken from whats in the document already
 
     // Get session data from page
     const sessionData = JSON.parse($('#endpoint-session-data').text());
+
+    const databaseData = JSON.parse($('#database-data').text());
 
     // Get the parameters from the session
     const parameters = sessionData.request.parameters;
@@ -375,22 +377,36 @@ function addFilter(columnID) {
     // The options that can be chosen from
     var selectedOptions = '';
 
-    // Get the GET parameters from above
-    for(var i=0; i<parameters.length; i++) {
+    console.log(databaseData);
+    console.log(tableID);
+
+    // The request cannot be both post and get so we check for which one
+    if(sessionData.request.type == 'GET') {
         selectedOptions += '<optgroup label="GET Parameters">';
-        if(parameters[i].type == 'GET') {
-            selectedOptions += '<option value="'+parameters[i].type+':'+parameters[i].key+'">'+parameters[i].key+'</option>';
-        }
-        selectedOptions += '</optgroup>';
+    } else if(sessionData.request.type == 'POST') {
+        selectedOptions += '<optgroup label="POST Parameters">';
     }
 
-    // Get the POST parameters from above
-    for(i=0; i<parameters.length; i++) {
-        selectedOptions += '<optgroup label="POST Parameters">';
-        if(parameters[i].type == 'POST') {
-            selectedOptions += '<option value="'+parameters[i].type+':'+parameters[i].key+'">'+parameters[i].key+'</option>';
+    // Get the GET parameters from above
+    for (var i = 0; i < parameters.length; i++) {
+        selectedOptions += '<option value="' + parameters[i].type + ':' + parameters[i].key + '">' + parameters[i].key + '</option>';
+    }
+
+    selectedOptions += '</optgroup>';
+
+    // Now display the options from the other tables as filters
+    for(var j=0; j<databaseData.tables.length; j++) {
+        if(databaseData.tables[j].id != tableID) {
+            selectedOptions += '<optgroup label="'+databaseData.tables[j].name+' Table Columns">';
+
+
+            // Now add the columns in the tables as parameters
+            for (var x = 0; x < databaseData.tables[j].columns.length; x++) {
+                selectedOptions += '<option value="COLUMN:' + databaseData.tables[j].columns[x].id + '">' + databaseData.tables[j].columns[x].name + ' ('+databaseData.tables[j].columns[x].type+')</option>';
+            }
+
+            selectedOptions += '</optgroup>';
         }
-        selectedOptions += '</optgroup>';
     }
 
     document.getElementById('filter_'+columnID).innerHTML = '<select id="filter_by_select_'+columnID+'" name="filter_by_select_'+columnID+'" class="selectpicker" multiple>\
