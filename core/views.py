@@ -407,8 +407,6 @@ class CreateEndpoint(LoginRequiredMixin, View):
                 # Append the table to the database_data
                 database_data['tables'].append(table_obj)
 
-                print(database_data)
-
             context['database_data'] = json.dumps(database_data)
 
         return render(request, 'core/create-endpoint.html', context)
@@ -462,7 +460,6 @@ class CreateEndpoint(LoginRequiredMixin, View):
             # Set this as a session variable.
             request.session['endpoint'] = endpoint
 
-            print("Here")
             # Now that the session is set, redirect back to create an endpoint to create the response
             return redirect('/endpoint/create/'+project_id)
 

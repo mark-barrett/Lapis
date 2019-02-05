@@ -191,6 +191,11 @@ body {
     color: #29C761;
 }
 
+.dropdown-item:active:hover {
+    background-color: white;
+    color: #29C761;
+}
+
 .page-content {
     padding: 20px;
     background: linear-gradient(87deg, #34C464 0, #29C761 100%) !important;

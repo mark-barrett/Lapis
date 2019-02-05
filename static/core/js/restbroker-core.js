@@ -1,5 +1,5 @@
 /**
- * Created by markbarrett on 07/11/2018.
+ * Created by Mark Barrett on 07/11/2018.
  */
 var num_headers = 0;
 var num_parameters = 0;
@@ -115,7 +115,7 @@ $('body').on('click', '#choose-database-as-source', function() {
     }
 
     var html = '<div id="database-source-'+num_databases_as_source+'">\
-                    <div class="float-right"><button type="button" id="remove-data-source" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></div>\
+                    <div class="float-right"><button type="button" id="remove_data_source_'+num_databases_as_source+'" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></div>\
                     <p class="form-instruction"><i class="fa fa-database"></i> Database Data Source</p>\
                         <div class="form-group">\
                             <label for="table-select">Add Columns:</label><br/>\
@@ -161,10 +161,10 @@ $('body').on('click', '#choose-database-as-source', function() {
             for(var i = 0; i < tableObj.columns.length; i++) {
                 selectedColumns += '<li class="list-group-item">';
                 selectedColumns += '<div class="row"><div class="col-md-3">';
-                selectedColumns += '<input type="checkbox" value="'+tableObj.columns[i].id+'"> '+tableObj.columns[i].name+' ('+tableObj.columns[i].type+')';
+                selectedColumns += '<input type="checkbox" value="'+tableObj.columns[i].id+'" name="chosen-column"> '+tableObj.columns[i].name+' ('+tableObj.columns[i].type+')';
 
                 selectedColumns += '</div><div class="col-md-9">';
-                selectedColumns += '<button class="btn btn-success btn-sm"><i class="fa fa-filter"></i> Add Filter</button>';
+                selectedColumns += '<div id="filter_'+tableObj.columns[i].id+'"><button type="button" class="btn btn-success btn-sm" onClick="addFilter('+tableObj.columns[i].id+'); return false;"><i class="fa fa-filter"></i> Add Filter</button></div>';
                 selectedColumns += '</div></div>';
                 selectedColumns += '</li>';
             }
@@ -226,7 +226,7 @@ $('body').on('click', '#choose-text-as-source', function() {
                   <div class="float-right"><button type="button" id="remove-data-source" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></div>\
                     <p class="form-instruction"><i class="fa fa-code"></i> Text Data Source</p>\
                             <div class="form-group">\
-                                <textarea class="form-control" placeholder="JSON" rows="10"></textarea>\
+                                <textarea name="text-source" class="form-control" placeholder="JSON" rows="10"></textarea>\
                             </div>';
     $('#data-sources').append(html);
 
@@ -359,4 +359,48 @@ function getSelectedOptions(sel) {
     }
 
     return opts;
+}
+
+// Function that takes the value of the column and adds a filter field
+function addFilter(columnID) {
+    // Now get that element and add the form filter
+    // The filter options are taken from whats in the document already
+
+    // Get session data from page
+    const sessionData = JSON.parse($('#endpoint-session-data').text());
+
+    // Get the parameters from the session
+    const parameters = sessionData.request.parameters;
+
+    // The options that can be chosen from
+    var selectedOptions = '';
+
+    // Get the GET parameters from above
+    for(var i=0; i<parameters.length; i++) {
+        selectedOptions += '<optgroup label="GET Parameters">';
+        if(parameters[i].type == 'GET') {
+            selectedOptions += '<option value="'+parameters[i].type+'">'+parameters[i].key+'</option>';
+        }
+        selectedOptions += '</optgroup>';
+    }
+
+    // Get the POST parameters from above
+    for(i=0; i<parameters.length; i++) {
+        selectedOptions += '<optgroup label="POST Parameters">';
+        if(parameters[i].type == 'POST') {
+            selectedOptions += '<option value="'+parameters[i].type+'">'+parameters[i].key+'</option>';
+        }
+        selectedOptions += '</optgroup>';
+    }
+
+    document.getElementById('filter_'+columnID).innerHTML = '<select id="filter_by_select_'+columnID+'" class="selectpicker">\
+                                '+selectedOptions+'\
+                              </select>&nbsp;<button type="button" class="btn btn-danger" id="remove_filter_'+columnID+'"><i class="fa fa-trash"></i></button>';
+
+    // Add a listener to listen out for remove requests for this filter
+    document.getElementById('remove_filter_'+columnID).addEventListener('click', function(e) {
+        document.getElementById('filter_'+columnID).innerHTML = '<button type="button" class="btn btn-success btn-sm" onClick="addFilter('+columnID+'); return false;"><i class="fa fa-filter"></i> Add Filter</button>';
+    });
+
+    $('.selectpicker').selectpicker();
 }
