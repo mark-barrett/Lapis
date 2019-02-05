@@ -379,7 +379,7 @@ function addFilter(columnID) {
     for(var i=0; i<parameters.length; i++) {
         selectedOptions += '<optgroup label="GET Parameters">';
         if(parameters[i].type == 'GET') {
-            selectedOptions += '<option value="'+parameters[i].type+'">'+parameters[i].key+'</option>';
+            selectedOptions += '<option value="'+parameters[i].type+':'+parameters[i].key+'">'+parameters[i].key+'</option>';
         }
         selectedOptions += '</optgroup>';
     }
@@ -388,12 +388,12 @@ function addFilter(columnID) {
     for(i=0; i<parameters.length; i++) {
         selectedOptions += '<optgroup label="POST Parameters">';
         if(parameters[i].type == 'POST') {
-            selectedOptions += '<option value="'+parameters[i].type+'">'+parameters[i].key+'</option>';
+            selectedOptions += '<option value="'+parameters[i].type+':'+parameters[i].key+'">'+parameters[i].key+'</option>';
         }
         selectedOptions += '</optgroup>';
     }
 
-    document.getElementById('filter_'+columnID).innerHTML = '<select id="filter_by_select_'+columnID+'" class="selectpicker">\
+    document.getElementById('filter_'+columnID).innerHTML = '<select id="filter_by_select_'+columnID+'" name="filter_by_select_'+columnID+'" class="selectpicker" multiple>\
                                 '+selectedOptions+'\
                               </select>&nbsp;<button type="button" class="btn btn-danger" id="remove_filter_'+columnID+'"><i class="fa fa-trash"></i></button>';
 

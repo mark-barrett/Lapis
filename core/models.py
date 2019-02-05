@@ -194,11 +194,30 @@ class EndpointDataSource(models.Model):
 # Each instance defines a column that needs to be returned
 class EndpointDataSourceColumn(models.Model):
     # In form, the available column names are received when building the table but filtered by the selected table.
-    name = models.CharField(max_length=64)
+    column_id = models.IntegerField()
     endpoint = models.ForeignKey(Endpoint)
 
     class Meta:
         verbose_name_plural = 'Endpoint Data Source Columns'
 
     def __str__(self):
-        return 'Endpoint: '+self.database.name+' Column Name: '+self.name
+        return 'Endpoint: '+self.database.name+' Column ID: '+self.name
+
+
+# Defines a filter that must be applied to the above column
+class EndpointDataSourceFilter(models.Model):
+    TYPE_CHOICES = (
+        ('GET', 'GET Parameter'),
+        ('POST', 'POST Parameter')
+        # Add previous column as parameter filter
+    )
+
+    type = models.CharField(max_length=6, choices=TYPE_CHOICES)
+    parameter = models.ForeignKey(EndpointParameter)
+    column = models.ForeignKey(EndpointDataSourceColumn)
+
+    class Meta:
+        verbose_name_plural = 'Endpoint Data Source Filters'
+
+    def __str__(self):
+        return 'Endpoint: '+str(self.column.endpoint.id)+' Column ID: '+str(self.column.id)+ ' Parameter to Filter by: '+str(self.parameter.id)

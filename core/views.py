@@ -367,6 +367,7 @@ class CreateEndpoint(LoginRequiredMixin, View):
         context = {
             'form': EndpointForm(request=request),
             'project_id': project_id,
+            'project': Project.objects.get(id=project_id),
             'projects': Project.objects.all().filter(user=request.user)
         }
 
@@ -415,53 +416,117 @@ class CreateEndpoint(LoginRequiredMixin, View):
     def post(self, request, project_id):
         form = EndpointForm(request.POST, request=request)
 
-        if form.is_valid():
-            # Get the values from the form, set it to a session and send back to the same page
-            endpoint = {
-                'project': project_id,
-                'name': form.cleaned_data['name'],
-                'description': form.cleaned_data['description'],
-                'request': {
-                    'type': form.cleaned_data['request_type'],
-                    'url': form.cleaned_data['endpoint_url'],
-                    'headers': [],
-                    'parameters': []
+        # If this is the first step i.e the request
+        if 'endpoint' not in request.session:
+            if form.is_valid():
+                # Get the values from the form, set it to a session and send back to the same page
+                endpoint = {
+                    'project': project_id,
+                    'name': form.cleaned_data['name'],
+                    'description': form.cleaned_data['description'],
+                    'request': {
+                        'type': form.cleaned_data['request_type'],
+                        'url': form.cleaned_data['endpoint_url'],
+                        'headers': [],
+                        'parameters': []
+                    },
+                    'response': {}
                 }
+
+                # Get the headers as lists
+                header_keys = request.POST.getlist('header-key')
+                header_value = request.POST.getlist('header-value')
+                header_description = request.POST.getlist('header-description')
+
+                # Loop through the keys and add the headers to the endpoint object.
+                for index, key in enumerate(header_keys):
+                    header = {
+                        'key': key,
+                        'value': header_value[index],
+                        'description': header_description[index]
+                    }
+
+                    endpoint['request']['headers'].append(header)
+
+                # Get the parameters as lists
+                parameter_types = request.POST.getlist('parameter-type')
+                parameter_keys = request.POST.getlist('parameter-key')
+
+                # Loop through them and add them to the endpoint
+                for index, key in enumerate(parameter_keys):
+                    parameter = {
+                        'type': parameter_types[index],
+                        'key': key
+                    }
+
+                    endpoint['request']['parameters'].append(parameter)
+
+                # Set this as a session variable.
+                request.session['endpoint'] = endpoint
+
+                # Now that the session is set, redirect back to create an endpoint to create the response
+                return redirect('/endpoint/create/'+project_id)
+        # If we are on the second step, i.e the response
+        else:
+            # JSON or XML
+            response_type = request.POST['response_type']
+
+            # The names of the tables which will be returned as ids
+            tables = request.POST.getlist('table')
+
+            # Get the columns that are to be returned
+            columns = request.POST.getlist('chosen-column')
+
+            print(tables)
+            print(columns)
+
+            # Start to construct the response object
+            response = {
+                'response_type': response_type,
+                'tables': [],
+                'columns': [],
             }
 
-            # Get the headers as lists
-            header_keys = request.POST.getlist('header-key')
-            header_value = request.POST.getlist('header-value')
-            header_description = request.POST.getlist('header-description')
+            # Add the tables to the response object
+            for table in tables:
+                response['tables'].append(table)
 
-            # Loop through the keys and add the headers to the endpoint object.
-            for index, key in enumerate(header_keys):
-                header = {
-                    'key': key,
-                    'value': header_value[index],
-                    'description': header_description[index]
+            # Loop through the tables one by one
+            for column in columns:
+
+                # Create the column object for the response object
+                column_obj = {
+                    'column': column,
+                    'filters': []
                 }
 
-                endpoint['request']['headers'].append(header)
+                # We need to check and see if there is a filter that exists for this column
+                if 'filter_by_select_'+column in request.POST:
+                    # There is a filter column so we need to get that information
+                    filter_this_column_by = request.POST.getlist('filter_by_select_'+column)
 
-            # Get the parameters as lists
-            parameter_types = request.POST.getlist('parameter-type')
-            parameter_keys = request.POST.getlist('parameter-key')
+                    for filter in filter_this_column_by:
+                        # Now we have the list of all of the filter items.
+                        # They are split by a colon, so split
+                        splitted_filter = filter.split(':')
 
-            # Loop through them and add them to the endpoint
-            for index, key in enumerate(parameter_keys):
-                parameter = {
-                    'type': parameter_types[index],
-                    'key': key
-                }
+                        # Define the filter
+                        filter_obj = {
+                            'param_type': splitted_filter[0],
+                            'key': splitted_filter[1]
+                        }
 
-                endpoint['request']['parameters'].append(parameter)
+                        # Append that filter
+                        column_obj['filters'].append(filter_obj)
 
-            # Set this as a session variable.
-            request.session['endpoint'] = endpoint
+                # Append that column
+                response['columns'].append(column_obj)
 
-            # Now that the session is set, redirect back to create an endpoint to create the response
-            return redirect('/endpoint/create/'+project_id)
+            # Now add the response to the session
+            request.session['endpoint']['response'] = response
+
+            print(request.session['endpoint'])
+
 
 
 class Account(LoginRequiredMixin, View):
@@ -606,3 +671,16 @@ class RegenerateAPIKey(LoginRequiredMixin, View):
             messages.error(request, 'API Key does not exist.')
 
         return redirect('/project/'+str(project.id)+'/api-keys')
+
+
+class ResetEndpoint(LoginRequiredMixin, View):
+    login_url = '/'
+
+    def get(self, request, project_id):
+
+        project = Project.objects.get(id=project_id)
+
+        if 'endpoint' in request.session:
+            del request.session['endpoint']
+
+        return redirect('/endpoint/create/'+str(project.id))
