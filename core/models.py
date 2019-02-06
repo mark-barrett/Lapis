@@ -157,7 +157,7 @@ class EndpointParameter(models.Model):
         ('POST', 'POST')
     )
     # Unique for each endpoint
-    key = models.CharField(max_length=64)
+    key = models.CharField(max_length=64, unique=True)
     type = models.CharField(max_length=4, choices=TYPE_CHOICES)
     endpoint = models.ForeignKey(Endpoint)
 
@@ -166,7 +166,7 @@ class EndpointParameter(models.Model):
 
 
     def __str__(self):
-        return 'Endpoint: ' + self.database.name + ' Parameter Key: ' + self.key
+        return 'Endpoint: ' + self.endpoint.name + ' Parameter Key: ' + self.key
 
 
 # A data source used in the returning of data from the request
@@ -201,23 +201,29 @@ class EndpointDataSourceColumn(models.Model):
         verbose_name_plural = 'Endpoint Data Source Columns'
 
     def __str__(self):
-        return 'Endpoint: '+self.database.name+' Column ID: '+self.name
+        return 'Endpoint: '+self.endpoint.name+' Column ID: '+str(self.id)
 
 
 # Defines a filter that must be applied to the above column
 class EndpointDataSourceFilter(models.Model):
     TYPE_CHOICES = (
-        ('GET', 'GET Parameter'),
-        ('POST', 'POST Parameter')
+        ('REQUEST', 'Parameter sent in request, either GET or POST'),
+        ('COLUMN', 'Parameter from another column.')
         # Add previous column as parameter filter
     )
 
     type = models.CharField(max_length=6, choices=TYPE_CHOICES)
-    parameter = models.ForeignKey(EndpointParameter)
-    column = models.ForeignKey(EndpointDataSourceColumn)
+    request_parameter = models.ForeignKey(EndpointParameter, blank=True, null=True)
+    # Foreign Key is Database Column not EndpointDataSourceColumn as that is used to represent what is being returned
+    column_parameter = models.ForeignKey(DatabaseColumn, blank=True, null=True)
+    endpoint = models.ForeignKey(Endpoint)
 
     class Meta:
         verbose_name_plural = 'Endpoint Data Source Filters'
 
     def __str__(self):
-        return 'Endpoint: '+str(self.column.endpoint.id)+' Column ID: '+str(self.column.id)+ ' Parameter to Filter by: '+str(self.parameter.id)
+        if self.type == 'REQUEST':
+            return 'Endpoint: '+str(self.endpoint.id)+' Type: '+str(self.type)+ ' Parameter to Filter by: '+str(self.request_parameter)
+        else:
+            return 'Endpoint: ' + str(self.endpoint.id) + ' Type: ' + str(
+                self.type) + ' Parameter to Filter by: ' + str(self.column_parameter)

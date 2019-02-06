@@ -66,7 +66,7 @@
                                 <td>{{ api_key.created_at }}</td>
                                 <td>
                                     <button type="button" class="btn btn-light" data-toggle="popover"
-                                            title="Options" data-html="true"
+                                            title="Actions" data-html="true"
                                             data-content="<a href='' data-toggle='modal' data-target='#regenerate_api_key_{{ api_key.id }}'>Regenerate API Key</a><br/>
                                             {% if not api_key.master %}
                                             <a href='' data-toggle='modal' data-target='#delete_api_key_{{ api_key.id }}'>Delete API Key</a><br/>

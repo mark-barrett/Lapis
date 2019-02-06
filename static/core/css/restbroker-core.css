@@ -373,3 +373,14 @@ body {
     text-align: center;
     transform: translate(-50%,-50%);
 }
+
+.endpoint-margin-padding {
+    padding: 5px;
+    margin: 0px;
+}
+
+.vertical-align-middle {
+    display:inline-block;
+    vertical-align:middle;
+    line-height:1.25em;
+}

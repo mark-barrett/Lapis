@@ -38,10 +38,45 @@
                 <div class="card card-no-top-radius">
                     <div class="card-body">
                         <div class="text-center">
-                            {# Do if endpoints #}
+                            {% if endpoints %}
+                                {% for endpoint in endpoints %}
+                                    <div class="card {% if endpoint.request_type == 'POST' %}border-primary{% elif endpoint.request_type == 'GET' %}border-warning{% endif %}">
+                                        <div class="card-body endpoint-margin-padding">
+                                            <div class="row">
+                                                <div class="col-md-2">
+                                                    <div class="card {% if endpoint.request_type == 'POST' %}bg-primary{% elif endpoint.request_type == 'GET' %}bg-warning{% endif %}">
+                                                        <div class="card-body endpoint-margin-padding"><h2>{{ endpoint.request_type }}</h2></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8 text-left">
+                                                    /{{ endpoint.endpoint_url }}<br/>
+                                                    <small>{{ endpoint.description }}</small>
+                                                </div>
+                                                <div class="col-md-2 text-right">
+                                                    <button type="button" class="btn btn-light" data-toggle="popover"
+                                                            title="Options" data-html="true"
+                                                            data-content="<a href=''>View Endpoint</a><br/>
+                                                                          <a href=''>Edit Endpoint</a><br/>
+                                                                          <a href=''>Delete Endpoint</a><br/>
+                                                                          <a href=''>View Requests to this Endpoint</a>">
+                                                        <i class="fas fa-ellipsis-h"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {# If we aren't in the last endpoint in the loop then add a line break for spacing #}
+                                    {% if not forloop.last %}
+                                        <br/>
+                                    {% endif %}
+                                {% endfor %}
+                                <br/>
+                                <a href="/endpoint/create/{{ project.id }}" class="btn btn-block btn-success">Create Endpoint</a>
+                            {% else %}
                             <h1><i class="far fa-frown fa-2x" aria-hidden="true"></i></h1>
                             <h3>No Endpoints Yet<br/><small>Start your next idea by creating one now!</small></h3>
                             <a href="/endpoint/create/{{ project.id }}" class="btn btn-success">Create Endpoint</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

@@ -23,7 +23,12 @@ from core.tasks import build_database
 class Home(View):
 
     def get(self, request):
-        return render(request, 'core/home.html')
+
+        # If the user is already logged in, send them to the dashboard.
+        if request.user.is_authenticated:
+            return redirect('/dashboard')
+        else:
+            return render(request, 'core/home.html')
 
 
     def post(self, request):
@@ -46,7 +51,11 @@ class SignUp(View):
 
     def get(self, request):
 
-        return render(request, 'core/sign-up.html')
+        # If the user is already logged in, send them to the dashboard.
+        if request.user.is_authenticated:
+            return redirect('/dashboard')
+        else:
+            return render(request, 'core/sign-up.html')
 
     def post(self, request):
 
@@ -104,7 +113,8 @@ class Dashboard(LoginRequiredMixin, View):
     def get(self, request):
 
         context = {
-            'projects': Project.objects.all().filter(user=request.user)
+            'projects': Project.objects.all().filter(user=request.user),
+            'api_keys': APIKey.objects.all()
         }
 
         return render(request, 'core/dashboard.html', context)
@@ -193,7 +203,8 @@ class ViewProject(LoginRequiredMixin, View):
             if project.user == request.user:
                 context = {
                     'project': project,
-                    'projects': Project.objects.all().filter(user=request.user)
+                    'projects': Project.objects.all().filter(user=request.user),
+                    'endpoints': Endpoint.objects.all().filter(project=project)
                 }
 
                 return render(request, 'core/project.html', context)
@@ -364,10 +375,12 @@ class CreateEndpoint(LoginRequiredMixin, View):
 
     def get(self, request, project_id):
 
+        project = Project.objects.get(id=project_id)
+
         context = {
             'form': EndpointForm(request=request),
             'project_id': project_id,
-            'project': Project.objects.get(id=project_id),
+            'project': project,
             'projects': Project.objects.all().filter(user=request.user)
         }
 
@@ -412,9 +425,10 @@ class CreateEndpoint(LoginRequiredMixin, View):
 
         return render(request, 'core/create-endpoint.html', context)
 
-
     def post(self, request, project_id):
         form = EndpointForm(request.POST, request=request)
+
+        project = Project.objects.get(id=project_id)
 
         # If this is the first step i.e the request
         if 'endpoint' not in request.session:
@@ -525,7 +539,75 @@ class CreateEndpoint(LoginRequiredMixin, View):
             # Now add the response to the session
             request.session['endpoint']['response'] = response
 
-            print(request.session['endpoint'])
+            # Now we have created the endpoint object, now lets start building it.
+            try:
+
+                endpoint = Endpoint(
+                    name=request.session['endpoint']['name'],
+                    description=request.session['endpoint']['description'],
+                    request_type=request.session['endpoint']['request']['type'],
+                    endpoint_url=request.session['endpoint']['request']['url'],
+                    response_format=request.session['endpoint']['response']['response_type'],
+                    project=project
+                )
+
+                endpoint.save()
+
+                # We need to save all the sent in parameters first.
+                for parameter in request.session['endpoint']['request']['parameters']:
+                    endpoint_parameter = EndpointParameter(
+                        key=parameter['key'],
+                        type=parameter['type'],
+                        endpoint=endpoint
+                    )
+
+                    endpoint_parameter.save()
+
+                # Now we have to loop through each column that is to be returned in the response and add it to the database
+                for column in request.session['endpoint']['response']['columns']:
+                    # These are the columns that need to be returned
+                    endpoint_data_source_column = EndpointDataSourceColumn(
+                        column_id=column['column'],
+                        endpoint=endpoint
+                    )
+
+                    endpoint_data_source_column.save()
+
+                    # Check to see if this column has any filters. If it does then add them
+                    if column['filters']:
+                        for filter in column['filters']:
+                            if filter['param_type'] == 'COLUMN':
+                                # Try and lookup that parameter from columns that exist from the Database
+                                column_parameter = DatabaseColumn.objects.get(
+                                    id=int(filter['key'])
+                                )
+
+                                # It's a Column filter
+                                endpoint_data_source_filter = EndpointDataSourceFilter(
+                                    type=filter['param_type'],
+                                    column_parameter=column_parameter
+                                )
+                            else:
+                                # Try and lookup that parameter
+                                endpoint_parameter = EndpointParameter.objects.get(
+                                    key=filter['key'],
+                                    type=filter['type'],
+                                    endpoint=endpoint
+                                )
+
+                                endpoint_data_source_filter = EndpointDataSourceFilter(
+                                    type=filter['param_type'],
+                                    request_parameter=endpoint_parameter
+                                )
+
+                            endpoint_data_source_filter.save()
+
+                messages.success(request, 'Endpoint successfully created.')
+
+            except Exception as e:
+                messages.error(request, str(e))
+
+            return redirect('/project/'+str(project.id))
 
 
 
