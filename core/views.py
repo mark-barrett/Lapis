@@ -620,6 +620,27 @@ class ViewEndpoint(LoginRequiredMixin, View):
             # And the endpoint
             endpoint = Endpoint.objects.get(id=endpoint_id)
 
+            tables_obj = {}
+
+            # Get all of the columns and their tables etc
+            endpoint_column_returns = EndpointDataSourceColumn.objects.all().filter(endpoint=endpoint)
+
+            for column in endpoint_column_returns:
+                db_column = DatabaseColumn.objects.get(id=column.column_id)
+                print(db_column.table.name)
+
+                # Check if this is already in the object
+                if db_column.table.name in tables_obj:
+                    # Check if the list exists
+                    if tables_obj[db_column.table.name]:
+                        tables_obj[db_column.table.name].append(db_column)
+                    else:
+                        tables_obj[db_column.table.name] = [db_column]
+                # Its not
+                else:
+                    # Create it
+                    tables_obj[db_column.table.name] = [db_column]
+
             # Check to make sure the user viewing this project is the owner of it
             if endpoint.project.user == request.user:
                 context = {
@@ -628,7 +649,7 @@ class ViewEndpoint(LoginRequiredMixin, View):
                     'endpoint': endpoint,
                     'endpoint_headers': EndpointHeader.objects.all().filter(endpoint=endpoint),
                     'endpoint_parameters': EndpointParameter.objects.all().filter(endpoint=endpoint),
-                    'endpoint_column_returns': EndpointDataSourceColumn.objects.all().filter(endpoint=endpoint),
+                    'endpoint_column_returns': tables_obj,
                     'endpoints': Endpoint.objects.all().filter(project=project)
                 }
 
