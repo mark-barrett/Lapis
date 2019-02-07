@@ -1,0 +1,242 @@
+{% extends 'core/nav-bar.html' %}
+
+{# Load static templating tag to be able to use it to get paths to static files #}
+{% load static %}
+
+{# Set the title and background color for the base.html file. #}
+{% block title %}RESTBroker - View Endpoint{% endblock %}
+
+{% block page-content %}
+    <div class="page-content">
+        <h2 class="title-name">{{ project.name }} </h2>
+        <p class="title-description">
+            {{ project.description }}
+            {% if project.type == 'public' %}
+                <span class="badge badge-light"><i class="fa fa-users"></i> Public</span>
+            {% else %}
+                <span class="badge badge-light"><i class="fa fa-lock"></i> Private</span>
+            {% endif %}
+        </p>
+        <div class="float-right">
+            <a href="/project/edit/{{ project.id }}" class="btn btn-light btn-sm">Edit Project</a>&nbsp;
+            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteProject">
+                Delete Project
+            </button>
+        </div>
+        <div class="inner-page-content">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+
+            {# If the database has been built. If not then say it needs to be built #}
+            {% if project.database_built %}
+
+                {% include 'core/project-nav-bar.html' with page='resources' %}
+
+                <div class="card card-no-top-radius">
+                    <div class="card-body">
+                        <div class="text-center">
+                            <div class="list-group">
+                                <a class="list-group-item list-group-item-action {% if endpoint.request_type == 'GET' %}list-group-item-warning {% else %}list-group-item-primary{% endif %}">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <div class="float-right" style="width: 80%">
+                                                <div class="card {% if endpoint.request_type == 'POST' %}bg-primary{% elif endpoint.request_type == 'GET' %}bg-warning{% endif %}">
+                                                    <div class="card-body endpoint-margin-padding">
+                                                        <h2 class="endpoint-name">{{ endpoint.request_type }}</h2>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="status-dot">
+                                                {% if endpoint.status %}
+                                                    <div class="dot on my-auto" data-toggle="tooltip" data-placement="top" title="On"></div>
+                                                {% else %}
+                                                    <div class="dot off" data-toggle="tooltip" data-placement="top" title="Off"></div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5 text-left">
+                                            /{{ endpoint.endpoint_url }}<br/>
+                                            <small>{{ endpoint.description }}</small>
+                                        </div>
+                                        <div class="col-md-3 response-type">
+                                            <i class="fa fa-code"></i> {{ endpoint.response_format }}
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="float-right">
+                                                {% if endpoint.status %}
+                                                    <button href="" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#changeEndpointStatus"><i class="fas fa-power-off"></i></button>
+                                                {% else %}
+                                                    <button href="" class="btn btn-success btn-lg" data-toggle="modal" data-target="#changeEndpointStatus"><i class="fas fa-power-off"></i></button>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="card card-not-top-radius-with-border text-left">
+                                    <div class="card-body">
+                                        <div class="float-right">
+                                            <a href="" class="btn btn-success">View Requests to this Endpoint</a>
+                                            <a href="" class="btn btn-primary">Edit</a>
+                                            <a href="" class="btn btn-danger">Delete</a>
+                                        </div>
+                                        <br/><br/>
+                                        <hr/>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title"><i class="fas fa-upload"></i> Request</h5>
+                                                        <p class="form-instruction">Headers</p>
+                                                        {% if endpoint_headers %}
+                                                            <table class="table table-striped table-sm">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th scope="col">Key</th>
+                                                                    <th scope="col">Value</th>
+                                                                    <th scope="col">Description</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                {% for header in endpoint_headers %}
+                                                                    <tr>
+                                                                        <td>{{ header.key }}</td>
+                                                                        <td>{{ header.value }}</td>
+                                                                        <td>{{ header.description }}</td>
+                                                                    </tr>
+                                                                {% endfor %}
+                                                                </tbody>
+                                                            </table>
+                                                        {% else %}
+                                                            None<br/><br/>
+                                                        {% endif %}
+                                                        <p class="form-instruction">Parameters</p>
+                                                        {% if endpoint_parameters %}
+                                                            <table class="table table-striped table-sm">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th scope="col">Type</th>
+                                                                    <th scope="col">Key</th>
+                                                                </tr>
+                                                                </thead>
+                                                                    <tbody>
+                                                                    {% for parameter in endpoint_parameters %}
+                                                                        <tr>
+                                                                            <td>{{ parameter.type }}</td>
+                                                                            <td>{{ parameter.key }}</td>
+                                                                        </tr>
+                                                                    {% endfor %}
+                                                                    </tbody>
+                                                            </table>
+                                                        {% else %}
+                                                            None<br/><br/>
+                                                        {% endif %}
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title"><i class="fas fa-download"></i> Response</h5>
+                                                        <p class="form-instruction">Tables</p>
+                                                        {% if endpoint_column_returns %}
+                                                            {{ endpoint_column_returns }}
+                                                        {% else %}
+                                                            None
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="card">
+                    <div class="card">
+                        <div class="card-header">Endpoints</div>
+                        <div class="card-body">
+                            <div class="text-center">
+                                <h1><i class="fa fa-database" aria-hidden="true"></i></h1>
+                                <h3>Database has not been built<br/><small class="subtext">Before creating endpoints, RESTBroker needs to contact your database and build a schema.</small></h3>
+                                <a href="/build-database/{{ project.id }}" class="btn btn-success">Build Database</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+        </div>
+        <div class="modal fade" id="changeEndpointStatus" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">
+                            You are about to turn this endpoint{% if endpoint.status %} off {% else %} on {% endif %}
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {% if endpoint.status %}
+                            By turning this endpoint off, it will not longer be able to accept incoming requests. It will still be saved and can
+                            be turned back on at anytime.
+                        {% else %}
+                            By turning this endpoint on, it will be opened up to incoming requests from authorised users. It can be turned off at
+                            anytime.
+                        {% endif %}
+                        <br/><br/>
+                        {% if endpoint.status %}
+                            <a href="/project/{{ project.id }}/endpoint/status/{{ endpoint.id }}" class="btn btn-danger btn-block">I understand, Turn this Endpoint Off</a>
+                        {% else %}
+                            <a href="/project/{{ project.id }}/endpoint/status/{{ endpoint.id }}" class="btn btn-success btn-block">I understand, Turn this Endpoint On</a>
+                        {% endif %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="deleteProject" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Delete Project {{ project.name }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        All endpoints, triggers and any other information associated with this project will be deleted.<br/>
+                        Please be sure that you want to delete this project.
+                        <br/><br/>
+                        <a href="/project/delete/{{ project.id }}" class="btn btn-danger btn-block">I understand, Delete this Project</a>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slant-end">
+        <svg x="0" y="0" viewBox="0 0 2560 200" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+            <polygon class="fill-back" points="2560 0 2560 300 0 200"></polygon>
+        </svg>
+    </div>
+    <div class="other-half">
+        <div class="container">
+            {% include 'core/footer.html' %}
+        </div>
+    </div>
+{% endblock %}

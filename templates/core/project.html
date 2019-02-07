@@ -39,37 +39,48 @@
                     <div class="card-body">
                         <div class="text-center">
                             {% if endpoints %}
-                                {% for endpoint in endpoints %}
-                                    <div class="card {% if endpoint.request_type == 'POST' %}border-primary{% elif endpoint.request_type == 'GET' %}border-warning{% endif %}">
-                                        <div class="card-body endpoint-margin-padding">
+                                <div class="list-group">
+                                    {% for endpoint in endpoints %}
+                                        <a class="list-group-item list-group-item-action {% if endpoint.request_type == 'GET' %}list-group-item-warning {% else %}list-group-item-primary{% endif %}">
+
                                             <div class="row">
                                                 <div class="col-md-2">
-                                                    <div class="card {% if endpoint.request_type == 'POST' %}bg-primary{% elif endpoint.request_type == 'GET' %}bg-warning{% endif %}">
-                                                        <div class="card-body endpoint-margin-padding"><h2>{{ endpoint.request_type }}</h2></div>
+                                                    <div class="float-right" style="width: 80%">
+                                                        <div class="card {% if endpoint.request_type == 'POST' %}bg-primary{% elif endpoint.request_type == 'GET' %}bg-warning{% endif %}">
+                                                            <div class="card-body endpoint-margin-padding">
+                                                                <h2 class="endpoint-name">{{ endpoint.request_type }}</h2>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="status-dot">
+                                                        {% if endpoint.status %}
+                                                            <div class="dot on my-auto" data-toggle="tooltip" data-placement="top" title="On"></div>
+                                                        {% else %}
+                                                            <div class="dot off" data-toggle="tooltip" data-placement="top" title="Off"></div>
+                                                        {% endif %}
                                                     </div>
                                                 </div>
-                                                <div class="col-md-8 text-left">
+                                                <div class="col-md-5 text-left">
                                                     /{{ endpoint.endpoint_url }}<br/>
                                                     <small>{{ endpoint.description }}</small>
                                                 </div>
+                                                <div class="col-md-3 response-type">
+                                                    <i class="fa fa-code"></i> {{ endpoint.response_format }}
+                                                </div>
                                                 <div class="col-md-2 text-right">
-                                                    <button type="button" class="btn btn-light" data-toggle="popover"
-                                                            title="Options" data-html="true"
-                                                            data-content="<a href=''>View Endpoint</a><br/>
-                                                                          <a href=''>Edit Endpoint</a><br/>
-                                                                          <a href=''>Delete Endpoint</a><br/>
-                                                                          <a href=''>View Requests to this Endpoint</a>">
+                                                    <button type="button" class="btn btn-light btn-lg" data-toggle="popover"
+                                                            title="Actions" data-html="true"
+                                                            data-content="<a href='/project/{{ project.id }}/endpoint/view/{{ endpoint.id }}'>View Endpoint</a><br/>
+                                                                                          <a href=''>Edit Endpoint</a><br/>
+                                                                                          <a href=''>Delete Endpoint</a><br/>
+                                                                                          <a href=''>View Requests to this Endpoint</a>">
                                                         <i class="fas fa-ellipsis-h"></i>
                                                     </button>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    {# If we aren't in the last endpoint in the loop then add a line break for spacing #}
-                                    {% if not forloop.last %}
-                                        <br/>
-                                    {% endif %}
-                                {% endfor %}
+                                        </a>
+                                    {% endfor %}
+                                </div>
                                 <br/>
                                 <a href="/endpoint/create/{{ project.id }}" class="btn btn-block btn-success">Create Endpoint</a>
                             {% else %}

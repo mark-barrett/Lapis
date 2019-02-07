@@ -146,6 +146,11 @@ body {
     border: none;
 }
 
+.card-not-top-radius-with-border {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+}
+
 .nav-pills-active {
     background-color: #FFFFFF;
     color: #808080;
@@ -167,6 +172,10 @@ body {
     color: #8898aa;
     text-transform: uppercase;
     font-weight: bold;
+}
+
+.no-bottom-margin {
+    margin-bottom: 0px;
 }
 
 .nav-link {
@@ -383,4 +392,35 @@ body {
     display:inline-block;
     vertical-align:middle;
     line-height:1.25em;
+}
+
+.endpoint-name {
+    font-size: 2.3vw !important;
+    padding: 0px;
+    margin: 0px;
+}
+
+.dot {
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    transform: translate(0%,90%);
+}
+
+.on {
+    background-color: #2DC662
+}
+
+.off {
+    background-color: #FF0000;
+}
+
+.status-dot {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.response-type {
+    transform: translate(0%, 20%);
 }

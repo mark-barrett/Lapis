@@ -120,6 +120,7 @@ class Endpoint(models.Model):
 
     name = models.CharField(max_length=64)
     description = models.CharField(max_length=64)
+    status = models.BooleanField(default=True)
 
     # The Request
     request_type = models.CharField(max_length=4, choices=REQUEST_CHOICES)

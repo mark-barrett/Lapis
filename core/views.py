@@ -491,9 +491,6 @@ class CreateEndpoint(LoginRequiredMixin, View):
             # Get the columns that are to be returned
             columns = request.POST.getlist('chosen-column')
 
-            print(tables)
-            print(columns)
-
             # Start to construct the response object
             response = {
                 'response_type': response_type,
@@ -604,11 +601,78 @@ class CreateEndpoint(LoginRequiredMixin, View):
 
                 messages.success(request, 'Endpoint successfully created.')
 
+                del request.session['endpoint']
+
             except Exception as e:
                 messages.error(request, str(e))
 
             return redirect('/project/'+str(project.id))
 
+
+class ViewEndpoint(LoginRequiredMixin, View):
+    login_url = '/'
+
+    def get(self, request, project_id, endpoint_id):
+
+        try:
+            # Get the project
+            project = Project.objects.get(id=project_id)
+            # And the endpoint
+            endpoint = Endpoint.objects.get(id=endpoint_id)
+
+            # Check to make sure the user viewing this project is the owner of it
+            if endpoint.project.user == request.user:
+                context = {
+                    'projects': Project.objects.all().filter(user=request.user),
+                    'project': project,
+                    'endpoint': endpoint,
+                    'endpoint_headers': EndpointHeader.objects.all().filter(endpoint=endpoint),
+                    'endpoint_parameters': EndpointParameter.objects.all().filter(endpoint=endpoint),
+                    'endpoint_column_returns': EndpointDataSourceColumn.objects.all().filter(endpoint=endpoint),
+                    'endpoints': Endpoint.objects.all().filter(project=project)
+                }
+
+                return render(request, 'core/view-endpoint.html', context)
+            else:
+                messages.error(request, 'Sorry, we can\'t seem to find what you were looking for.')
+                return redirect('/dashboard')
+        except:
+            messages.error(request, 'Endpoint does not exist.')
+            return redirect('/dashboard')
+
+
+class ChangeEndpointStatus(LoginRequiredMixin, View):
+    login_url = '/'
+
+    def get(self, request, project_id, endpoint_id):
+
+        try:
+            # Get the project
+            project = Project.objects.get(id=project_id)
+            # And the endpoint
+            endpoint = Endpoint.objects.get(id=endpoint_id)
+
+            # Check to make sure the user viewing this project is the owner of it
+            if endpoint.project.user == request.user:
+                # Change the status to the opposite of what it is
+                endpoint.status = not endpoint.status
+
+                endpoint.save()
+
+                # If it was turned on then say so if off say so
+                if endpoint.status:
+                    status = 'on'
+                else:
+                    status = 'off'
+
+                messages.success(request, 'Endpoint successfully turned '+status+'.')
+                return redirect('/project/'+str(project.id)+'/endpoint/view/'+str(endpoint.id))
+            else:
+                messages.error(request, 'Sorry, we can\'t seem to find what you were looking for.')
+                return redirect('/dashboard')
+        except:
+            messages.error(request, 'Endpoint does not exist.')
+            return redirect('/dashboard')
 
 
 class Account(LoginRequiredMixin, View):
