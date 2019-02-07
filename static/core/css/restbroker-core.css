@@ -400,6 +400,15 @@ body {
     margin: 0px;
 }
 
+.database-option-info {
+    padding-left: 0px;
+    padding-top: 10px;
+}
+
+.database-option-image {
+    padding-right: 0px;
+}
+
 .dot {
     height: 12px;
     width: 12px;

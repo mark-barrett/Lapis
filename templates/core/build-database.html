@@ -12,36 +12,59 @@
 {% block page-content %}
 
     <div id="page-content" class="page-content">
+        <h2 class="title-name">Build Database</h2>
+        <p class="title-description">
+            Link your database to your project and build a schema to build endpoints.
+        </p>
+
         {% if messages %}
             {% for message in messages %}
                 <div class="alert alert-{{ message.tags }}">{{ message }}</div>
             {% endfor %}
         {% endif %}
-        <h1 class="title-name">Build Database</h1>
-        <p class="title-description">Link your database to your project and build a schema to build endpoints.</p>
-
         <div id="database-builder-connection-messages">
 
         </div>
+        <br/>
 
         <form method="post" action="" name="build-database">
-            <h3>Database Type</h3>
             <div class="card">
                 <div class="card-body">
+                    <p class="form-instruction">Database Type</p>
                     <div class="row">
                         <div class="col-md-4">
-                            <div class="text-center">
-                                <img src="{% static 'core/images/mysql-logo.png' %}" height="100px"><br/>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="database-type" id="mysql" value="mysql">
+                            <div class="card border-primary">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6 database-option-image">
+                                            <img src="{% static 'core/images/mysql-logo.png' %}" width="100%" alt="">
+                                        </div>
+                                        <div class="col-md-6 database-option-info">
+                                            <div class="float-right">
+                                                <input class="form-check-input" type="radio" name="database-type" id="mariadb" value="mariadb">
+                                            </div>
+                                            MySQL<br/>
+                                            <small>Version: 8.0.13</small>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="text-center">
-                                <img src="{% static 'core/images/maria-db.png' %}" height="100px"><br/>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="database-type" id="mariadb" value="mariadb">
+                            <div class="card border-primary">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6" style="padding-right: 0px;">
+                                            <img src="{% static 'core/images/maria-db.png' %}" width="100%" alt="">
+                                        </div>
+                                        <div class="col-md-6" style="padding-left: 0px; padding-top: 10px;">
+                                            <div class="float-right">
+                                                <input class="form-check-input" type="radio" name="database-type" id="mariadb" value="mariadb">
+                                            </div>
+                                            MariaDB<br/>
+                                            <small>Version: 10.3.12</small>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -49,37 +72,19 @@
 
                         </div>
                     </div>
-                </div>
-            </div>
-            <br/>
-            <h3>SSH Information</h3>
-            <div class="card">
-                <div class="card-body">
+                    <br/>
+                    <p class="form-instruction">Database Information</p>
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             {{ form.server_address|as_crispy_field }}
                         </div>
-                        <div class="col-md-4">
-                            {{ form.ssh_user|as_crispy_field }}
-                        </div>
-                        <div class="col-md-4">
-                            {{ form.ssh_password|as_crispy_field }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br/>
-            <h3>Database Information</h3>
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             {{ form.database_name|as_crispy_field }}
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             {{ form.database_user|as_crispy_field }}
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             {{ form.database_password|as_crispy_field }}
                         </div>
                     </div>

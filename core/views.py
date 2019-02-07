@@ -696,6 +696,25 @@ class ChangeEndpointStatus(LoginRequiredMixin, View):
             return redirect('/dashboard')
 
 
+class DeleteEndpoint(LoginRequiredMixin, View):
+    login_url = '/'
+
+    def get(self, request, project_id, endpoint_id):
+        # Get the project
+        project = Project.objects.get(id=project_id)
+
+        # Get the endpoint
+        endpoint = Endpoint.objects.get(id=endpoint_id)
+
+        # Check the ownership
+        if endpoint.project.user == request.user:
+            # Confirmed that they own the project. Delete and redirect to the dashboard with a message.
+            endpoint.delete()
+
+            messages.success(request, 'Successfully deleted endpoint.')
+            return redirect('/project/'+str(project.id))
+
+
 class Account(LoginRequiredMixin, View):
     login_url = '/'
 

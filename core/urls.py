@@ -26,5 +26,6 @@ urlpatterns = [
     url(r'^endpoint/reset/(?P<project_id>[0-9]+)$', views.ResetEndpoint.as_view(), name='reset-endpoint'),
     url(r'^endpoint/create/(?P<project_id>[0-9]+)$', views.CreateEndpoint.as_view(), name='create-endpoint'),
     url(r'^project/(?P<project_id>[0-9]+)/endpoint/view/(?P<endpoint_id>[0-9]+)$', views.ViewEndpoint.as_view(), name='view-endpoint'),
+    url(r'^project/(?P<project_id>[0-9]+)/endpoint/delete/(?P<endpoint_id>[0-9]+)$', views.DeleteEndpoint.as_view(), name='delete-endpoint'),
     url(r'^project/(?P<project_id>[0-9]+)/endpoint/status/(?P<endpoint_id>[0-9]+)$', views.ChangeEndpointStatus.as_view(), name='change-endpoint-status'),
 ]

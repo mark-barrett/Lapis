@@ -276,8 +276,6 @@ $('#build-database').click(function() {
     var databaseUser = $('#id_database_user').val();
     var databasePassword = $('#id_database_password').val();
     var serverAddress = $('#id_server_address').val();
-    var sshUser = $('#id_ssh_user').val();
-    var sshPassword = $('#id_ssh_password').val();
     var projectID = $('#project_id').val();
     var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
 
@@ -292,12 +290,6 @@ $('#build-database').click(function() {
     } else if(serverAddress.length == 0) {
         // Raise an error
         toastr.error('Cannot test connection as no server address was given.');
-    } else if(sshUser.length == 0) {
-        // Raise an error
-        toastr.error('Cannot test connection as no SSH user was given.');
-    } else if(sshPassword.length == 0) {
-        // Raise an error
-        toastr.error('Cannot test connection as no SSH password was given.');
     } else {
         errorDiv.html('');
 
@@ -309,8 +301,6 @@ $('#build-database').click(function() {
 
         const postData = {
             'ssh_address': serverAddress,
-            'ssh_user': sshUser,
-            'ssh_password': sshPassword,
             'database_name': databaseName,
             'database_user': databaseUser,
             'database_password': databasePassword
