@@ -30,8 +30,14 @@
         <form method="post" action="" name="build-database">
             <div class="card">
                 <div class="card-body">
-                    <p class="form-instruction">Database Type</p>
                     <div class="row">
+                        <div class="col-md-4">
+                            <h2 class="text-dark">Database Type</h2>
+                            <p><small>
+                                Choose which database server you run and RESTBroker will contact it to get the schema
+                                of your database.</small>
+                            </p>
+                        </div>
                         <div class="col-md-4">
                             <div class="card border-primary">
                                 <div class="card-body">
@@ -68,23 +74,23 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-
-                        </div>
                     </div>
                     <br/>
-                    <p class="form-instruction">Database Information</p>
+                    <hr/>
+                    <br/>
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
+                            <h2 class="text-dark">Database Information</h2>
+                            <p><small>Please ensure that Remote SQL access is enabled on your server (remove bind from local host)
+                                or RESTBroker will not be able to connect to your server.
+
+                            <br/><br/>
+                                If necessary, you can add the RESTBroker IP to the list of your allowed connections in your firewall.</small></p>
+                        </div>
+                        <div class="col-md-8">
                             {{ form.server_address|as_crispy_field }}
-                        </div>
-                        <div class="col-md-3">
                             {{ form.database_name|as_crispy_field }}
-                        </div>
-                        <div class="col-md-3">
                             {{ form.database_user|as_crispy_field }}
-                        </div>
-                        <div class="col-md-3">
                             {{ form.database_password|as_crispy_field }}
                         </div>
                     </div>

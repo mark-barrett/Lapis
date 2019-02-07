@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="693ea1cf-17b0-42f8-8355-71d597cd4bad" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/core/images/maria-db.png" afterPath="$PROJECT_DIR$/static/core/images/maria-db.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/urls.py" afterPath="$PROJECT_DIR$/core/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/views.py" afterPath="$PROJECT_DIR$/core/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/core/css/restbroker-core.css" afterPath="$PROJECT_DIR$/static/core/css/restbroker-core.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/core/js/restbroker-core.js" afterPath="$PROJECT_DIR$/static/core/js/restbroker-core.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/build-database.html" afterPath="$PROJECT_DIR$/templates/core/build-database.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/project-settings.html" afterPath="$PROJECT_DIR$/templates/core/project-settings.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/project.html" afterPath="$PROJECT_DIR$/templates/core/project.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/view-endpoint.html" afterPath="$PROJECT_DIR$/templates/core/view-endpoint.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -39,14 +30,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="build-database.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="build-database.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/core/build-database.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="86" column="44" lean-forward="false" selection-start-line="86" selection-start-column="44" selection-end-line="86" selection-end-column="44" />
+            <state relative-caret-position="171">
+              <caret line="86" column="38" lean-forward="false" selection-start-line="86" selection-start-column="38" selection-end-line="86" selection-end-column="38" />
               <folding>
-                <element signature="e#2520#2547#0#HTML" expanded="true" />
-                <element signature="e#2774#2819#0#HTML" expanded="true" />
+                <element signature="e#2849#2876#0#HTML" expanded="true" />
+                <element signature="e#3103#3148#0#HTML" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -131,7 +122,7 @@
       <file leaf-file-name="project-settings.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/core/project-settings.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="531">
+            <state relative-caret-position="411">
               <caret line="43" column="55" lean-forward="false" selection-start-line="43" selection-start-column="55" selection-end-line="43" selection-end-column="55" />
               <folding />
             </state>
@@ -158,10 +149,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
+            <state relative-caret-position="270">
               <caret line="328" column="0" lean-forward="false" selection-start-line="328" selection-start-column="0" selection-end-line="329" selection-end-column="55" />
               <folding>
                 <element signature="e#532#1300#0" expanded="false" />
@@ -201,7 +192,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>CreateProjec</find>
       <find>project</find>
       <find>active</find>
       <find>ViewPo</find>
@@ -231,6 +221,7 @@
       <find>database</find>
       <find>endpoint-name</find>
       <find>build</find>
+      <find>BuildD</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -263,9 +254,9 @@
         <option value="$PROJECT_DIR$/templates/core/project-settings.html" />
         <option value="$PROJECT_DIR$/templates/core/project.html" />
         <option value="$PROJECT_DIR$/static/core/css/restbroker-core.css" />
-        <option value="$PROJECT_DIR$/templates/core/build-database.html" />
         <option value="$PROJECT_DIR$/static/core/js/restbroker-core.js" />
         <option value="$PROJECT_DIR$/core/views.py" />
+        <option value="$PROJECT_DIR$/templates/core/build-database.html" />
       </list>
     </option>
   </component>
@@ -1080,14 +1071,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/core/project-settings.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="531">
-          <caret line="43" column="55" lean-forward="false" selection-start-line="43" selection-start-column="55" selection-end-line="43" selection-end-column="55" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/core/css/restbroker-core.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="293">
@@ -1120,17 +1103,6 @@
         <state relative-caret-position="152">
           <caret line="42" column="7" lean-forward="false" selection-start-line="42" selection-start-column="7" selection-end-line="42" selection-end-column="7" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/core/build-database.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="86" column="44" lean-forward="false" selection-start-line="86" selection-start-column="44" selection-end-line="86" selection-end-column="44" />
-          <folding>
-            <element signature="e#2520#2547#0#HTML" expanded="true" />
-            <element signature="e#2774#2819#0#HTML" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1187,7 +1159,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/core/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
+        <state relative-caret-position="270">
           <caret line="328" column="0" lean-forward="false" selection-start-line="328" selection-start-column="0" selection-end-line="329" selection-end-column="55" />
           <folding>
             <element signature="e#532#1300#0" expanded="false" />
@@ -1208,6 +1180,25 @@
             <element signature="e#28286#28920#0" expanded="false" />
             <element signature="e#28977#30166#0" expanded="false" />
             <element signature="e#30220#30479#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/core/project-settings.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="411">
+          <caret line="43" column="55" lean-forward="false" selection-start-line="43" selection-start-column="55" selection-end-line="43" selection-end-column="55" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/core/build-database.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="86" column="38" lean-forward="false" selection-start-line="86" selection-start-column="38" selection-end-line="86" selection-end-column="38" />
+          <folding>
+            <element signature="e#2849#2876#0#HTML" expanded="true" />
+            <element signature="e#3103#3148#0#HTML" expanded="true" />
           </folding>
         </state>
       </provider>
