@@ -18,7 +18,9 @@
             <br/>
             <p class="sub-caption">Build and Deploy your REST API in minutes through a graphical interface. RESTBroker will remotely contact
                 your database and serve content. It will self document and also manage things like API Keys and IP Blacklisting.</p>
-
+            <div class="login-footer">
+                {% include 'core/footer.html' %}
+            </div>
         </div>
         <div class="col-md-5 login-right">
             {% if messages %}
@@ -67,5 +69,4 @@
             </div>
         </div>
     </div>
-    {% include 'core/footer.html' %}
 {% endblock %}

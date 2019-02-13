@@ -463,3 +463,13 @@ body {
     color: white;
     font-size: 20px;
 }
+
+.login-footer {
+    position:absolute;
+    left:0;
+    padding-left: 40px;
+    padding-right: 40px;
+    width: 100%;
+    bottom:0;
+    color: white;
+}

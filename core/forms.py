@@ -61,17 +61,12 @@ class ProjectForm(ModelForm):
 class DatabaseBuilderForm(forms.Form):
 
     server_address = forms.CharField(max_length=32)
-    ssh_user = forms.CharField(max_length=32)
-    ssh_password = forms.CharField(max_length=256, widget=forms.PasswordInput())
     database_user = forms.CharField(max_length=32)
     database_password = forms.CharField(max_length=256)
     database_name = forms.CharField(max_length=64)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['ssh_user'].label = 'SSH User'
-        self.fields['ssh_password'].label = 'SSH Password'
-
     
 class EndpointForm(forms.Form):
     REQUEST_CHOICES = (

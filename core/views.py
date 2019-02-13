@@ -321,13 +321,10 @@ class BuildDatabase(LoginRequiredMixin, View):
             messages.error(request, 'Project does not exist.')
             return redirect('/dashboard')
 
-
     def post(self, request, project_id):
 
         try:
-            ssh_address = request.POST['ssh_address']
-            ssh_user = request.POST['ssh_user']
-            ssh_password = request.POST['ssh_password']
+            server_address = request.POST['server_address']
             database_name = request.POST['database_name']
             database_user = request.POST['database_user']
             database_password = request.POST['database_password']
@@ -341,8 +338,8 @@ class BuildDatabase(LoginRequiredMixin, View):
 
                     # Now that we have all of the information let us test the SSH Tunnel.
                     # Pass it to Celery to deal with
-                    async_result = build_database.delay(project_id=project.id, ssh_address=ssh_address, ssh_user=ssh_user,
-                                                        ssh_password=ssh_password, database_name=database_name,
+                    async_result = build_database.delay(project_id=project.id, server_address=server_address,
+                                                        database_name=database_name,
                                                         database_user=database_user,
                                                         database_password=database_password)
 

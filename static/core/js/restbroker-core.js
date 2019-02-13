@@ -300,7 +300,7 @@ $('#build-database').click(function() {
         pageContent.after('<h1 id="building-database-loader" class="building-database"><i class="fa fa-cog fa-spin"></i> Building Database<br/><small>Testing connection, then building the database.</small></h1>');
 
         const postData = {
-            'ssh_address': serverAddress,
+            'server_address': serverAddress,
             'database_name': databaseName,
             'database_user': databaseUser,
             'database_password': databasePassword
@@ -329,8 +329,19 @@ $('#build-database').click(function() {
                 }
             },
             error: function(data) {
-                console.log(data);
-            }
+                // Check to see if there is statusText
+                if(data.hasOwnProperty('statusText')) {
+                    // There is status text
+                    if(data['statusText'] == 'timeout') {
+                        pageContent.removeClass('blur');
+                        $('#building-database-loader').remove();
+                        toastr.error('Error Connecting to Database: Either your database is not online, or you have not allowed' +
+                            'for Remote SQL connections.');
+                    }
+                }
+            },
+            timeout: 5000,
+            async: true
         });
     }
 });

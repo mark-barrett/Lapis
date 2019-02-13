@@ -72,8 +72,6 @@ class Database(models.Model):
     name = models.CharField(max_length=64)
     user = models.CharField(max_length=64)
     password = models.CharField(max_length=256)
-    ssh_username = models.CharField(max_length=64)
-    ssh_password = models.CharField(max_length=256)
     server_address = models.CharField(max_length=32)
     project = models.ForeignKey(Project)
 
