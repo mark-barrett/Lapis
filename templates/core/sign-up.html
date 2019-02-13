@@ -8,75 +8,64 @@
 {% block background-color %}secondary-background{% endblock %}
 
 {% block content %}
-    <div class="container">
+    <div class="row login-row h-100">
+        <div class="col-md-7 login-left">
+            <img class="logo" src="{% static 'core/images/logo-white.png' %}">
 
+            <br/>
+            <h1 class="main-caption">Build, automate,<br/> document
+                and manage<br/> REST APIs.</h1>
+            <br/>
+            <p class="sub-caption">Build and Deploy your REST API in minutes through a graphical interface. RESTBroker will remotely contact
+                your database and serve content. It will self document and also manage things like API Keys and IP Blacklisting.</p>
 
-        <div class="row">
-            <div class="col-md-4">
-
-            </div>
-            <div class="col-md-4">
-                <div class="text-center">
-                    <img class="logo" src="{% static 'core/images/logo-white.png' %}"><br/><br/>
-
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-                        {% endfor %}
-                    {% endif %}
-                </div>
-                <div class="card">
-                    <div class="card-body">
-                        <div class="text-center">
-                            <h2>Sign Up</h2>
+        </div>
+        <div class="col-md-5 login-right">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+            <div class="login-form">
+                <h2>Sign Up</h2>
+                <hr/>
+                <form name="sign-up" action="" method="post">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input id="first_name" placeholder="First Name" type="text" name="first_name" required="required" class="form-control">
+                            </div>
                         </div>
-                        <form name="sign-up" action="" method="post">
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <input id="first_name" placeholder="First Name" type="text" name="first_name" required="required" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <input id="last_name" placeholder="Last Name" type="text" name="last_name" required="required" class="form-control">
-                                    </div>
-                                </div>
-                            </div>
-
+                        <div class="col-md-6">
                             <div class="form-group">
-                                <input id="email" placeholder="Email" type="email" name="email" required="required" class="form-control">
-                            </div>
-
-                            <div class="form-group">
-                                <input id="username" placeholder="Username" type="text" name="username" required="required" class="form-control">
-                            </div>
-
-                            <div class="form-group">
-                                <input id="password" placeholder="Password" type="password" name="password" required="required" class="form-control">
-                            </div>
-
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-success btn-block">Sign Up</button>
-                        </form>
-                        <hr/>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <a href="{% url 'home' %}" class="btn btn-block btn-secondary">Login</a>
-                            </div>
-                            <div class="col-md-6">
-                                <a href="" class="btn btn-block btn-secondary">Forgot Password</a>
+                                <input id="last_name" placeholder="Last Name" type="text" name="last_name" required="required" class="form-control">
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-4">
 
+                    <div class="form-group">
+                        <input id="email" placeholder="Email" type="email" name="email" required="required" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <input id="username" placeholder="Username" type="text" name="username" required="required" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <input id="password" placeholder="Password" type="password" name="password" required="required" class="form-control">
+                    </div>
+
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success btn-block">Sign Up</button>
+                </form>
+                <br/>
+                <a href="" class="btn btn-secondary btn-block">Forgot Password</a>
+                <hr/>
+                <div class="text-center">
+                    Already have an account? <a href="{% url 'home' %}">Login.</a>
+                </div>
             </div>
         </div>
     </div>
-
     {% include 'core/footer.html' %}
 {% endblock %}

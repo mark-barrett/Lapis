@@ -8,56 +8,51 @@
 {% block background-color %}secondary-background{% endblock %}
 
 {% block content %}
-    <div class="container">
-        <div class="home-content">
-            <div class="row">
-                <div class="col-md-4">
+    <div class="row login-row h-100">
+        <div class="col-md-7 login-left">
+            <img class="logo" src="{% static 'core/images/logo-white.png' %}">
 
-                </div>
-                <div class="col-md-4">
-                    <div class="text-center">
-                        <img class="logo" src="{% static 'core/images/logo-white.png' %}"><br/><br/>
-                        {% if messages %}
-                            {% for message in messages %}
-                                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-                            {% endfor %}
-                        {% endif %}
-                        <div class="card">
-                            <div class="card-body">
-                                <h2>Login</h2>
-                                <form name="login" action="" method="post">
-                                    <div class="input-group mb-3" style="padding-top: 5px;">
-                                        <div class="input-group-prepend">
-                                            <span style="background-color: white;" class="input-group-text" id="basic-addon1"><i class="fa fa-user"></i></span>
-                                        </div>
-                                        <input type="text" class="form-control" placeholder="Username" aria-label="Username" name="username" aria-describedby="basic-addon1" required="required">
-                                    </div>
-                                    <div class="input-group mb-3" style="padding-top: 5px;">
-                                        <div class="input-group-prepend">
-                                            <span style="background-color: white;" class="input-group-text" id="basic-addon1"><i class="fa fa-lock"></i></span>
-                                        </div>
-                                        <input type="password" class="form-control" placeholder="Password" aria-label="Username" name="password" aria-describedby="basic-addon1" required="required">
-                                    </div>
+            <br/>
+            <h1 class="main-caption">Build, automate,<br/> document
+                and manage<br/> REST APIs.</h1>
+            <br/>
+            <p class="sub-caption">Build and Deploy your REST API in minutes through a graphical interface. RESTBroker will remotely contact
+            your database and serve content. It will self document and also manage things like API Keys and IP Blacklisting.</p>
 
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-success btn-block">Login</button>
-                                </form>
-                                <hr/>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <a href="{% url 'sign-up' %}" class="btn btn-block btn-secondary">Sign Up</a>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <a href="" class="btn btn-block btn-secondary">Forgot Password</a>
-                                    </div>
-                                </div>
-                            </div>
+        </div>
+        <div class="col-md-5 login-right">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+            <div class="login-form">
+                <h2>Login</h2>
+                <hr/>
+                <form name="login" action="" method="post" class="">
+                    <div class="input-group mb-3" style="padding-top: 5px;">
+                        <div class="input-group-prepend">
+                            <span style="background-color: white;" class="input-group-text" id="basic-addon1"><i class="fa fa-user"></i></span>
                         </div>
+                        <input type="text" class="form-control" placeholder="Username" aria-label="Username" name="username" aria-describedby="basic-addon1" required="required">
                     </div>
+                    <div class="input-group mb-3" style="padding-top: 5px;">
+                        <div class="input-group-prepend">
+                            <span style="background-color: white;" class="input-group-text" id="basic-addon1"><i class="fa fa-lock"></i></span>
+                        </div>
+                        <input type="password" class="form-control" placeholder="Password" aria-label="Username" name="password" aria-describedby="basic-addon1" required="required">
+                    </div>
+
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success btn-block">Login</button>
+                </form>
+                <br/>
+                <a href="" class="btn btn-secondary btn-block">Forgot Password</a>
+                <hr/>
+                <div class="text-center">
+                    Don't have an account? <a href="{% url 'sign-up' %}">Sign Up.</a>
                 </div>
             </div>
         </div>
     </div>
-
-    {% include 'core/footer.html' with color='white' %}
 {% endblock %}

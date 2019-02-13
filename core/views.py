@@ -41,7 +41,7 @@ class Home(View):
         if user is not None:
             login(request, user)
             messages.success(request, 'Hey ' + user.first_name + ', welcome back!')
-            return redirect('/dashboard')
+            return redirect('/admin/dashboard')
         else:
             messages.error(request, 'Invalid username or password.')
             return redirect('/')
