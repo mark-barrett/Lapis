@@ -22,61 +22,82 @@ from core.models import Database, DatabaseTable, Project, DatabaseColumn
 def build_database(project_id, server_address,
                    database_name, database_user, database_password):
 
+    # Try connect to the database by its name to check if it exists.
     try:
-        # Try connect to the database.
         conn = db.connect(host=server_address, port=3306,
                           user=database_user, password=database_password,
-                          database='information_schema')
+                          database=database_name)
 
-        project = Project.objects.get(id=project_id)
+        # If all good close the connection
+        conn.close()
 
-        # Now that we know we can connect, let's construct a database object
-        database = Database(
-            name=database_name,
-            user=database_user,
-            password=database_password,
-            project=project
-        )
+        # Now try to actually build the database
+        try:
+            conn = db.connect(host=server_address, port=3306,
+                              user=database_user, password=database_password,
+                              database='information_schema')
 
-        print("Hello World")
+            project = Project.objects.get(id=project_id)
 
-        database.save()
-
-        cursor = conn.cursor()
-        cursor2 = conn.cursor()
-
-        # Get all of the tables in that database
-        cursor.execute("SELECT * FROM information_schema.tables WHERE table_schema='%s'" % database_name)
-
-        for row in cursor:
-            database_table = DatabaseTable(
-                name=row[2],
-                database=database
+            # Now that we know we can connect, let's construct a database object
+            database = Database(
+                name=database_name,
+                user=database_user,
+                password=database_password,
+                project=project
             )
 
-            database_table.save()
+            print("Hello World")
 
-            query = "SELECT * FROM information_schema.columns WHERE table_name='{0}' AND table_schema='{1}'".format(
-                row[2], database_name)
+            database.save()
 
-            # For each row, get the columns in that table
-            cursor2.execute(query)
+            cursor = conn.cursor()
+            cursor2 = conn.cursor()
 
-            for inner_row in cursor2:
-                database_column = DatabaseColumn(
-                    name=inner_row[3],
-                    type=inner_row[7],
-                    table=database_table
+            # Get all of the tables in that database
+            cursor.execute("SELECT * FROM information_schema.tables WHERE table_schema='%s'" % database_name)
+
+            for row in cursor:
+                database_table = DatabaseTable(
+                    name=row[2],
+                    database=database
                 )
 
-                database_column.save()
+                database_table.save()
 
-        # Set the "database built" in the project ot true.
-        project.database_built = True
-        project.save()
+                query = "SELECT * FROM information_schema.columns WHERE table_name='{0}' AND table_schema='{1}'".format(
+                    row[2], database_name)
 
-        return 'Built Database'
+                # For each row, get the columns in that table
+                cursor2.execute(query)
+
+                for inner_row in cursor2:
+                    database_column = DatabaseColumn(
+                        name=inner_row[3],
+                        type=inner_row[7],
+                        table=database_table
+                    )
+
+                    database_column.save()
+
+            # Set the "database built" in the project ot true.
+            project.database_built = True
+            project.save()
+
+            # Close all the stuff
+            cursor.close()
+            cursor2.close()
+            conn.close()
+
+            return 'Built Database'
+
+        except Exception as e:
+
+            return str(e)
+
 
     except Exception as e:
 
         return str(e)
+
+

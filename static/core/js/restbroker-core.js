@@ -318,9 +318,10 @@ $('#build-database').click(function() {
             headers: { "X-CSRFToken": csrfToken },
             data: postData,
             success: function(data) {
+                console.log('Success buzz');
                 if(data['message'] == 'Built Database') {
-                    buildingDatabaseLoader.html('<i class="fa fa-check" aria-hidden="true"></i> Database Build Successful<br/><small>Let us finalise some things and we will redirect you.</small>');
-                    setTimeout(window.location.href = '/project/'+projectID, 50000);
+                    buildingDatabaseLoader.html('<i class="fa fa-check faa-tada animated" aria-hidden="true"></i> Database Build Successful<br/><small>Let us finalise some things and we will redirect you.</small>');
+                    setTimeout(function() { window.location.href = '/project/'+projectID}, 5000);
                 } else {
                     // Remove the blur and loading screen
                     pageContent.removeClass('blur');
@@ -329,6 +330,7 @@ $('#build-database').click(function() {
                 }
             },
             error: function(data) {
+                console.log('error');
                 // Check to see if there is statusText
                 if(data.hasOwnProperty('statusText')) {
                     // There is status text
@@ -336,12 +338,10 @@ $('#build-database').click(function() {
                         pageContent.removeClass('blur');
                         $('#building-database-loader').remove();
                         toastr.error('Error Connecting to Database: Either your database is not online, or you have not allowed' +
-                            'for Remote SQL connections.');
+                            ' Remote SQL connections.');
                     }
                 }
-            },
-            timeout: 5000,
-            async: true
+            }
         });
     }
 });

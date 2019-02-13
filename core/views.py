@@ -547,6 +547,8 @@ class CreateEndpoint(LoginRequiredMixin, View):
 
                 endpoint.save()
 
+                print("ENDPOINT SAVED")
+
                 # We need to save all the sent in parameters first.
                 for parameter in request.session['endpoint']['request']['parameters']:
                     endpoint_parameter = EndpointParameter(
@@ -557,6 +559,10 @@ class CreateEndpoint(LoginRequiredMixin, View):
 
                     endpoint_parameter.save()
 
+                print("ENDPOINT PARAMETERS SAVED")
+
+                print(request.session['endpoint']['response']['columns'])
+
                 # Now we have to loop through each column that is to be returned in the response and add it to the database
                 for column in request.session['endpoint']['response']['columns']:
                     # These are the columns that need to be returned
@@ -566,6 +572,8 @@ class CreateEndpoint(LoginRequiredMixin, View):
                     )
 
                     endpoint_data_source_column.save()
+
+                    print("ENDPOINT DATA SOURCE SAVED")
 
                     # Check to see if this column has any filters. If it does then add them
                     if column['filters']:
@@ -579,22 +587,25 @@ class CreateEndpoint(LoginRequiredMixin, View):
                                 # It's a Column filter
                                 endpoint_data_source_filter = EndpointDataSourceFilter(
                                     type=filter['param_type'],
-                                    column_parameter=column_parameter
+                                    column_parameter=column_parameter,
+                                    endpoint=endpoint
                                 )
                             else:
                                 # Try and lookup that parameter
                                 endpoint_parameter = EndpointParameter.objects.get(
                                     key=filter['key'],
-                                    type=filter['type'],
+                                    type=filter['param_type'],
                                     endpoint=endpoint
                                 )
 
                                 endpoint_data_source_filter = EndpointDataSourceFilter(
                                     type=filter['param_type'],
-                                    request_parameter=endpoint_parameter
+                                    request_parameter=endpoint_parameter,
+                                    endpoint=endpoint
                                 )
 
                             endpoint_data_source_filter.save()
+                        print("ENDPOINT FITLER SAVED")
 
                 messages.success(request, 'Endpoint successfully created.')
 
