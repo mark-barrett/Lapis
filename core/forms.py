@@ -68,7 +68,7 @@ class DatabaseBuilderForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
     
-class EndpointForm(forms.Form):
+class ResourceForm(forms.Form):
     REQUEST_CHOICES = (
         ('GET', 'GET'),
         ('POST', 'POST')
@@ -82,7 +82,7 @@ class EndpointForm(forms.Form):
     name = forms.CharField(max_length=64)
     description = forms.CharField(max_length=64)
     request_type = forms.ChoiceField(choices=REQUEST_CHOICES)
-    endpoint_url = forms.CharField(max_length=64)
+    resource_url = forms.CharField(max_length=64)
 
     response_type = forms.ChoiceField(choices=RESPONSE_CHOICES, required=False)
 
@@ -93,9 +93,9 @@ class EndpointForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = 'post'
-        self.helper.add_input(Submit('submit', 'Create Endpoint', css_class='btn btn-success btn-block'))
+        self.helper.add_input(Submit('submit', 'Create Resource', css_class='btn btn-success btn-block'))
 
         self.fields['request_type'].label = 'Request Type'
-        self.fields['endpoint_url'].label = 'Endpoint URL'
+        self.fields['resource_url'].label = 'Resource'
 
         self.fields['response_type'].widget.attrs['class'] = 'selectpicker'

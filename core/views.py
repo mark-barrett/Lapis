@@ -10,7 +10,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views import View
 
-from api.models import APIKey
+from api.models import APIKey, APIRequest
 from core.forms import *
 from core.models import *
 
@@ -205,7 +205,7 @@ class ViewProject(LoginRequiredMixin, View):
                 context = {
                     'project': project,
                     'projects': Project.objects.all().filter(user=request.user),
-                    'endpoints': Endpoint.objects.all().filter(project=project)
+                    'resources': Resource.objects.all().filter(project=project)
                 }
 
                 return render(request, 'core/project.html', context)
@@ -369,7 +369,7 @@ class BuildDatabase(LoginRequiredMixin, View):
             return HttpResponse(json.dumps(response), content_type='application/json')
 
 
-class CreateEndpoint(LoginRequiredMixin, View):
+class CreateResource(LoginRequiredMixin, View):
     login_url = '/'
 
     def get(self, request, project_id):
@@ -377,14 +377,14 @@ class CreateEndpoint(LoginRequiredMixin, View):
         project = Project.objects.get(id=project_id)
 
         context = {
-            'form': EndpointForm(request=request),
+            'form': ResourceForm(request=request),
             'project_id': project_id,
             'project': project,
             'projects': Project.objects.all().filter(user=request.user)
         }
 
         # If its the second step
-        if 'endpoint' in request.session:
+        if 'resource' in request.session:
 
             database_data = {
                 'tables': []
@@ -422,24 +422,24 @@ class CreateEndpoint(LoginRequiredMixin, View):
 
             context['database_data'] = json.dumps(database_data)
 
-        return render(request, 'core/create-endpoint.html', context)
+        return render(request, 'core/create-resource.html', context)
 
     def post(self, request, project_id):
-        form = EndpointForm(request.POST, request=request)
+        form = ResourceForm(request.POST, request=request)
 
         project = Project.objects.get(id=project_id)
 
         # If this is the first step i.e the request
-        if 'endpoint' not in request.session:
+        if 'resource' not in request.session:
             if form.is_valid():
                 # Get the values from the form, set it to a session and send back to the same page
-                endpoint = {
+                resource = {
                     'project': project_id,
                     'name': form.cleaned_data['name'],
                     'description': form.cleaned_data['description'],
                     'request': {
                         'type': form.cleaned_data['request_type'],
-                        'url': form.cleaned_data['endpoint_url'],
+                        'url': form.cleaned_data['resource_url'],
                         'headers': [],
                         'parameters': []
                     },
@@ -451,7 +451,7 @@ class CreateEndpoint(LoginRequiredMixin, View):
                 header_value = request.POST.getlist('header-value')
                 header_description = request.POST.getlist('header-description')
 
-                # Loop through the keys and add the headers to the endpoint object.
+                # Loop through the keys and add the headers to the resource object.
                 for index, key in enumerate(header_keys):
                     header = {
                         'key': key,
@@ -459,26 +459,26 @@ class CreateEndpoint(LoginRequiredMixin, View):
                         'description': header_description[index]
                     }
 
-                    endpoint['request']['headers'].append(header)
+                    resource['request']['headers'].append(header)
 
                 # Get the parameters as lists
                 parameter_types = request.POST.getlist('parameter-type')
                 parameter_keys = request.POST.getlist('parameter-key')
 
-                # Loop through them and add them to the endpoint
+                # Loop through them and add them to the resource
                 for index, key in enumerate(parameter_keys):
                     parameter = {
                         'type': parameter_types[index],
                         'key': key
                     }
 
-                    endpoint['request']['parameters'].append(parameter)
+                    resource['request']['parameters'].append(parameter)
 
                 # Set this as a session variable.
-                request.session['endpoint'] = endpoint
+                request.session['resource'] = resource
 
-                # Now that the session is set, redirect back to create an endpoint to create the response
-                return redirect('/endpoint/create/'+project_id)
+                # Now that the session is set, redirect back to create an resource to create the response
+                return redirect('/resource/create/'+project_id)
         # If we are on the second step, i.e the response
         else:
             # JSON or XML
@@ -533,41 +533,52 @@ class CreateEndpoint(LoginRequiredMixin, View):
                 response['columns'].append(column_obj)
 
             # Now add the response to the session
-            request.session['endpoint']['response'] = response
+            request.session['resource']['response'] = response
 
-            # Now we have created the endpoint object, now lets start building it.
+            # Now we have created the resource object, now lets start building it.
             try:
 
-                endpoint = Endpoint(
-                    name=request.session['endpoint']['name'],
-                    description=request.session['endpoint']['description'],
-                    request_type=request.session['endpoint']['request']['type'],
-                    endpoint_url=request.session['endpoint']['request']['url'],
-                    response_format=request.session['endpoint']['response']['response_type'],
+                resource = Resource(
+                    name=request.session['resource']['name'],
+                    description=request.session['resource']['description'],
+                    request_type=request.session['resource']['request']['type'],
+                    resource_url=request.session['resource']['request']['url'],
+                    response_format=request.session['resource']['response']['response_type'],
                     project=project
                 )
 
-                endpoint.save()
+                resource.save()
+
+                # We need to save all of the headers first
+                for header in request.session['resource']['request']['headers']:
+                    resource_header = ResourceHeader(
+                        key=header['key'],
+                        value=header['value'],
+                        description=header['description'],
+                        resource=resource
+                    )
+
+                    resource_header.save()
 
                 # We need to save all the sent in parameters first.
-                for parameter in request.session['endpoint']['request']['parameters']:
-                    endpoint_parameter = EndpointParameter(
+                for parameter in request.session['resource']['request']['parameters']:
+                    resource_parameter = ResourceParameter(
                         key=parameter['key'],
                         type=parameter['type'],
-                        endpoint=endpoint
+                        resource=resource
                     )
 
-                    endpoint_parameter.save()
+                    resource_parameter.save()
 
                 # Now we have to loop through each column that is to be returned in the response and add it to the database
-                for column in request.session['endpoint']['response']['columns']:
+                for column in request.session['resource']['response']['columns']:
                     # These are the columns that need to be returned
-                    endpoint_data_source_column = EndpointDataSourceColumn(
+                    resource_data_source_column = ResourceDataSourceColumn(
                         column_id=column['column'],
-                        endpoint=endpoint
+                        resource=resource
                     )
 
-                    endpoint_data_source_column.save()
+                    resource_data_source_column.save()
 
                     # Check to see if this column has any filters. If it does then add them
                     if column['filters']:
@@ -579,30 +590,30 @@ class CreateEndpoint(LoginRequiredMixin, View):
                                 )
 
                                 # It's a Column filter
-                                endpoint_data_source_filter = EndpointDataSourceFilter(
+                                resource_data_source_filter = ResourceDataSourceFilter(
                                     type=filter['param_type'],
                                     column_parameter=column_parameter,
-                                    endpoint=endpoint
+                                    resource=resource
                                 )
                             else:
                                 # Try and lookup that parameter
-                                endpoint_parameter = EndpointParameter.objects.get(
+                                resource_parameter = ResourceParameter.objects.get(
                                     key=filter['key'],
                                     type=filter['param_type'],
-                                    endpoint=endpoint
+                                    resource=resource
                                 )
 
-                                endpoint_data_source_filter = EndpointDataSourceFilter(
+                                resource_data_source_filter = ResourceDataSourceFilter(
                                     type=filter['param_type'],
-                                    request_parameter=endpoint_parameter,
-                                    endpoint=endpoint
+                                    request_parameter=resource_parameter,
+                                    resource=resource
                                 )
 
-                            endpoint_data_source_filter.save()
+                            resource_data_source_filter.save()
 
-                messages.success(request, 'Endpoint successfully created.')
+                messages.success(request, 'Resource successfully created.')
 
-                del request.session['endpoint']
+                del request.session['resource']
 
             except Exception as e:
                 messages.error(request, str(e))
@@ -610,23 +621,23 @@ class CreateEndpoint(LoginRequiredMixin, View):
             return redirect('/project/'+str(project.id))
 
 
-class ViewEndpoint(LoginRequiredMixin, View):
+class ViewResource(LoginRequiredMixin, View):
     login_url = '/'
 
-    def get(self, request, project_id, endpoint_id):
+    def get(self, request, project_id, resource_id):
 
         try:
             # Get the project
             project = Project.objects.get(id=project_id)
-            # And the endpoint
-            endpoint = Endpoint.objects.get(id=endpoint_id)
+            # And the resource
+            resource = Resource.objects.get(id=resource_id)
 
             tables_obj = {}
 
             # Get all of the columns and their tables etc
-            endpoint_column_returns = EndpointDataSourceColumn.objects.all().filter(endpoint=endpoint)
+            resource_column_returns = ResourceDataSourceColumn.objects.all().filter(resource=resource)
 
-            for column in endpoint_column_returns:
+            for column in resource_column_returns:
                 db_column = DatabaseColumn.objects.get(id=column.column_id)
                 print(db_column.table.name)
 
@@ -643,76 +654,106 @@ class ViewEndpoint(LoginRequiredMixin, View):
                     tables_obj[db_column.table.name] = [db_column]
 
             # Check to make sure the user viewing this project is the owner of it
-            if endpoint.project.user == request.user:
+            if resource.project.user == request.user:
                 context = {
                     'projects': Project.objects.all().filter(user=request.user),
                     'project': project,
-                    'endpoint': endpoint,
-                    'endpoint_headers': EndpointHeader.objects.all().filter(endpoint=endpoint),
-                    'endpoint_parameters': EndpointParameter.objects.all().filter(endpoint=endpoint),
-                    'endpoint_column_returns': tables_obj,
-                    'endpoints': Endpoint.objects.all().filter(project=project)
+                    'resource': resource,
+                    'resource_headers': ResourceHeader.objects.all().filter(resource=resource),
+                    'resource_parameters': ResourceParameter.objects.all().filter(resource=resource),
+                    'resource_column_returns': tables_obj,
+                    'resources': Resource.objects.all().filter(project=project)
                 }
 
-                return render(request, 'core/view-endpoint.html', context)
+                return render(request, 'core/view-resource.html', context)
             else:
                 messages.error(request, 'Sorry, we can\'t seem to find what you were looking for.')
                 return redirect('/dashboard')
         except:
-            messages.error(request, 'Endpoint does not exist.')
+            messages.error(request, 'Resource does not exist.')
             return redirect('/dashboard')
 
 
-class ChangeEndpointStatus(LoginRequiredMixin, View):
+class ViewResourceRequests(LoginRequiredMixin, View):
     login_url = '/'
 
-    def get(self, request, project_id, endpoint_id):
+    def get(self, request, project_id, resource_id):
 
         try:
             # Get the project
             project = Project.objects.get(id=project_id)
-            # And the endpoint
-            endpoint = Endpoint.objects.get(id=endpoint_id)
+            # And the resource
+            resource = Resource.objects.get(id=resource_id)
 
             # Check to make sure the user viewing this project is the owner of it
-            if endpoint.project.user == request.user:
-                # Change the status to the opposite of what it is
-                endpoint.status = not endpoint.status
+            if resource.project.user == request.user:
+                context = {
+                    'projects': Project.objects.all().filter(user=request.user),
+                    'project': project,
+                    'resource': resource,
+                    'api_requests': APIRequest.objects.all().filter(resource=resource)
+                }
 
-                endpoint.save()
-
-                # If it was turned on then say so if off say so
-                if endpoint.status:
-                    status = 'on'
-                else:
-                    status = 'off'
-
-                messages.success(request, 'Endpoint successfully turned '+status+'.')
-                return redirect('/project/'+str(project.id)+'/endpoint/view/'+str(endpoint.id))
+                return render(request, 'core/view-resource-requests.html', context)
             else:
                 messages.error(request, 'Sorry, we can\'t seem to find what you were looking for.')
                 return redirect('/dashboard')
         except:
-            messages.error(request, 'Endpoint does not exist.')
+            messages.error(request, 'Resource does not exist.')
             return redirect('/dashboard')
 
 
-class DeleteEndpoint(LoginRequiredMixin, View):
+
+class ChangeResourceStatus(LoginRequiredMixin, View):
     login_url = '/'
 
-    def get(self, request, project_id, endpoint_id):
+    def get(self, request, project_id, resource_id):
+
+        try:
+            # Get the project
+            project = Project.objects.get(id=project_id)
+            # And the resource
+            resource = Resource.objects.get(id=resource_id)
+
+            # Check to make sure the user viewing this project is the owner of it
+            if resource.project.user == request.user:
+                # Change the status to the opposite of what it is
+                resource.status = not resource.status
+
+                resource.save()
+
+                # If it was turned on then say so if off say so
+                if resource.status:
+                    status = 'on'
+                else:
+                    status = 'off'
+
+                messages.success(request, 'Resource successfully turned '+status+'.')
+                return redirect('/project/'+str(project.id)+'/resource/view/'+str(resource.id))
+            else:
+                messages.error(request, 'Sorry, we can\'t seem to find what you were looking for.')
+                return redirect('/dashboard')
+        except:
+            messages.error(request, 'Resource does not exist.')
+            return redirect('/dashboard')
+
+
+class DeleteResource(LoginRequiredMixin, View):
+    login_url = '/'
+
+    def get(self, request, project_id, resource_id):
         # Get the project
         project = Project.objects.get(id=project_id)
 
-        # Get the endpoint
-        endpoint = Endpoint.objects.get(id=endpoint_id)
+        # Get the resource
+        resource = Resource.objects.get(id=resource_id)
 
         # Check the ownership
-        if endpoint.project.user == request.user:
+        if resource.project.user == request.user:
             # Confirmed that they own the project. Delete and redirect to the dashboard with a message.
-            endpoint.delete()
+            resource.delete()
 
-            messages.success(request, 'Successfully deleted endpoint.')
+            messages.success(request, 'Successfully deleted resource.')
             return redirect('/project/'+str(project.id))
 
 
@@ -860,14 +901,14 @@ class RegenerateAPIKey(LoginRequiredMixin, View):
         return redirect('/project/'+str(project.id)+'/api-keys')
 
 
-class ResetEndpoint(LoginRequiredMixin, View):
+class ResetResource(LoginRequiredMixin, View):
     login_url = '/'
 
     def get(self, request, project_id):
 
         project = Project.objects.get(id=project_id)
 
-        if 'endpoint' in request.session:
-            del request.session['endpoint']
+        if 'resource' in request.session:
+            del request.session['resource']
 
-        return redirect('/endpoint/create/'+str(project.id))
+        return redirect('/resource/create/'+str(project.id))

@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 
-from core.models import Endpoint, Project
+from core.models import Resource, Project
 
 
 # Projects can have API Keys
@@ -35,12 +35,13 @@ class APIRequest(models.Model):
     STATUS = (
         ('200 OK', '200 OK - Request was fine'),
         ('400 ERR', '400 ERR - The request was incorrect.'),
-        ('401 ERR', '401 ERR - No API key or the provided key is invalid.')
+        ('401 ERR', '401 ERR - No API key or the provided key is invalid.'),
+        ('404 ERR', '404 ERR - The requested resource does not exist.')
     )
 
     authentication_type = models.CharField(max_length=10, choices=AUTHENTICATION_TYPES)
     type = models.CharField(max_length=6, choices=REQUEST_TYPE)
-    resource = models.ForeignKey(Endpoint, blank=True, null=True)
+    resource = models.ForeignKey(Resource, blank=True, null=True)
     url = models.CharField(max_length=256)
     date = models.DateTimeField(default=timezone.now)
     status = models.CharField(max_length=8, choices=STATUS)

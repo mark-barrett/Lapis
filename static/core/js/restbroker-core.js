@@ -45,7 +45,7 @@ var underscoreTipSent = false;
 var trailingSlash = false;
 
 // Checking the endpoint URL to offer tip
-$('#id_endpoint_url').bind('input', function() {
+$('#id_resource_url').bind('input', function() {
 
     var usersEntry = $(this).val();
 
@@ -105,7 +105,7 @@ $('body').on('click', '#choose-database-as-source', function() {
     // Get the database data
     const databaseData = JSON.parse($('#database-data').text());
 
-    const sessionData = JSON.parse($('#endpoint-session-data').text());
+    const sessionData = JSON.parse($('#resource-session-data').text());
 
     var columnData = '';
 
@@ -373,7 +373,7 @@ function addFilter(columnID, tableID) {
     // The filter options are taken from whats in the document already
 
     // Get session data from page
-    const sessionData = JSON.parse($('#endpoint-session-data').text());
+    const sessionData = JSON.parse($('#resource-session-data').text());
 
     const databaseData = JSON.parse($('#database-data').text());
 

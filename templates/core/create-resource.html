@@ -19,17 +19,17 @@
             {% endfor %}
         {% endif %}
         <h2 class="title-name">Create Resource</h2>
-        <p class="title-description">{% if request.session.endpoint and request.session.endpoint.project == project_id %}The Response {% else %}The Request{% endif %}</p>
+        <p class="title-description">{% if request.session.resource and request.session.resource.project == project_id %}The Response {% else %}The Request{% endif %}</p>
         <div class="inner-page-content">
             <div class="card">
                 <div class="card-body">
                     <div class="inside-padding">
-                        {% if request.session.endpoint and request.session.endpoint.project == project_id %}
+                        {% if request.session.resource and request.session.resource.project == project_id %}
                             <div class="alert alert-info" role="alert">
-                                Request for {{ request.session.endpoint.name }} endpoint is complete. Continue below. <a href="/endpoint/reset/{{ project.id }}">Click here to start from scratch?</a>
+                                Request for {{ request.session.resource.name }} resource is complete. Continue below. <a href="/resource/reset/{{ project.id }}">Click here to start from scratch?</a>
                             </div>
 
-                            <form name="create-endpoint" method="post" action="">
+                            <form name="create-resource" method="post" action="">
                                 <div>
                                     <p class="form-instruction">Basic Information</p>
                                     {{ form.response_type|as_crispy_field }}
@@ -50,7 +50,7 @@
                             </form>
 
                         {% else %}
-                            <form name="create-endpoint" method="post" action="">
+                            <form name="create-resource" method="post" action="">
                                 <div>
                                     <p class="form-instruction">Basic Information</p>
                                     <div class="row">
@@ -68,7 +68,7 @@
                                             {{ form.request_type|as_crispy_field }}
                                         </div>
                                         <div class="col-md-6">
-                                            {{ form.endpoint_url|as_crispy_field }}
+                                            {{ form.resource_url|as_crispy_field }}
                                         </div>
                                     </div>
                                     <label for="headers">Headers</label>
@@ -105,12 +105,12 @@
             {% include 'core/footer.html' %}
         </div>
     </div>
-    {% if request.session.endpoint %}
+    {% if request.session.resource %}
         <script id="database-data" type="application/json">
             {{ database_data|safe }}
         </script>
-        <script id="endpoint-session-data" type="application/json">
-            {{ request.session.endpoint|to_json|safe }}
+        <script id="resource-session-data" type="application/json">
+            {{ request.session.resource|to_json|safe }}
         </script>
     {% endif %}
 {% endblock %}

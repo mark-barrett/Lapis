@@ -8,6 +8,7 @@ from django.views import View
 
 # The main view that handles Private API requests
 from api.models import APIRequest, APIKey
+from core.models import Resource, ResourceParameter, ResourceHeader
 
 
 def get_client_ip(request):
@@ -37,7 +38,82 @@ class RequestHandlerPrivate(View):
                 # API Key is found. No check for a resource.
                 if 'HTTP_RESTBROKER_RESOURCE' in request.META:
                     # Now that we know they provided a resource, let's check to see if it exists.
-                    pass
+                    try:
+                        resource = Resource.objects.get(
+                            name=request.META['HTTP_RESTBROKER_RESOURCE'],
+                            project=api_key.project
+                        )
+
+                        # The resource does exist! Now we need to go through the request and check to see
+                        # if what is required has been sent.
+
+                        # HEADERS CHECK
+                        # We need to check and see if there are headers.
+                        resource_headers = ResourceHeader.objects.all().filter(resource=resource)
+
+                        # Create a list of the provided headers and their values
+                        provided_headers = []
+
+                        # If there are headers
+                        if resource_headers:
+                            # Loop through each header and check to see if it exists in the request
+                            for header in resource_headers:
+                                # Check to see if that one is present. HTTP_+header name with dashes replaced with underscores.
+                                if 'HTTP_'+header.key.upper().replace('-', '_') in request.META:
+                                    # Does not exist.
+                                    print("Exists")
+                                else:
+                                    # This means a required header is not provided so record it and respond
+                                    api_request = APIRequest(
+                                        authentication_type='KEY',
+                                        type=request.method,
+                                        url=request.get_full_path(),
+                                        status='400 ERR',
+                                        ip_address=get_client_ip(request),
+                                        source=request.META['HTTP_USER_AGENT'],
+                                        api_key=api_key
+                                    )
+
+                                    api_request.save()
+
+                                    response = {
+                                        'error': {
+                                            'message': 'Your request is missing a required header. Missing header is: '+header.key,
+                                            'type': 'missing_header'
+                                        }
+                                    }
+
+                                    return HttpResponse(json.dumps(response), content_type='application/json')
+
+
+                        else:
+                            # There are no headers, i.e move on.
+                            pass
+
+                    except Exception as e:
+                        print(e)
+                        # Resource does not exist. Record the request.
+                        api_request = APIRequest(
+                            authentication_type='KEY',
+                            type=request.method,
+                            url=request.get_full_path(),
+                            status='404 ERR',
+                            ip_address=get_client_ip(request),
+                            source=request.META['HTTP_USER_AGENT'],
+                            api_key=api_key
+                        )
+
+                        api_request.save()
+
+                        # Create a response
+                        response = {
+                            'error': {
+                                'message': 'The resource that was requested does not exist.',
+                                'type': 'resource_doesnt_exist'
+                            }
+                        }
+
+                        return HttpResponse(json.dumps(response), content_type='application/json')
                 else:
                     # The resource was not provided. Record the requst
                     api_request = APIRequest(

@@ -313,7 +313,7 @@ body {
     background-color: #D9534F;
 }
 
-.endpoint-information {
+.resource-information {
     padding-top: 10px;
 }
 
@@ -321,12 +321,12 @@ body {
     font-size: 45px;
 }
 
-.endpoint {
+.resource {
     padding-left: 1rem;
     height: 80px;
 }
 
-.manage-endpoint {
+.manage-resource {
     height: 70px;
     line-height: 70px;
     text-align: right;
@@ -383,7 +383,7 @@ body {
     transform: translate(-50%,-50%);
 }
 
-.endpoint-margin-padding {
+.resource-margin-padding {
     padding: 5px;
     margin: 0px;
 }
@@ -394,7 +394,7 @@ body {
     line-height:1.25em;
 }
 
-.endpoint-name {
+.resource-name {
     font-size: 2.3vw !important;
     padding: 0px;
     margin: 0px;
@@ -472,4 +472,12 @@ body {
     width: 100%;
     bottom:0;
     color: white;
+}
+
+.badge-warning {
+    color: white;
+}
+
+.request-status {
+    font-size: 15px;
 }

@@ -10,7 +10,7 @@ from django.utils import timezone
 
 class Account(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    endpoint_limit = models.IntegerField(default=10)
+    resource_limit = models.IntegerField(default=10)
 
     class Meta:
         verbose_name_plural = 'Accounts'
@@ -89,7 +89,7 @@ class DatabaseColumn(models.Model):
         return 'Database Column: '+self.name+ ' Table: '+self.table.name
 
 
-class Endpoint(models.Model):
+class Resource(models.Model):
     REQUEST_CHOICES = (
         ('GET', 'GET'),
         ('POST', 'POST')
@@ -100,13 +100,12 @@ class Endpoint(models.Model):
         ('XML', 'XML')
     )
 
-    name = models.CharField(max_length=64)
+    name = models.CharField(max_length=64, unique=True)
     description = models.CharField(max_length=64)
     status = models.BooleanField(default=True)
 
     # The Request
     request_type = models.CharField(max_length=4, choices=REQUEST_CHOICES)
-    endpoint_url = models.CharField(max_length=64, unique=True)
 
     # The Response
     response_format = models.CharField(max_length=4, choices=RESPONSE_CHOICES)
@@ -114,46 +113,46 @@ class Endpoint(models.Model):
     project = models.ForeignKey(Project)
 
     class Meta:
-        verbose_name_plural = 'Endpoints'
+        verbose_name_plural = 'Resources'
 
     def __str__(self):
-        return 'Project: '+self.project.name+' Endpoint: '+self.name
+        return 'Project: '+self.project.name+' Resource: '+self.name
 
 
-class EndpointHeader(models.Model):
-    # Unique for each endpoint
+class ResourceHeader(models.Model):
+    # Unique for each resource
     key = models.CharField(max_length=64)
     value = models.CharField(max_length=64)
     description = models.CharField(max_length=64)
-    endpoint = models.ForeignKey(Endpoint)
+    resource = models.ForeignKey(Resource)
 
     class Meta:
-        verbose_name_plural = 'Endpoint Headers'
+        verbose_name_plural = 'Resource Headers'
 
     def __str__(self):
-        return 'Endpoint: '+self.endpoint.name+' Header Key: '+self.key
+        return 'Resource: '+self.resource.name+' Header Key: '+self.key
 
 
-class EndpointParameter(models.Model):
+class ResourceParameter(models.Model):
     TYPE_CHOICES = (
         ('GET', 'GET'),
         ('POST', 'POST')
     )
-    # Unique for each endpoint
+    # Unique for each resource
     key = models.CharField(max_length=64, unique=True)
     type = models.CharField(max_length=4, choices=TYPE_CHOICES)
-    endpoint = models.ForeignKey(Endpoint)
+    resource = models.ForeignKey(Resource)
 
     class Meta:
-        verbose_name_plural = 'Endpoint Parameters'
+        verbose_name_plural = 'Resource Parameters'
 
 
     def __str__(self):
-        return 'Endpoint: ' + self.endpoint.name + ' Parameter Key: ' + self.key
+        return 'Resource: ' + self.resource.name + ' Parameter Key: ' + self.key
 
 
 # A data source used in the returning of data from the request
-class EndpointDataSource(models.Model):
+class ResourceDataSource(models.Model):
     TYPE_CHOICES = (
         ('D', 'Database'),
         ('T', 'Text')
@@ -167,28 +166,28 @@ class EndpointDataSource(models.Model):
     text = models.TextField(null=True, blank=True)
 
     class Meta:
-        verbose_name_plural = 'Endpoint Datasources'
+        verbose_name_plural = 'Resource Datasources'
 
 
     def __str__(self):
-        return 'Endpoint: ' + self.endpoint.name + ' Data Source Type: ' + self.type
+        return 'Resource: ' + self.resource.name + ' Data Source Type: ' + self.type
 
 
 # Each instance defines a column that needs to be returned
-class EndpointDataSourceColumn(models.Model):
+class ResourceDataSourceColumn(models.Model):
     # In form, the available column names are received when building the table but filtered by the selected table.
     column_id = models.IntegerField()
-    endpoint = models.ForeignKey(Endpoint)
+    resource = models.ForeignKey(Resource)
 
     class Meta:
-        verbose_name_plural = 'Endpoint Data Source Columns'
+        verbose_name_plural = 'Resource Data Source Columns'
 
     def __str__(self):
-        return 'Endpoint: '+self.endpoint.name+' Column ID: '+str(self.id)
+        return 'Resource: '+self.resource.name+' Column ID: '+str(self.id)
 
 
 # Defines a filter that must be applied to the above column
-class EndpointDataSourceFilter(models.Model):
+class ResourceDataSourceFilter(models.Model):
     TYPE_CHOICES = (
         ('REQUEST', 'Parameter sent in request, either GET or POST'),
         ('COLUMN', 'Parameter from another column.')
@@ -196,17 +195,17 @@ class EndpointDataSourceFilter(models.Model):
     )
 
     type = models.CharField(max_length=6, choices=TYPE_CHOICES)
-    request_parameter = models.ForeignKey(EndpointParameter, blank=True, null=True)
-    # Foreign Key is Database Column not EndpointDataSourceColumn as that is used to represent what is being returned
+    request_parameter = models.ForeignKey(ResourceParameter, blank=True, null=True)
+    # Foreign Key is Database Column not ResourceDataSourceColumn as that is used to represent what is being returned
     column_parameter = models.ForeignKey(DatabaseColumn, blank=True, null=True)
-    endpoint = models.ForeignKey(Endpoint)
+    resource = models.ForeignKey(Resource)
 
     class Meta:
-        verbose_name_plural = 'Endpoint Data Source Filters'
+        verbose_name_plural = 'Resource Data Source Filters'
 
     def __str__(self):
         if self.type == 'REQUEST':
-            return 'Endpoint: '+str(self.endpoint.id)+' Type: '+str(self.type)+ ' Parameter to Filter by: '+str(self.request_parameter)
+            return 'Resource: '+str(self.resource.id)+' Type: '+str(self.type)+ ' Parameter to Filter by: '+str(self.request_parameter)
         else:
-            return 'Endpoint: ' + str(self.endpoint.id) + ' Type: ' + str(
+            return 'Resource: ' + str(self.resource.id) + ' Type: ' + str(
                 self.type) + ' Parameter to Filter by: ' + str(self.column_parameter)
