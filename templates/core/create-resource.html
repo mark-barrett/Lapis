@@ -63,14 +63,7 @@
                                     </div>
                                     <br/>
                                     <p class="form-instruction">Request Data</p>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            {{ form.request_type|as_crispy_field }}
-                                        </div>
-                                        <div class="col-md-6">
-                                            {{ form.resource_url|as_crispy_field }}
-                                        </div>
-                                    </div>
+                                    {{ form.request_type|as_crispy_field }}
                                     <label for="headers">Headers</label>
                                     <div id="headers">
 

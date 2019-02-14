@@ -41,6 +41,7 @@ def build_database(project_id, server_address,
 
             # Now that we know we can connect, let's construct a database object
             database = Database(
+                server_address=server_address,
                 name=database_name,
                 user=database_user,
                 password=database_password,

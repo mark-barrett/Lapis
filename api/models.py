@@ -36,6 +36,7 @@ class APIRequest(models.Model):
         ('200 OK', '200 OK - Request was fine'),
         ('400 ERR', '400 ERR - The request was incorrect.'),
         ('401 ERR', '401 ERR - No API key or the provided key is invalid.'),
+        ('402 ERR', '402 ERR - The parameters were valid but the request failed.'),
         ('404 ERR', '404 ERR - The requested resource does not exist.')
     )
 

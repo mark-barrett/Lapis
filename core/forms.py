@@ -82,7 +82,6 @@ class ResourceForm(forms.Form):
     name = forms.CharField(max_length=64)
     description = forms.CharField(max_length=64)
     request_type = forms.ChoiceField(choices=REQUEST_CHOICES)
-    resource_url = forms.CharField(max_length=64)
 
     response_type = forms.ChoiceField(choices=RESPONSE_CHOICES, required=False)
 
@@ -96,6 +95,5 @@ class ResourceForm(forms.Form):
         self.helper.add_input(Submit('submit', 'Create Resource', css_class='btn btn-success btn-block'))
 
         self.fields['request_type'].label = 'Request Type'
-        self.fields['resource_url'].label = 'Resource'
 
         self.fields['response_type'].widget.attrs['class'] = 'selectpicker'
