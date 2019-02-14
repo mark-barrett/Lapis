@@ -175,50 +175,64 @@ class RequestHandlerPrivate(View):
                         # Get the SQL information
                         database = Database.objects.get(project=resource.project)
 
-                        # Construct the sql query
-                        sql_query = ''
-
-                        # Loop through each table
-                        for table_index, (table, columns) in enumerate(resource_request['columns_to_return'].items()):
-                            single_table_query = 'SELECT '
-                            # Loop through columns
-                            for index, column in enumerate(columns):
-                                single_table_query += column.name
-
-                                # If we are in any iteration apart from the last add a comma and space
-                                if(index < len(columns)-1):
-                                    single_table_query += ', '
-
-                            # Add the table
-                            single_table_query += ' FROM '+table+''
-
-                            # Check if we are in the last table, if not then add UNION as we want to UNION all of the tables.
-                            # If not just return a semi colon to end the statement
-                            if table_index < len(resource_request['columns_to_return'].keys())-1:
-                                single_table_query += ' UNION '
-                            else:
-                                # Last table, complete the query
-                                single_table_query += ';'
-
-                            sql_query += single_table_query
+                        # Dictionary to hold the data that is returned from the database.
+                        data_from_database = {}
 
                         # Try connect to the server and do database things.
                         try:
-
                             conn = db.connect(host=database.server_address, port=3306,
-                                          user=database.user, password=database.password,
-                                          database=database.name)
+                                              user=database.user, password=database.password,
+                                              database=database.name)
 
+                            # Construct the sql query
+                            sql_query = ''
 
-                            # Create a cursor
-                            cursor = conn.cursor()
+                            # Loop through each table
+                            for table_index, (table, columns) in enumerate(resource_request['columns_to_return'].items()):
 
-                            # Execute the query
-                            cursor.execute(sql_query)
+                                # Create a cursor
+                                cursor = conn.cursor()
 
-                            for row in cursor:
-                                print(row)
+                                single_table_query = 'SELECT '
+                                # Loop through columns
+                                for index, column in enumerate(columns):
+                                    single_table_query += column.name
 
+                                    # If we are in any iteration apart from the last add a comma and space
+                                    if(index < len(columns)-1):
+                                        single_table_query += ', '
+
+                                # Add the table
+                                single_table_query += ' FROM '+table+''
+
+                                # Append the end with a semi colon to end the query
+                                single_table_query += ';'
+
+                                # Now that we have the single query, execute it.
+                                cursor.execute(single_table_query)
+
+                                column_names = [i[0] for i in cursor.description]
+
+                                # Loop through the results
+                                for row in cursor:
+                                    single_table_object = {}
+
+                                    # We need to loop through the columns in this row and match them to the column names
+                                    for index, db_column in enumerate(row):
+                                        # Put whatever column name in order that we got from SQL matched with its value
+                                        single_table_object[column_names[index]] = db_column
+
+                                    # Check to see if the table is already in the data_from_database dict
+                                    if table in data_from_database:
+                                        # If it is then we append.
+                                        data_from_database[table].append(single_table_object)
+                                    else:
+                                        # If not we create
+                                        data_from_database[table] = [single_table_object]
+
+                            conn.close()
+
+                            return HttpResponse(json.dumps(data_from_database), content_type='application/json')
                         except Exception as e:
                             print(e)
                             # Cannot connect to the server. Record it and respond
