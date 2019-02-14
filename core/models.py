@@ -52,22 +52,6 @@ class Project(models.Model):
         return 'User: '+self.user.username+' Project:'+self.name
 
 
-# Projects can have API Keys
-class APIKey(models.Model):
-    # In form, the available column names are received when building the table but filtered by the selected table.
-    key = models.CharField(max_length=64)
-    user = models.ForeignKey(User)
-    project = models.ForeignKey(Project)
-    created_at = models.DateField(default=timezone.now)
-    master = models.BooleanField(default=True)
-
-    class Meta:
-        verbose_name_plural = 'API Keys'
-
-    def __str__(self):
-        return 'Key: '+self.key+ ' For: '+ self.project.name
-
-
 class Database(models.Model):
     name = models.CharField(max_length=64)
     user = models.CharField(max_length=64)

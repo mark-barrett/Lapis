@@ -319,6 +319,7 @@ $('#build-database').click(function() {
             data: postData,
             success: function(data) {
                 console.log('Success buzz');
+                console.log(data);
                 if(data['message'] == 'Built Database') {
                     buildingDatabaseLoader.html('<i class="fa fa-check faa-tada animated" aria-hidden="true"></i> Database Build Successful<br/><small>Let us finalise some things and we will redirect you.</small>');
                     setTimeout(function() { window.location.href = '/project/'+projectID}, 5000);
@@ -340,6 +341,10 @@ $('#build-database').click(function() {
                         toastr.error('Error Connecting to Database: Either your database is not online, or you have not allowed' +
                             ' Remote SQL connections.');
                     }
+                } else {
+                    pageContent.removeClass('blur');
+                    $('#building-database-loader').remove();
+                    toastr.error(data);
                 }
             }
         });

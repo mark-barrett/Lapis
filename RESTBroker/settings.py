@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
+    'api',
     'crispy_forms',
     'celery',
     'core.templatetags.util'

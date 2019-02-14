@@ -95,7 +95,6 @@ def build_database(project_id, server_address,
 
             return str(e)
 
-
     except Exception as e:
 
         return str(e)
