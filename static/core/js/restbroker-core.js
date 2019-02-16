@@ -409,8 +409,6 @@ function addFilter(columnID, tableID) {
         }
     }
 
-
-
     document.getElementById('filter_'+columnID).innerHTML = '<select id="filter_by_select_'+columnID+'" name="filter_by_select_'+columnID+'" class="selectpicker" data-style="btn-success" multiple>\
                                 '+selectedOptions+'\
                               </select>&nbsp;<button type="button" class="btn btn-danger" id="remove_filter_'+columnID+'"><i class="fa fa-trash"></i></button>';
@@ -445,14 +443,14 @@ function addParent(columnID, tableID) {
 
             // Now add the columns in the tables as parameters
             for (var x = 0; x < databaseData.tables[j].columns.length; x++) {
-                selectedOptions += '<option value="COLUMN:' + databaseData.tables[j].columns[x].id + '">' + databaseData.tables[j].columns[x].name + ' ('+databaseData.tables[j].columns[x].type+')</option>';
+                selectedOptions += '<option value="' + databaseData.tables[j].columns[x].id + ':'+databaseData.tables[j].name+':'+tableID+'">' + databaseData.tables[j].columns[x].name + ' ('+databaseData.tables[j].columns[x].type+')</option>';
             }
 
             selectedOptions += '</optgroup>';
         }
     }
 
-    document.getElementById('parent_'+columnID).innerHTML = ' <select id="parent_select_'+columnID+'" name="parent_select_'+columnID+'" class="selectpicker" data-style="btn-primary" multiple>\
+    document.getElementById('parent_'+columnID).innerHTML = ' <select id="parent_select_'+columnID+'" name="parent_select_'+columnID+'" class="selectpicker" data-style="btn-primary">\
                                 '+selectedOptions+'\
                               </select>&nbsp;<button type="button" class="btn btn-danger" id="remove_parent_'+columnID+'"><i class="fa fa-trash"></i></button>';
 

@@ -129,6 +129,9 @@ class ResourceHeader(models.Model):
     class Meta:
         verbose_name_plural = 'Resource Headers'
 
+        # Set that this resource can only have one of this key
+        unique_together = ('key', 'resource')
+
     def __str__(self):
         return 'Resource: '+self.resource.name+' Header Key: '+self.key
 
@@ -139,13 +142,15 @@ class ResourceParameter(models.Model):
         ('POST', 'POST')
     )
     # Unique for each resource
-    key = models.CharField(max_length=64, unique=True)
+    key = models.CharField(max_length=64)
     type = models.CharField(max_length=4, choices=TYPE_CHOICES)
     resource = models.ForeignKey(Resource)
 
     class Meta:
         verbose_name_plural = 'Resource Parameters'
 
+        # Set that this resource can only have one of this key
+        unique_together = ('key', 'resource')
 
     def __str__(self):
         return 'Resource: ' + self.resource.name + ' Parameter Key: ' + self.key
@@ -213,7 +218,7 @@ class ResourceDataSourceFilter(models.Model):
 
 
 # This model defines for a given child, its parent table. This allows nesting of results
-class ResourceParentOfRelationship(models.Model):
+class ResourceParentChildRelationship(models.Model):
     parent_table = models.ForeignKey(DatabaseTable, related_name='the_parent_table')
     child_table = models.ForeignKey(DatabaseTable, related_name='the_child_table')
     parent_table_column = models.ForeignKey(DatabaseColumn, related_name='the_column_in_the_parent_table_to_match_to_the_child_table')

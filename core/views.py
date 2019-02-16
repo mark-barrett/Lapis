@@ -506,7 +506,8 @@ class CreateResource(LoginRequiredMixin, View):
                 # Create the column object for the response object
                 column_obj = {
                     'column': column,
-                    'filters': []
+                    'filters': [],
+                    'parent_child_relationships': None
                 }
 
                 # We need to check and see if there is a filter that exists for this column
@@ -528,6 +529,24 @@ class CreateResource(LoginRequiredMixin, View):
                         # Append that filter
                         column_obj['filters'].append(filter_obj)
 
+                # We need to check and see if there are any parents added
+                if 'parent_select_'+column in request.POST:
+                    # The parent select does exist.
+                    parent_child = request.POST['parent_select_'+column]
+
+                    # Now split it. The first value is the parent column, the second is the parentTable
+                    splitted_parent_child = parent_child.split(':')
+
+                    # Define the relationship
+                    parent_child = {
+                        'parent_column': splitted_parent_child[0],
+                        'parent_table': splitted_parent_child[1],
+                        'child_column': column,
+                        'child_table': DatabaseTable.objects.get(id=int(splitted_parent_child[2])).name
+                    }
+
+                    column_obj['parent_child_relationships'] = parent_child
+
                 # Append that column
                 response['columns'].append(column_obj)
 
@@ -541,7 +560,6 @@ class CreateResource(LoginRequiredMixin, View):
                     name=request.session['resource']['name'],
                     description=request.session['resource']['description'],
                     request_type=request.session['resource']['request']['type'],
-                    resource_url=request.session['resource']['request']['url'],
                     response_format=request.session['resource']['response']['response_type'],
                     project=project
                 )
@@ -568,6 +586,7 @@ class CreateResource(LoginRequiredMixin, View):
                     )
 
                     resource_parameter.save()
+
 
                 # Now we have to loop through each column that is to be returned in the response and add it to the database
                 for column in request.session['resource']['response']['columns']:
@@ -609,6 +628,20 @@ class CreateResource(LoginRequiredMixin, View):
                                 )
 
                             resource_data_source_filter.save()
+
+                    if column['parent_child_relationships']:
+                        # Get the database using project
+                        database = Database.objects.get(project=project)
+
+                        # Now that we have it we need to create an instance of ResourceParentChildRelationship
+                        parent_child_relationship = ResourceParentChildRelationship(
+                            parent_table=DatabaseTable.objects.get(name=column['parent_child_relationships']['parent_table'], database=database),
+                            child_table=DatabaseTable.objects.get(name=column['parent_child_relationships']['child_table'], database=database),
+                            parent_table_column=DatabaseColumn.objects.get(id=int(column['parent_child_relationships']['parent_column'])),
+                            child_table_column=DatabaseColumn.objects.get(id=int(column['parent_child_relationships']['child_column']))
+                        )
+
+                        parent_child_relationship.save()
 
                 messages.success(request, 'Resource successfully created.')
 
