@@ -164,7 +164,7 @@ $('body').on('click', '#choose-database-as-source', function() {
                 selectedColumns += '<input type="checkbox" value="'+tableObj.columns[i].id+'" name="chosen-column"> '+tableObj.columns[i].name+' ('+tableObj.columns[i].type+')';
 
                 selectedColumns += '</div><div class="col-md-9">';
-                selectedColumns += '<div id="filter_'+tableObj.columns[i].id+'"><button type="button" class="btn btn-success btn-sm" onClick="addFilter('+tableObj.columns[i].id+','+tableObj.id+'); return false;"><i class="fa fa-filter"></i> Add Filter</button></div>';
+                selectedColumns += '<div class="column_tool" id="filter_'+tableObj.columns[i].id+'"><button type="button" class="btn btn-success btn-sm" onClick="addFilter('+tableObj.columns[i].id+','+tableObj.id+'); return false;"><i class="fa fa-filter"></i> Add Filter</button></div><div class="column_tool" id="parent_'+tableObj.columns[i].id+'"> <button type="button" class="btn btn-primary btn-sm" onClick="addParent('+tableObj.columns[i].id+','+tableObj.id+'); return false;"><i class="fa fa-plus-square"></i> Add Parent</button></div>';
                 selectedColumns += '</div></div>';
                 selectedColumns += '</li>';
             }
@@ -380,11 +380,11 @@ function addFilter(columnID, tableID) {
     // Get the parameters from the session
     const parameters = sessionData.request.parameters;
 
+    // Get the headers
+    const headers = sessionData.request.headers;
+
     // The options that can be chosen from
     var selectedOptions = '';
-
-    console.log(databaseData);
-    console.log(tableID);
 
     // The request cannot be both post and get so we check for which one
     if(sessionData.request.type == 'GET') {
@@ -399,6 +399,43 @@ function addFilter(columnID, tableID) {
     }
 
     selectedOptions += '</optgroup>';
+
+    // Now do the headers
+    if(selectedOptions) {
+        selectedOptions += '<optgroup label="Headers">';
+
+        for(var i=0; i<headers.length; i++) {
+            selectedOptions += '<option value="' + headers[i].type + ':' + headers[i].key + '">' + headers[i].key + '</option>';
+        }
+    }
+
+
+
+    document.getElementById('filter_'+columnID).innerHTML = '<select id="filter_by_select_'+columnID+'" name="filter_by_select_'+columnID+'" class="selectpicker" data-style="btn-success" multiple>\
+                                '+selectedOptions+'\
+                              </select>&nbsp;<button type="button" class="btn btn-danger" id="remove_filter_'+columnID+'"><i class="fa fa-trash"></i></button>';
+
+    // Add a listener to listen out for remove requests for this filter
+    document.getElementById('remove_filter_'+columnID).addEventListener('click', function(e) {
+        document.getElementById('filter_'+columnID).innerHTML = '<button type="button" class="btn btn-success btn-sm" onClick="addFilter('+columnID+'); return false;"><i class="fa fa-filter"></i> Add Filter</button>';
+    });
+
+    $('.selectpicker').selectpicker();
+}
+
+// Function that takes the value of the column and adds a parent field
+function addParent(columnID, tableID) {
+    /* EDIT THIS TO ADD A PARENT */
+    // Now get that element and add the form filter
+    // The filter options are taken from whats in the document already
+
+    // Get session data from page
+    const sessionData = JSON.parse($('#resource-session-data').text());
+
+    const databaseData = JSON.parse($('#database-data').text());
+
+    // The options that can be chosen from
+    var selectedOptions = '';
 
     // Now display the options from the other tables as filters
     for(var j=0; j<databaseData.tables.length; j++) {
@@ -415,13 +452,13 @@ function addFilter(columnID, tableID) {
         }
     }
 
-    document.getElementById('filter_'+columnID).innerHTML = '<select id="filter_by_select_'+columnID+'" name="filter_by_select_'+columnID+'" class="selectpicker" multiple>\
+    document.getElementById('parent_'+columnID).innerHTML = ' <select id="parent_select_'+columnID+'" name="parent_select_'+columnID+'" class="selectpicker" data-style="btn-primary" multiple>\
                                 '+selectedOptions+'\
-                              </select>&nbsp;<button type="button" class="btn btn-danger" id="remove_filter_'+columnID+'"><i class="fa fa-trash"></i></button>';
+                              </select>&nbsp;<button type="button" class="btn btn-danger" id="remove_parent_'+columnID+'"><i class="fa fa-trash"></i></button>';
 
     // Add a listener to listen out for remove requests for this filter
-    document.getElementById('remove_filter_'+columnID).addEventListener('click', function(e) {
-        document.getElementById('filter_'+columnID).innerHTML = '<button type="button" class="btn btn-success btn-sm" onClick="addFilter('+columnID+'); return false;"><i class="fa fa-filter"></i> Add Filter</button>';
+    document.getElementById('remove_parent_'+columnID).addEventListener('click', function(e) {
+        document.getElementById('parent_'+columnID).innerHTML = ' <button type="button" class="btn btn-primary btn-sm" onClick="addParent('+columnID+'); return false;"><i class="fa fa-plus-square"></i> Add Parent</button>';
     });
 
     $('.selectpicker').selectpicker();

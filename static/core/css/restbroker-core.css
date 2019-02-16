@@ -481,3 +481,7 @@ body {
 .request-status {
     font-size: 15px;
 }
+
+.column_tool {
+    display: inline;
+}

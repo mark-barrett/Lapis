@@ -197,8 +197,9 @@ class ResourceDataSourceFilter(models.Model):
     type = models.CharField(max_length=6, choices=TYPE_CHOICES)
     request_parameter = models.ForeignKey(ResourceParameter, blank=True, null=True)
     # Foreign Key is Database Column not ResourceDataSourceColumn as that is used to represent what is being returned
-    column_parameter = models.ForeignKey(DatabaseColumn, blank=True, null=True)
+    column_parameter = models.ForeignKey(DatabaseColumn, blank=True, null=True, related_name='column_to_act_as_filter')
     resource = models.ForeignKey(Resource)
+    column_to_filter = models.ForeignKey(DatabaseColumn, related_name='column_to_filter_with_this_filter')
 
     class Meta:
         verbose_name_plural = 'Resource Data Source Filters'
@@ -209,3 +210,19 @@ class ResourceDataSourceFilter(models.Model):
         else:
             return 'Resource: ' + str(self.resource.id) + ' Type: ' + str(
                 self.type) + ' Parameter to Filter by: ' + str(self.column_parameter)
+
+
+# This model defines for a given child, its parent table. This allows nesting of results
+class ResourceParentOfRelationship(models.Model):
+    parent_table = models.ForeignKey(DatabaseTable, related_name='the_parent_table')
+    child_table = models.ForeignKey(DatabaseTable, related_name='the_child_table')
+    parent_table_column = models.ForeignKey(DatabaseColumn, related_name='the_column_in_the_parent_table_to_match_to_the_child_table')
+    child_table_column = models.ForeignKey(DatabaseColumn, related_name='the_column_in_the_child_table_to_match_to_the_parent_table')
+
+    class Meta:
+        verbose_name_plural = 'Resource Parent of Relationships'
+
+    def __str__(self):
+        return self.parent_table.name + ' is the parent of child '+self.child_table.name+ ' through the field '+\
+               self.parent_table_column.name + ' on the parent table matched to '+\
+               self.child_table_column.name + ' on the child table'

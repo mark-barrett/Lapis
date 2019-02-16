@@ -9,7 +9,8 @@ import MySQLdb as db
 
 # The main view that handles Private API requests
 from api.models import APIRequest, APIKey
-from core.models import Resource, ResourceParameter, ResourceHeader, ResourceDataSourceColumn, DatabaseColumn, Database
+from core.models import Resource, ResourceParameter, ResourceHeader, ResourceDataSourceColumn, DatabaseColumn, Database, \
+    ResourceDataSourceFilter, DatabaseTable
 
 
 def get_client_ip(request):
@@ -231,6 +232,9 @@ class RequestHandlerPrivate(View):
                                         data_from_database[table] = [single_table_object]
 
                             conn.close()
+
+                            # Now lets look at the filters
+                            resource_data_source_filters = ResourceDataSourceFilter.objects.all().filter(resource=resource)
 
                             return HttpResponse(json.dumps(data_from_database), content_type='application/json')
                         except Exception as e:

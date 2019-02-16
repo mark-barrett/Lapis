@@ -439,7 +439,6 @@ class CreateResource(LoginRequiredMixin, View):
                     'description': form.cleaned_data['description'],
                     'request': {
                         'type': form.cleaned_data['request_type'],
-                        'url': form.cleaned_data['resource_url'],
                         'headers': [],
                         'parameters': []
                     },
