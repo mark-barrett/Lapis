@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.utils.datetime_safe import datetime
 from django.views import View
 
 from api.models import APIKey, APIRequest
@@ -113,9 +114,35 @@ class Dashboard(LoginRequiredMixin, View):
 
     def get(self, request):
 
+        # Get today
+        today = datetime.today()
+
+        # Get the number of requests this month
+        num_requests_this_month = APIRequest.objects.all().filter(date__month=today.month).count()
+
+        # Get the number of requests last month
+        num_requests_last_month = APIRequest.objects.all().filter(date__month=today.month-1).count()
+
+        print(num_requests_this_month)
+        print(num_requests_last_month)
+
+        # If no requests have been made this month then its a -100% decrease
+        if num_requests_this_month == 0:
+            percentage = -100
+        else:
+            # If last months requests are 0 then its a 100% increase
+            if num_requests_last_month == 0:
+                percentage = 100
+            else:
+                change =  num_requests_this_month - num_requests_last_month
+
+                percentage = (change / num_requests_last_month) * 100
+
         context = {
             'projects': Project.objects.all().filter(user=request.user),
-            'api_keys': APIKey.objects.all()
+            'api_keys': APIKey.objects.all(),
+            'num_requests_this_month': num_requests_this_month,
+            'percentage': percentage
         }
 
         return render(request, 'core/dashboard.html', context)

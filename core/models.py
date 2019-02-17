@@ -223,6 +223,7 @@ class ResourceParentChildRelationship(models.Model):
     child_table = models.ForeignKey(DatabaseTable, related_name='the_child_table')
     parent_table_column = models.ForeignKey(DatabaseColumn, related_name='the_column_in_the_parent_table_to_match_to_the_child_table')
     child_table_column = models.ForeignKey(DatabaseColumn, related_name='the_column_in_the_child_table_to_match_to_the_parent_table')
+    resource = models.ForeignKey(Resource)
 
     class Meta:
         verbose_name_plural = 'Resource Parent of Relationships'

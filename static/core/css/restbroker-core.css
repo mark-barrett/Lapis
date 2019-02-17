@@ -292,6 +292,14 @@ body {
     color: #29C761;
 }
 
+.red {
+    color: #FF0000;
+}
+
+.blue {
+    color: #12CDEF;
+}
+
 .request {
     border-top-left-radius: .25rem;
     border-bottom-left-radius: .25rem;
