@@ -614,7 +614,6 @@ class CreateResource(LoginRequiredMixin, View):
 
                     resource_parameter.save()
 
-
                 # Now we have to loop through each column that is to be returned in the response and add it to the database
                 for column in request.session['resource']['response']['columns']:
                     # These are the columns that need to be returned
@@ -665,7 +664,8 @@ class CreateResource(LoginRequiredMixin, View):
                             parent_table=DatabaseTable.objects.get(name=column['parent_child_relationships']['parent_table'], database=database),
                             child_table=DatabaseTable.objects.get(name=column['parent_child_relationships']['child_table'], database=database),
                             parent_table_column=DatabaseColumn.objects.get(id=int(column['parent_child_relationships']['parent_column'])),
-                            child_table_column=DatabaseColumn.objects.get(id=int(column['parent_child_relationships']['child_column']))
+                            child_table_column=DatabaseColumn.objects.get(id=int(column['parent_child_relationships']['child_column'])),
+                            resource=resource
                         )
 
                         parent_child_relationship.save()
@@ -750,7 +750,7 @@ class ViewResourceRequests(LoginRequiredMixin, View):
                     'projects': Project.objects.all().filter(user=request.user),
                     'project': project,
                     'resource': resource,
-                    'api_requests': APIRequest.objects.all().filter(resource=resource)
+                    'api_requests': APIRequest.objects.all().filter(resource=resource.name)
                 }
 
                 return render(request, 'core/view-resource-requests.html', context)
@@ -761,6 +761,30 @@ class ViewResourceRequests(LoginRequiredMixin, View):
             messages.error(request, 'Resource does not exist.')
             return redirect('/dashboard')
 
+
+class ViewRequest(LoginRequiredMixin, View):
+    login_url = '/'
+
+    def get(self, request, project_id, request_id):
+
+        try:
+            # Get the project
+            project = Project.objects.get(id=project_id)
+
+            # Get the request
+            api_request = APIRequest.objects.get(id=request_id)
+
+            # Check to make sure the user viewing this project is the owner of it
+            context = {
+                'projects': Project.objects.all().filter(user=request.user),
+                'project': project,
+                'api_request': api_request
+            }
+
+            return render(request, 'core/view-request.html', context)
+        except:
+            messages.error(request, 'Resource does not exist.')
+            return redirect('/dashboard')
 
 
 class ChangeResourceStatus(LoginRequiredMixin, View):
@@ -839,6 +863,19 @@ class ProjectSettings(LoginRequiredMixin, View):
         }
 
         return render(request, 'core/project-settings.html', context)
+
+
+class ProjectStatistics(LoginRequiredMixin, View):
+    login_url = '/'
+
+    def get(self, request, project_id):
+
+        context = {
+            'projects': Project.objects.all().filter(user=request.user),
+            'project': Project.objects.get(id=project_id)
+        }
+
+        return render(request, 'core/project-statistics.html', context)
 
 
 class APIKeys(LoginRequiredMixin, View):

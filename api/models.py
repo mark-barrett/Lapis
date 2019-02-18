@@ -42,7 +42,7 @@ class APIRequest(models.Model):
 
     authentication_type = models.CharField(max_length=10, choices=AUTHENTICATION_TYPES)
     type = models.CharField(max_length=6, choices=REQUEST_TYPE)
-    resource = models.ForeignKey(Resource, blank=True, null=True)
+    resource = models.CharField(max_length=64, blank=True, null=True)
     url = models.CharField(max_length=256)
     date = models.DateTimeField(default=timezone.now)
     status = models.CharField(max_length=8, choices=STATUS)

@@ -18,6 +18,25 @@
 
     <div class="inner-page-content">
 
+    <div class="row">
+        {% for project in projects %}
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ project.name }} {% if project.type == 'public' %}
+                            <span class="badge badge-light"><i class="fa fa-users"></i> Public</span>
+                        {% else %}
+                            <span class="badge badge-light"><i class="fa fa-lock"></i> Private</span>
+                        {% endif %}</h5>
+                        <p><small>{{ project.description }}</small></p>
+                        <a href="" class="btn btn-sm btn-success">Choose Project</a>
+                    </div>
+                </div>
+            <br/>
+            </div>
+        {% endfor %}
+    </div>
+
         <div class="row">
             <div class="col-md-4">
                 <div class="card">

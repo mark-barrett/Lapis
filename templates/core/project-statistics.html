@@ -4,7 +4,7 @@
 {% load static %}
 
 {# Set the title and background color for the base.html file. #}
-{% block title %}RESTBroker - Project Settings{% endblock %}
+{% block title %}RESTBroker - Project Statistics{% endblock %}
 
 {% block page-content %}
     <div class="page-content">
@@ -30,7 +30,7 @@
                 {% endfor %}
             {% endif %}
 
-            {% include 'core/project-nav-bar.html' with page='settings' %}
+            {% include 'core/project-nav-bar.html' with page='statistics' %}
 
             <div class="card card-no-top-radius">
                 <div class="card-body">
@@ -38,9 +38,9 @@
                         <div class="col-md-3">
                             <ul class="list-group">
                                 <li class="list-group-item active">Overview</li>
-                                <li class="list-group-item">Documentation</li>
-                                <li class="list-group-item">Security</li>
-                                <li class="list-group-item">Team (Maybe)</li>
+                                <li class="list-group-item">Requests</li>
+                                <li class="list-group-item">API Keys</li>
+                                <li class="list-group-item">Alerts</li>
                             </ul>
                         </div>
                         <div class="col-md-9">

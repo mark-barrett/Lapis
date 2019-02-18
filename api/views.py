@@ -10,7 +10,7 @@ import MySQLdb as db
 # The main view that handles Private API requests
 from api.models import APIRequest, APIKey
 from core.models import Resource, ResourceParameter, ResourceHeader, ResourceDataSourceColumn, DatabaseColumn, Database, \
-    ResourceDataSourceFilter, DatabaseTable
+    ResourceDataSourceFilter, DatabaseTable, ResourceParentChildRelationship
 
 
 def get_client_ip(request):
@@ -78,6 +78,7 @@ class RequestHandlerPrivate(View):
                                     api_request = APIRequest(
                                         authentication_type='KEY',
                                         type=request.method,
+                                        resource=request.META['HTTP_RESTBROKER_RESOURCE'],
                                         url=request.get_full_path(),
                                         status='400 ERR',
                                         ip_address=get_client_ip(request),
@@ -126,6 +127,7 @@ class RequestHandlerPrivate(View):
                                     api_request = APIRequest(
                                         authentication_type='KEY',
                                         type=request.method,
+                                        resource=request.META['HTTP_RESTBROKER_RESOURCE'],
                                         url=request.get_full_path(),
                                         status='400 ERR',
                                         ip_address=get_client_ip(request),
@@ -183,7 +185,7 @@ class RequestHandlerPrivate(View):
                         try:
                             conn = db.connect(host=database.server_address, port=3306,
                                               user=database.user, password=database.password,
-                                              database=database.name)
+                                              database=database.name, connect_timeout=4)
 
                             # Construct the sql query
                             sql_query = ''
@@ -233,16 +235,50 @@ class RequestHandlerPrivate(View):
 
                             conn.close()
 
-                            # Now lets look at the filters
-                            resource_data_source_filters = ResourceDataSourceFilter.objects.all().filter(resource=resource)
+                            # Now lets look for the parent child relationships
+                            parent_child_relationships = ResourceParentChildRelationship.objects.all().filter(resource=resource)
+
+                            for relationship in parent_child_relationships:
+                                # Loop through the data
+                                for value, data in data_from_database.items():
+                                    # Check to see if the table is a parent
+                                    try:
+                                        relationship = ResourceParentChildRelationship.objects.get(resource=resource, parent_table=DatabaseTable.objects.get(database=database, name=value))
+
+                                        for instance in data:
+                                            # Delete the column with the name of
+
+                                            instance[relationship.child_table.name] = list(filter(lambda single_instance: single_instance[relationship.child_table_column.name] == instance[relationship.parent_table_column.name], data_from_database[relationship.child_table.name]))
+
+                                    except Exception as e:
+                                        print(e)
+
+                                # Delete the child value from the data
+                                del data_from_database[relationship.child_table.name]
+
+                                # Cannot connect to the server. Record it and respond
+                                api_request = APIRequest(
+                                    authentication_type='KEY',
+                                    type=request.method,
+                                    resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                    url=request.get_full_path(),
+                                    status='200 OK',
+                                    ip_address=get_client_ip(request),
+                                    source=request.META['HTTP_USER_AGENT'],
+                                    api_key=api_key
+                                )
+
+                                api_request.save()
 
                             return HttpResponse(json.dumps(data_from_database), content_type='application/json')
+
                         except Exception as e:
                             print(e)
                             # Cannot connect to the server. Record it and respond
                             api_request = APIRequest(
                                 authentication_type='KEY',
                                 type=request.method,
+                                resource=request.META['HTTP_RESTBROKER_RESOURCE'],
                                 url=request.get_full_path(),
                                 status='402 ERR',
                                 ip_address=get_client_ip(request),
@@ -270,6 +306,7 @@ class RequestHandlerPrivate(View):
                         api_request = APIRequest(
                             authentication_type='KEY',
                             type=request.method,
+                            resource=request.META['HTTP_RESTBROKER_RESOURCE'],
                             url=request.get_full_path(),
                             status='404 ERR',
                             ip_address=get_client_ip(request),
