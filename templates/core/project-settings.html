@@ -17,6 +17,9 @@
                 <span class="badge badge-light"><i class="fa fa-lock"></i> Private</span>
             {% endif %}
         </p>
+        <div class="float-left">
+            <h2><i class="fa fa-cogs"></i> Settings</h2>
+        </div>
         <div class="float-right">
             <a href="/project/edit/{{ project.id }}" class="btn btn-light btn-sm">Edit Project</a>&nbsp;
             <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteProject">
@@ -30,8 +33,6 @@
                 {% endfor %}
             {% endif %}
 
-            {% include 'core/project-nav-bar.html' with page='settings' %}
-
             <div class="card card-no-top-radius">
                 <div class="card-body">
                     <div class="row">
@@ -44,7 +45,8 @@
                             </ul>
                         </div>
                         <div class="col-md-9">
-
+                            <h4>Overview</h4>
+                            <hr/>
                         </div>
                     </div>
                 </div>

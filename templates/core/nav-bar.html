@@ -18,25 +18,50 @@
                     <img src="{% static 'core/images/logo-green.png' %}" width="100%">
                 </div>
                 <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link {% if 'dashboard' in request.get_full_path %}active{% endif %}" href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i>
-                            Dashboard</a>
-                    </li>
+                    {# If the project has not been selected then don't display this stuff #}
+                    {% if request.session.selected_project_id %}
+                        <li class="separator"></li>
+                        <div class="text-center change-project-dropdown">
+                            <div class="dropdown">
+                                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-hand-point-up" aria-hidden="true"></i> Select a Project
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    {% for project in projects %}
+                                        <a class="dropdown-item {% if project.id == request.session.selected_project_id|add:"0" %}active-project{% endif %}" href="/dashboard/{{ project.id }}">{% if project.id == request.session.selected_project_id|add:"0" %}<i class="fa fa-check"></i>{% endif %} {{ project.name }}</a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
 
-                    <li class="separator text-muted">Projects</li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if 'dashboard' in request.get_full_path %}active{% endif %}" href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i>
+                                Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if 'resource' in request.get_full_path and 'requests' not in request.get_full_path %}active{% endif %}" href="{% url 'resources' %}"><i class="fas fa-table" aria-hidden="true"></i> Resources</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if 'settings' in request.get_full_path %}active{% endif %}" href="/project/{{ project.id }}/settings"><i class="fas fa-cogs" aria-hidden="true"></i> Settings</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if 'api' in request.get_full_path %}active{% endif %}" href="/project/{{ project.id }}/api-keys"><i class="fas fa-key" aria-hidden="true"></i> API Keys</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if 'statistics' in request.get_full_path or 'requests' in request.get_full_path %}active{% endif %}" href="/project/{{ project.id }}/statistics"><i class="fas fa-chart-bar" aria-hidden="true"></i> Statistics</a>
+                        </li>
 
-                    {% if projects %}
-                        {% for project in projects %}
-                            <li class="nav-item project">
-                                <a class="nav-link {% check_if_project_active_nav request.get_full_path project %}" href="/project/{{ project.id }}"><i class="fa fa-archive" aria-hidden="true"></i> {{ project.name }}</a>
-                            </li>
-                        {% endfor %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'create-project' %}"><i class="fa fa-plus" aria-hidden="true"></i> Create New Project</a>
+                        </li>
                     {% else %}
-                        <p class="project text-white">No projects yet.</p>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/"><i class="fa fa-hand-point-up" aria-hidden="true"></i> Select Project</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'create-project' %}"><i class="fa fa-plus" aria-hidden="true"></i> Create New Project</a>
+                        </li>
                     {% endif %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'create-project' %}"><i class="fa fa-plus" aria-hidden="true"></i> Create New Project</a>
-                    </li>
                 </ul>
             </div>
         </div>

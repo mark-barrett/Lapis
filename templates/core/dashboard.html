@@ -14,28 +14,19 @@
             <div class="alert alert-{{ message.tags }}">{{ message }}</div>
         {% endfor %}
     {% endif %}
-    <h2>Dashboard</h2>
-
-    <div class="inner-page-content">
-
-    <div class="row">
-        {% for project in projects %}
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ project.name }} {% if project.type == 'public' %}
-                            <span class="badge badge-light"><i class="fa fa-users"></i> Public</span>
-                        {% else %}
-                            <span class="badge badge-light"><i class="fa fa-lock"></i> Private</span>
-                        {% endif %}</h5>
-                        <p><small>{{ project.description }}</small></p>
-                        <a href="" class="btn btn-sm btn-success">Choose Project</a>
-                    </div>
-                </div>
-            <br/>
-            </div>
-        {% endfor %}
+    <h2 class="title-name">{{ project.name }} </h2>
+    <p class="title-description">
+        {{ project.description }}
+        {% if project.type == 'public' %}
+            <span class="badge badge-light"><i class="fa fa-users"></i> Public</span>
+        {% else %}
+            <span class="badge badge-light"><i class="fa fa-lock"></i> Private</span>
+        {% endif %}
+    </p>
+    <div class="float-left">
+        <h2><i class="fas fa-tachometer-alt" aria-hidden="true"></i> Dashboard</h2>
     </div>
+    <div class="inner-page-content">
 
         <div class="row">
             <div class="col-md-4">
@@ -79,6 +70,49 @@
                 </div>
             </div>
         </div>
+        <br/>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">Recent API Requests</div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">First</th>
+                                <th scope="col">Last</th>
+                                <th scope="col">Handle</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@fat</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td>Larry</td>
+                                <td>the Bird</td>
+                                <td>@twitter</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+
+            </div>
+        </div>
 
     </div>
 
@@ -93,6 +127,4 @@
         {% include 'core/footer.html' %}
     </div>
 </div>
-
-    {% include 'core/footer.html' %}
 {% endblock %}

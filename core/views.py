@@ -26,11 +26,19 @@ class Home(View):
 
     def get(self, request):
 
-        # If the user is already logged in, send them to the dashboard.
+        # Check if user is logged in
         if request.user.is_authenticated:
-            return redirect('/dashboard')
+
+            if 'selected_project_id' in request.session:
+                return redirect('/dashboard')
+            else:
+                context = {
+                    'projects': Project.objects.all().filter(user=request.user)
+                }
+
+                return render(request, 'core/home.html', context)
         else:
-            return render(request, 'core/home.html')
+            return render(request, 'core/login.html')
 
 
     def post(self, request):
@@ -43,7 +51,7 @@ class Home(View):
         if user is not None:
             login(request, user)
             messages.success(request, 'Hey ' + user.first_name + ', welcome back!')
-            return redirect('/admin/dashboard')
+            return redirect('/')
         else:
             messages.error(request, 'Invalid username or password.')
             return redirect('/')
@@ -114,38 +122,87 @@ class Dashboard(LoginRequiredMixin, View):
 
     def get(self, request):
 
-        # Get today
-        today = datetime.today()
+        # Check if the project has been selected
+        if 'selected_project_id' in request.session:
 
-        # Get the number of requests this month
-        num_requests_this_month = APIRequest.objects.all().filter(date__month=today.month).count()
+            # Get today
+            today = datetime.today()
 
-        # Get the number of requests last month
-        num_requests_last_month = APIRequest.objects.all().filter(date__month=today.month-1).count()
+            # Get the number of requests this month
+            num_requests_this_month = APIRequest.objects.all().filter(date__month=today.month).count()
 
-        print(num_requests_this_month)
-        print(num_requests_last_month)
+            # Get the number of requests last month
+            num_requests_last_month = APIRequest.objects.all().filter(date__month=today.month-1).count()
 
-        # If no requests have been made this month then its a -100% decrease
-        if num_requests_this_month == 0:
-            percentage = -100
-        else:
-            # If last months requests are 0 then its a 100% increase
-            if num_requests_last_month == 0:
-                percentage = 100
+            print(num_requests_this_month)
+            print(num_requests_last_month)
+
+            # If no requests have been made this month then its a -100% decrease
+            if num_requests_this_month == 0:
+                percentage = -100
             else:
-                change =  num_requests_this_month - num_requests_last_month
+                # If last months requests are 0 then its a 100% increase
+                if num_requests_last_month == 0:
+                    percentage = 100
+                else:
+                    change =  num_requests_this_month - num_requests_last_month
 
-                percentage = (change / num_requests_last_month) * 100
+                    percentage = (change / num_requests_last_month) * 100
 
-        context = {
-            'projects': Project.objects.all().filter(user=request.user),
-            'api_keys': APIKey.objects.all(),
-            'num_requests_this_month': num_requests_this_month,
-            'percentage': percentage
-        }
+            context = {
+                'projects': Project.objects.all().filter(user=request.user),
+                'api_keys': APIKey.objects.all(),
+                'num_requests_this_month': num_requests_this_month,
+                'percentage': percentage,
+                'project': Project.objects.get(id=request.session['selected_project_id'])
+            }
 
-        return render(request, 'core/dashboard.html', context)
+            return render(request, 'core/dashboard.html', context)
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/')
+
+
+class DashboardSetSelectedProject(View):
+
+    def get(self, request, project_id):
+
+        # Check if user is logged in
+        if request.user.is_authenticated:
+
+            # Check the user has access to this project
+            try:
+                project = Project.objects.get(id=project_id)
+
+                if project.user == request.user:
+
+                    # Check to see if the project is set as a session.
+                    if 'selected_project_id' in request.session:
+                        # It already exists
+                        # It does exist, check to see if the set value is different to the current.
+                        # If it is different set it, if not dont
+                        if request.session['selected_project_id'] != project_id:
+                            request.session['selected_project_id'] = project_id
+
+                    else:
+                        # It does not already exist so set it.
+                        request.session['selected_project_id'] = project_id
+
+                        # It does exist, check to see if the set value is different to the current.
+                        # If it is different set it, if not dont
+                        if request.session['selected_project_id'] != project_id:
+                            request.session['selected_project_id'] = project_id
+                else:
+                    messages.error(request, 'You do not have permission to view that project.')
+                    return redirect('/')
+            except:
+                messages.error(request, 'That project does not exist.')
+                return redirect('/')
+
+            # Now return to dashboard
+            return redirect('/dashboard')
+        else:
+            return render(request, 'core/login.html')
 
 
 class CreateProject(LoginRequiredMixin, View):
@@ -218,30 +275,34 @@ class CreateProject(LoginRequiredMixin, View):
             return render(request, 'core/create-edit-project.html', context)
 
 
-class ViewProject(LoginRequiredMixin, View):
+class Resources(LoginRequiredMixin, View):
     login_url = '/'
 
-    def get(self, request, project_id):
+    def get(self, request):
 
-        try:
-            # Get the project
-            project = Project.objects.get(id=project_id)
+        if 'selected_project_id' in request.session:
+            try:
+                # Get the project
+                project = Project.objects.get(id=request.session['selected_project_id'])
 
-            # Check to make sure the user viewing this project is the owner of it
-            if project.user == request.user:
-                context = {
-                    'project': project,
-                    'projects': Project.objects.all().filter(user=request.user),
-                    'resources': Resource.objects.all().filter(project=project)
-                }
+                # Check to make sure the user viewing this project is the owner of it
+                if project.user == request.user:
+                    context = {
+                        'project': project,
+                        'projects': Project.objects.all().filter(user=request.user),
+                        'resources': Resource.objects.all().filter(project=project)
+                    }
 
-                return render(request, 'core/project.html', context)
-            else:
-                messages.error(request, 'Sorry, we can\'t seem to find what you were looking for.')
+                    return render(request, 'core/resources.html', context)
+                else:
+                    messages.error(request, 'Sorry, we can\'t seem to find what you were looking for.')
+                    return redirect('/dashboard')
+            except:
+                messages.error(request, 'Project does not exist.')
                 return redirect('/dashboard')
-        except:
-            messages.error(request, 'Project does not exist.')
-            return redirect('/dashboard')
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/')
 
 
 class EditProject(LoginRequiredMixin, View):
@@ -399,392 +460,421 @@ class BuildDatabase(LoginRequiredMixin, View):
 class CreateResource(LoginRequiredMixin, View):
     login_url = '/'
 
-    def get(self, request, project_id):
+    def get(self, request):
 
-        project = Project.objects.get(id=project_id)
+        if 'selected_project_id' in request.session:
 
-        context = {
-            'form': ResourceForm(request=request),
-            'project_id': project_id,
-            'project': project,
-            'projects': Project.objects.all().filter(user=request.user)
-        }
+            project = Project.objects.get(id=request.session['selected_project_id'])
 
-        # If its the second step
-        if 'resource' in request.session:
-
-            database_data = {
-                'tables': []
+            context = {
+                'form': ResourceForm(request=request),
+                'project_id': project.id,
+                'project': project,
+                'projects': Project.objects.all().filter(user=request.user)
             }
 
-            # Get the database using the project_id
-            database = Database.objects.get(project=Project.objects.get(id=project_id))
+            # If its the second step
+            if 'resource' in request.session:
 
-            # Add the database tables and columns to the context
-            tables = DatabaseTable.objects.all().filter(database=database)
-
-            # Loop through all tables
-            for table in tables:
-                table_obj = {
-                    'id': table.id,
-                    'name': table.name,
-                    'columns': []
+                database_data = {
+                    'tables': []
                 }
 
-                columns = DatabaseColumn.objects.all().filter(table=table)
+                # Get the database using the project_id
+                database = Database.objects.get(project=project)
 
-                # Loop through all columns
-                for column in columns:
-                    column_obj = {
-                        'id': column.id,
-                        'name': column.name,
-                        'type': column.type
+                # Add the database tables and columns to the context
+                tables = DatabaseTable.objects.all().filter(database=database)
+
+                # Loop through all tables
+                for table in tables:
+                    table_obj = {
+                        'id': table.id,
+                        'name': table.name,
+                        'columns': []
                     }
 
-                    # Append it
-                    table_obj['columns'].append(column_obj)
+                    columns = DatabaseColumn.objects.all().filter(table=table)
 
-                # Append the table to the database_data
-                database_data['tables'].append(table_obj)
-
-            context['database_data'] = json.dumps(database_data)
-
-        return render(request, 'core/create-resource.html', context)
-
-    def post(self, request, project_id):
-        form = ResourceForm(request.POST, request=request)
-
-        project = Project.objects.get(id=project_id)
-
-        # If this is the first step i.e the request
-        if 'resource' not in request.session:
-            if form.is_valid():
-                # Get the values from the form, set it to a session and send back to the same page
-                resource = {
-                    'project': project_id,
-                    'name': form.cleaned_data['name'],
-                    'description': form.cleaned_data['description'],
-                    'request': {
-                        'type': form.cleaned_data['request_type'],
-                        'headers': [],
-                        'parameters': []
-                    },
-                    'response': {}
-                }
-
-                # Get the headers as lists
-                header_keys = request.POST.getlist('header-key')
-                header_value = request.POST.getlist('header-value')
-                header_description = request.POST.getlist('header-description')
-
-                # Loop through the keys and add the headers to the resource object.
-                for index, key in enumerate(header_keys):
-                    header = {
-                        'key': key,
-                        'value': header_value[index],
-                        'description': header_description[index]
-                    }
-
-                    resource['request']['headers'].append(header)
-
-                # Get the parameters as lists
-                parameter_types = request.POST.getlist('parameter-type')
-                parameter_keys = request.POST.getlist('parameter-key')
-
-                # Loop through them and add them to the resource
-                for index, key in enumerate(parameter_keys):
-                    parameter = {
-                        'type': parameter_types[index],
-                        'key': key
-                    }
-
-                    resource['request']['parameters'].append(parameter)
-
-                # Set this as a session variable.
-                request.session['resource'] = resource
-
-                # Now that the session is set, redirect back to create an resource to create the response
-                return redirect('/resource/create/'+project_id)
-        # If we are on the second step, i.e the response
-        else:
-            # JSON or XML
-            response_type = request.POST['response_type']
-
-            # The names of the tables which will be returned as ids
-            tables = request.POST.getlist('table')
-
-            # Get the columns that are to be returned
-            columns = request.POST.getlist('chosen-column')
-
-            # Start to construct the response object
-            response = {
-                'response_type': response_type,
-                'tables': [],
-                'columns': [],
-            }
-
-            # Add the tables to the response object
-            for table in tables:
-                response['tables'].append(table)
-
-            # Loop through the tables one by one
-            for column in columns:
-
-                # Create the column object for the response object
-                column_obj = {
-                    'column': column,
-                    'filters': [],
-                    'parent_child_relationships': None
-                }
-
-                # We need to check and see if there is a filter that exists for this column
-                if 'filter_by_select_'+column in request.POST:
-                    # There is a filter column so we need to get that information
-                    filter_this_column_by = request.POST.getlist('filter_by_select_'+column)
-
-                    for filter in filter_this_column_by:
-                        # Now we have the list of all of the filter items.
-                        # They are split by a colon, so split
-                        splitted_filter = filter.split(':')
-
-                        # Define the filter
-                        filter_obj = {
-                            'param_type': splitted_filter[0],
-                            'key': splitted_filter[1]
+                    # Loop through all columns
+                    for column in columns:
+                        column_obj = {
+                            'id': column.id,
+                            'name': column.name,
+                            'type': column.type
                         }
 
-                        # Append that filter
-                        column_obj['filters'].append(filter_obj)
+                        # Append it
+                        table_obj['columns'].append(column_obj)
 
-                # We need to check and see if there are any parents added
-                if 'parent_select_'+column in request.POST:
-                    # The parent select does exist.
-                    parent_child = request.POST['parent_select_'+column]
+                    # Append the table to the database_data
+                    database_data['tables'].append(table_obj)
 
-                    # Now split it. The first value is the parent column, the second is the parentTable
-                    splitted_parent_child = parent_child.split(':')
+                context['database_data'] = json.dumps(database_data)
 
-                    # Define the relationship
-                    parent_child = {
-                        'parent_column': splitted_parent_child[0],
-                        'parent_table': splitted_parent_child[1],
-                        'child_column': column,
-                        'child_table': DatabaseTable.objects.get(id=int(splitted_parent_child[2])).name
+            return render(request, 'core/create-resource.html', context)
+
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/')
+
+
+    def post(self, request):
+        form = ResourceForm(request.POST, request=request)
+
+        if 'selected_project_id' in request.session:
+
+            project = Project.objects.get(id=request.session['selected_project_id'])
+
+
+            # If this is the first step i.e the request
+            if 'resource' not in request.session:
+                if form.is_valid():
+                    # Get the values from the form, set it to a session and send back to the same page
+                    resource = {
+                        'project': project.id,
+                        'name': form.cleaned_data['name'],
+                        'description': form.cleaned_data['description'],
+                        'request': {
+                            'type': form.cleaned_data['request_type'],
+                            'headers': [],
+                            'parameters': []
+                        },
+                        'response': {}
                     }
 
-                    column_obj['parent_child_relationships'] = parent_child
+                    # Get the headers as lists
+                    header_keys = request.POST.getlist('header-key')
+                    header_value = request.POST.getlist('header-value')
+                    header_description = request.POST.getlist('header-description')
 
-                # Append that column
-                response['columns'].append(column_obj)
+                    # Loop through the keys and add the headers to the resource object.
+                    for index, key in enumerate(header_keys):
+                        header = {
+                            'key': key,
+                            'value': header_value[index],
+                            'description': header_description[index]
+                        }
 
-            # Now add the response to the session
-            request.session['resource']['response'] = response
+                        resource['request']['headers'].append(header)
 
-            # Now we have created the resource object, now lets start building it.
-            try:
+                    # Get the parameters as lists
+                    parameter_types = request.POST.getlist('parameter-type')
+                    parameter_keys = request.POST.getlist('parameter-key')
 
-                resource = Resource(
-                    name=request.session['resource']['name'],
-                    description=request.session['resource']['description'],
-                    request_type=request.session['resource']['request']['type'],
-                    response_format=request.session['resource']['response']['response_type'],
-                    project=project
-                )
+                    # Loop through them and add them to the resource
+                    for index, key in enumerate(parameter_keys):
+                        parameter = {
+                            'type': parameter_types[index],
+                            'key': key
+                        }
 
-                resource.save()
+                        resource['request']['parameters'].append(parameter)
 
-                # We need to save all of the headers first
-                for header in request.session['resource']['request']['headers']:
-                    resource_header = ResourceHeader(
-                        key=header['key'],
-                        value=header['value'],
-                        description=header['description'],
-                        resource=resource
+                    # Set this as a session variable.
+                    request.session['resource'] = resource
+
+                    # Now that the session is set, redirect back to create an resource to create the response
+                    return redirect('/resource/create')
+            # If we are on the second step, i.e the response
+            else:
+                # JSON or XML
+                response_type = request.POST['response_type']
+
+                # The names of the tables which will be returned as ids
+                tables = request.POST.getlist('table')
+
+                # Get the columns that are to be returned
+                columns = request.POST.getlist('chosen-column')
+
+                # Start to construct the response object
+                response = {
+                    'response_type': response_type,
+                    'tables': [],
+                    'columns': [],
+                }
+
+                # Add the tables to the response object
+                for table in tables:
+                    response['tables'].append(table)
+
+                # Loop through the tables one by one
+                for column in columns:
+
+                    # Create the column object for the response object
+                    column_obj = {
+                        'column': column,
+                        'filters': [],
+                        'parent_child_relationships': None
+                    }
+
+                    # We need to check and see if there is a filter that exists for this column
+                    if 'filter_by_select_'+column in request.POST:
+                        # There is a filter column so we need to get that information
+                        filter_this_column_by = request.POST.getlist('filter_by_select_'+column)
+
+                        for filter in filter_this_column_by:
+                            # Now we have the list of all of the filter items.
+                            # They are split by a colon, so split
+                            splitted_filter = filter.split(':')
+
+                            # Define the filter
+                            filter_obj = {
+                                'param_type': splitted_filter[0],
+                                'key': splitted_filter[1]
+                            }
+
+                            # Append that filter
+                            column_obj['filters'].append(filter_obj)
+
+                    # We need to check and see if there are any parents added
+                    if 'parent_select_'+column in request.POST:
+                        # The parent select does exist.
+                        parent_child = request.POST['parent_select_'+column]
+
+                        # Now split it. The first value is the parent column, the second is the parentTable
+                        splitted_parent_child = parent_child.split(':')
+
+                        # Define the relationship
+                        parent_child = {
+                            'parent_column': splitted_parent_child[0],
+                            'parent_table': splitted_parent_child[1],
+                            'child_column': column,
+                            'child_table': DatabaseTable.objects.get(id=int(splitted_parent_child[2])).name
+                        }
+
+                        column_obj['parent_child_relationships'] = parent_child
+
+                    # Append that column
+                    response['columns'].append(column_obj)
+
+                # Now add the response to the session
+                request.session['resource']['response'] = response
+
+                # Now we have created the resource object, now lets start building it.
+                try:
+
+                    resource = Resource(
+                        name=request.session['resource']['name'],
+                        description=request.session['resource']['description'],
+                        request_type=request.session['resource']['request']['type'],
+                        response_format=request.session['resource']['response']['response_type'],
+                        project=project
                     )
 
-                    resource_header.save()
+                    resource.save()
 
-                # We need to save all the sent in parameters first.
-                for parameter in request.session['resource']['request']['parameters']:
-                    resource_parameter = ResourceParameter(
-                        key=parameter['key'],
-                        type=parameter['type'],
-                        resource=resource
-                    )
-
-                    resource_parameter.save()
-
-                # Now we have to loop through each column that is to be returned in the response and add it to the database
-                for column in request.session['resource']['response']['columns']:
-                    # These are the columns that need to be returned
-                    resource_data_source_column = ResourceDataSourceColumn(
-                        column_id=column['column'],
-                        resource=resource
-                    )
-
-                    resource_data_source_column.save()
-
-                    # Check to see if this column has any filters. If it does then add them
-                    if column['filters']:
-                        for filter in column['filters']:
-                            if filter['param_type'] == 'COLUMN':
-                                # Try and lookup that parameter from columns that exist from the Database
-                                column_parameter = DatabaseColumn.objects.get(
-                                    id=int(filter['key'])
-                                )
-
-                                # It's a Column filter
-                                resource_data_source_filter = ResourceDataSourceFilter(
-                                    type=filter['param_type'],
-                                    column_parameter=column_parameter,
-                                    resource=resource
-                                )
-                            else:
-                                # Try and lookup that parameter
-                                resource_parameter = ResourceParameter.objects.get(
-                                    key=filter['key'],
-                                    type=filter['param_type'],
-                                    resource=resource
-                                )
-
-                                resource_data_source_filter = ResourceDataSourceFilter(
-                                    type=filter['param_type'],
-                                    request_parameter=resource_parameter,
-                                    resource=resource
-                                )
-
-                            resource_data_source_filter.save()
-
-                    if column['parent_child_relationships']:
-                        # Get the database using project
-                        database = Database.objects.get(project=project)
-
-                        # Now that we have it we need to create an instance of ResourceParentChildRelationship
-                        parent_child_relationship = ResourceParentChildRelationship(
-                            parent_table=DatabaseTable.objects.get(name=column['parent_child_relationships']['parent_table'], database=database),
-                            child_table=DatabaseTable.objects.get(name=column['parent_child_relationships']['child_table'], database=database),
-                            parent_table_column=DatabaseColumn.objects.get(id=int(column['parent_child_relationships']['parent_column'])),
-                            child_table_column=DatabaseColumn.objects.get(id=int(column['parent_child_relationships']['child_column'])),
+                    # We need to save all of the headers first
+                    for header in request.session['resource']['request']['headers']:
+                        resource_header = ResourceHeader(
+                            key=header['key'],
+                            value=header['value'],
+                            description=header['description'],
                             resource=resource
                         )
 
-                        parent_child_relationship.save()
+                        resource_header.save()
 
-                messages.success(request, 'Resource successfully created.')
+                    # We need to save all the sent in parameters first.
+                    for parameter in request.session['resource']['request']['parameters']:
+                        resource_parameter = ResourceParameter(
+                            key=parameter['key'],
+                            type=parameter['type'],
+                            resource=resource
+                        )
 
-                del request.session['resource']
+                        resource_parameter.save()
 
-            except Exception as e:
-                messages.error(request, str(e))
+                    # Now we have to loop through each column that is to be returned in the response and add it to the database
+                    for column in request.session['resource']['response']['columns']:
+                        # These are the columns that need to be returned
+                        resource_data_source_column = ResourceDataSourceColumn(
+                            column_id=column['column'],
+                            resource=resource
+                        )
 
-            return redirect('/project/'+str(project.id))
+                        resource_data_source_column.save()
+
+                        # Check to see if this column has any filters. If it does then add them
+                        if column['filters']:
+                            for filter in column['filters']:
+                                if filter['param_type'] == 'COLUMN':
+                                    # Try and lookup that parameter from columns that exist from the Database
+                                    column_parameter = DatabaseColumn.objects.get(
+                                        id=int(filter['key'])
+                                    )
+
+                                    # It's a Column filter
+                                    resource_data_source_filter = ResourceDataSourceFilter(
+                                        type=filter['param_type'],
+                                        column_parameter=column_parameter,
+                                        resource=resource
+                                    )
+                                else:
+                                    # Try and lookup that parameter
+                                    resource_parameter = ResourceParameter.objects.get(
+                                        key=filter['key'],
+                                        type=filter['param_type'],
+                                        resource=resource
+                                    )
+
+                                    resource_data_source_filter = ResourceDataSourceFilter(
+                                        type=filter['param_type'],
+                                        request_parameter=resource_parameter,
+                                        resource=resource
+                                    )
+
+                                resource_data_source_filter.save()
+
+                        if column['parent_child_relationships']:
+                            # Get the database using project
+                            database = Database.objects.get(project=project)
+
+                            # Now that we have it we need to create an instance of ResourceParentChildRelationship
+                            parent_child_relationship = ResourceParentChildRelationship(
+                                parent_table=DatabaseTable.objects.get(name=column['parent_child_relationships']['parent_table'], database=database),
+                                child_table=DatabaseTable.objects.get(name=column['parent_child_relationships']['child_table'], database=database),
+                                parent_table_column=DatabaseColumn.objects.get(id=int(column['parent_child_relationships']['parent_column'])),
+                                child_table_column=DatabaseColumn.objects.get(id=int(column['parent_child_relationships']['child_column'])),
+                                resource=resource
+                            )
+
+                            parent_child_relationship.save()
+
+                    messages.success(request, 'Resource successfully created.')
+
+                    del request.session['resource']
+
+                except Exception as e:
+                    messages.error(request, str(e))
+
+                return redirect('/resources')
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/')
 
 
 class ViewResource(LoginRequiredMixin, View):
     login_url = '/'
 
-    def get(self, request, project_id, resource_id):
+    def get(self, request, resource_id):
 
-        try:
-            # Get the project
-            project = Project.objects.get(id=project_id)
-            # And the resource
-            resource = Resource.objects.get(id=resource_id)
+        if 'selected_project_id' in request.session:
 
-            tables_obj = {}
+            try:
+                # Get the project
+                project = Project.objects.get(id=request.session['selected_project_id'])
+                # And the resource
+                resource = Resource.objects.get(id=resource_id)
 
-            # Get all of the columns and their tables etc
-            resource_column_returns = ResourceDataSourceColumn.objects.all().filter(resource=resource)
+                tables_obj = {}
 
-            for column in resource_column_returns:
-                db_column = DatabaseColumn.objects.get(id=column.column_id)
-                print(db_column.table.name)
+                # Get all of the columns and their tables etc
+                resource_column_returns = ResourceDataSourceColumn.objects.all().filter(resource=resource)
 
-                # Check if this is already in the object
-                if db_column.table.name in tables_obj:
-                    # Check if the list exists
-                    if tables_obj[db_column.table.name]:
-                        tables_obj[db_column.table.name].append(db_column)
+                for column in resource_column_returns:
+                    db_column = DatabaseColumn.objects.get(id=column.column_id)
+                    print(db_column.table.name)
+
+                    # Check if this is already in the object
+                    if db_column.table.name in tables_obj:
+                        # Check if the list exists
+                        if tables_obj[db_column.table.name]:
+                            tables_obj[db_column.table.name].append(db_column)
+                        else:
+                            tables_obj[db_column.table.name] = [db_column]
+                    # Its not
                     else:
+                        # Create it
                         tables_obj[db_column.table.name] = [db_column]
-                # Its not
+
+                # Check to make sure the user viewing this project is the owner of it
+                if resource.project.user == request.user:
+                    context = {
+                        'projects': Project.objects.all().filter(user=request.user),
+                        'project': project,
+                        'resource': resource,
+                        'resource_headers': ResourceHeader.objects.all().filter(resource=resource),
+                        'resource_parameters': ResourceParameter.objects.all().filter(resource=resource),
+                        'resource_column_returns': tables_obj,
+                        'resources': Resource.objects.all().filter(project=project)
+                    }
+
+                    return render(request, 'core/view-resource.html', context)
                 else:
-                    # Create it
-                    tables_obj[db_column.table.name] = [db_column]
-
-            # Check to make sure the user viewing this project is the owner of it
-            if resource.project.user == request.user:
-                context = {
-                    'projects': Project.objects.all().filter(user=request.user),
-                    'project': project,
-                    'resource': resource,
-                    'resource_headers': ResourceHeader.objects.all().filter(resource=resource),
-                    'resource_parameters': ResourceParameter.objects.all().filter(resource=resource),
-                    'resource_column_returns': tables_obj,
-                    'resources': Resource.objects.all().filter(project=project)
-                }
-
-                return render(request, 'core/view-resource.html', context)
-            else:
-                messages.error(request, 'Sorry, we can\'t seem to find what you were looking for.')
+                    messages.error(request, 'Sorry, we can\'t seem to find what you were looking for.')
+                    return redirect('/dashboard')
+            except:
+                messages.error(request, 'Resource does not exist.')
                 return redirect('/dashboard')
-        except:
-            messages.error(request, 'Resource does not exist.')
-            return redirect('/dashboard')
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/')
 
 
 class ViewResourceRequests(LoginRequiredMixin, View):
     login_url = '/'
 
-    def get(self, request, project_id, resource_id):
+    def get(self, request, resource_id):
 
-        try:
-            # Get the project
-            project = Project.objects.get(id=project_id)
-            # And the resource
-            resource = Resource.objects.get(id=resource_id)
+        if 'selected_project_id' in request.session:
 
-            # Check to make sure the user viewing this project is the owner of it
-            if resource.project.user == request.user:
-                context = {
-                    'projects': Project.objects.all().filter(user=request.user),
-                    'project': project,
-                    'resource': resource,
-                    'api_requests': APIRequest.objects.all().filter(resource=resource.name)
-                }
+            try:
+                # Get the project
+                project = Project.objects.get(id=request.session['selected_project_id'])
+                # And the resource
+                resource = Resource.objects.get(id=resource_id)
 
-                return render(request, 'core/view-resource-requests.html', context)
-            else:
-                messages.error(request, 'Sorry, we can\'t seem to find what you were looking for.')
+                # Check to make sure the user viewing this project is the owner of it
+                if resource.project.user == request.user:
+                    context = {
+                        'projects': Project.objects.all().filter(user=request.user),
+                        'project': project,
+                        'resource': resource,
+                        'api_requests': APIRequest.objects.all().filter(resource=resource.name)
+                    }
+
+                    return render(request, 'core/view-resource-requests.html', context)
+                else:
+                    messages.error(request, 'Sorry, we can\'t seem to find what you were looking for.')
+                    return redirect('/dashboard')
+            except:
+                messages.error(request, 'Resource does not exist.')
                 return redirect('/dashboard')
-        except:
-            messages.error(request, 'Resource does not exist.')
-            return redirect('/dashboard')
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/')
 
 
 class ViewRequest(LoginRequiredMixin, View):
     login_url = '/'
 
-    def get(self, request, project_id, request_id):
+    def get(self, request, request_id):
 
-        try:
-            # Get the project
-            project = Project.objects.get(id=project_id)
+        if 'selected_project_id' in request.session:
 
-            # Get the request
-            api_request = APIRequest.objects.get(id=request_id)
+            try:
+                # Get the project
+                project = Project.objects.get(id=request.session['selected_project_id'])
 
-            # Check to make sure the user viewing this project is the owner of it
-            context = {
-                'projects': Project.objects.all().filter(user=request.user),
-                'project': project,
-                'api_request': api_request
-            }
+                # Get the request
+                api_request = APIRequest.objects.get(id=request_id)
 
-            return render(request, 'core/view-request.html', context)
-        except:
-            messages.error(request, 'Resource does not exist.')
-            return redirect('/dashboard')
+                # Check to make sure the user viewing this project is the owner of it
+                context = {
+                    'projects': Project.objects.all().filter(user=request.user),
+                    'project': project,
+                    'api_request': api_request
+                }
+
+                return render(request, 'core/view-request.html', context)
+            except:
+                messages.error(request, 'Resource does not exist.')
+                return redirect('/dashboard')
+
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/')
 
 
 class ChangeResourceStatus(LoginRequiredMixin, View):
@@ -792,52 +882,62 @@ class ChangeResourceStatus(LoginRequiredMixin, View):
 
     def get(self, request, project_id, resource_id):
 
-        try:
-            # Get the project
-            project = Project.objects.get(id=project_id)
-            # And the resource
-            resource = Resource.objects.get(id=resource_id)
+        if 'selected_project_id' in request.session:
 
-            # Check to make sure the user viewing this project is the owner of it
-            if resource.project.user == request.user:
-                # Change the status to the opposite of what it is
-                resource.status = not resource.status
+            try:
+                # Get the project
+                project = Project.objects.get(id=project_id)
+                # And the resource
+                resource = Resource.objects.get(id=resource_id)
 
-                resource.save()
+                # Check to make sure the user viewing this project is the owner of it
+                if resource.project.user == request.user:
+                    # Change the status to the opposite of what it is
+                    resource.status = not resource.status
 
-                # If it was turned on then say so if off say so
-                if resource.status:
-                    status = 'on'
+                    resource.save()
+
+                    # If it was turned on then say so if off say so
+                    if resource.status:
+                        status = 'on'
+                    else:
+                        status = 'off'
+
+                    messages.success(request, 'Resource successfully turned '+status+'.')
+                    return redirect('/project/'+str(project.id)+'/resource/view/'+str(resource.id))
                 else:
-                    status = 'off'
-
-                messages.success(request, 'Resource successfully turned '+status+'.')
-                return redirect('/project/'+str(project.id)+'/resource/view/'+str(resource.id))
-            else:
-                messages.error(request, 'Sorry, we can\'t seem to find what you were looking for.')
-                return redirect('/dashboard')
-        except:
-            messages.error(request, 'Resource does not exist.')
-            return redirect('/dashboard')
+                    messages.error(request, 'Sorry, we can\'t seem to find what you were looking for.')
+                    return redirect('/dashboard')
+            except:
+                messages.error(request, 'Resource does not exist.')
+                return redirect('/resources')
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/')
 
 
 class DeleteResource(LoginRequiredMixin, View):
     login_url = '/'
 
-    def get(self, request, project_id, resource_id):
-        # Get the project
-        project = Project.objects.get(id=project_id)
+    def get(self, request, resource_id):
 
-        # Get the resource
-        resource = Resource.objects.get(id=resource_id)
+        if 'selected_project_id' in request.session:
+            # Get the project
+            project = Project.objects.get(id=request.session['selected_project_id'])
 
-        # Check the ownership
-        if resource.project.user == request.user:
-            # Confirmed that they own the project. Delete and redirect to the dashboard with a message.
-            resource.delete()
+            # Get the resource
+            resource = Resource.objects.get(id=resource_id)
 
-            messages.success(request, 'Successfully deleted resource.')
-            return redirect('/project/'+str(project.id))
+            # Check the ownership
+            if resource.project.user == request.user:
+                # Confirmed that they own the project. Delete and redirect to the dashboard with a message.
+                resource.delete()
+
+                messages.success(request, 'Successfully deleted resource.')
+                return redirect('/resources')
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/')
 
 
 class Account(LoginRequiredMixin, View):
@@ -855,156 +955,191 @@ class Account(LoginRequiredMixin, View):
 class ProjectSettings(LoginRequiredMixin, View):
     login_url = '/'
 
-    def get(self, request, project_id):
+    def get(self, request):
 
-        context = {
-            'projects': Project.objects.all().filter(user=request.user),
-            'project': Project.objects.get(id=project_id)
-        }
+        if 'selected_project_id' in request.session:
+            context = {
+                'projects': Project.objects.all().filter(user=request.user),
+                'project': Project.objects.get(id=request.session['selected_project_id'])
+            }
 
-        return render(request, 'core/project-settings.html', context)
+            return render(request, 'core/project-settings.html', context)
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/')
 
 
 class ProjectStatistics(LoginRequiredMixin, View):
     login_url = '/'
 
-    def get(self, request, project_id):
+    def get(self, request):
 
-        context = {
-            'projects': Project.objects.all().filter(user=request.user),
-            'project': Project.objects.get(id=project_id)
-        }
+        if 'selected_project_id' in request.session:
+            context = {
+                'projects': Project.objects.all().filter(user=request.user),
+                'project': Project.objects.get(id=request.session['selected_project_id'])
+            }
 
-        return render(request, 'core/project-statistics.html', context)
+            return render(request, 'core/project-statistics.html', context)
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/')
 
 
 class APIKeys(LoginRequiredMixin, View):
     login_url = '/'
 
-    def get(self, request, project_id):
+    def get(self, request):
 
-        project = Project.objects.get(id=project_id)
+        if 'selected_project_id' in request.session:
 
-        context = {
-            'projects': Project.objects.all().filter(user=request.user),
-            'project': project,
-            'api_keys': APIKey.objects.all().filter(project=project)
-        }
+            project = Project.objects.get(id=request.session['selected_project_id'])
 
-        return render(request, 'core/api-keys.html', context)
+            context = {
+                'projects': Project.objects.all().filter(user=request.user),
+                'project': project,
+                'api_keys': APIKey.objects.all().filter(project=project)
+            }
+
+            return render(request, 'core/api-keys.html', context)
+
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/')
 
 
 class GenerateAPIKey(LoginRequiredMixin, View):
     login_url = '/'
 
-    def get(self, request, project_id):
+    def get(self, request):
 
-        project = Project.objects.get(id=project_id)
+        if 'selected_project_id' in request.session:
+            project = Project.objects.get(id=request.session['selected_project_id'])
 
-        # Generate an API key
-        if project.type == 'private':
-            # Now that a project has been created lets generate an API key for it.
-            api_key_not_found = True
+            # Generate an API key
+            if project.type == 'private':
+                # Now that a project has been created lets generate an API key for it.
+                api_key_not_found = True
 
-            key = ''
+                key = ''
 
-            while api_key_not_found:
-                key = ''.join(random.choices(string.ascii_uppercase + string.digits, k=32))
+                while api_key_not_found:
+                    key = ''.join(random.choices(string.ascii_uppercase + string.digits, k=32))
 
-                key = 'rb_nrm_key_' + key
+                    key = 'rb_nrm_key_' + key
 
-                try:
-                    api_key = APIKey.objects.get(key=key)
-                except:
-                    api_key_not_found = False
+                    try:
+                        api_key = APIKey.objects.get(key=key)
+                    except:
+                        api_key_not_found = False
 
-            api_key = APIKey(
-                key=key,
-                user=request.user,
-                project=project,
-                master=False
-            )
+                api_key = APIKey(
+                    key=key,
+                    user=request.user,
+                    project=project,
+                    master=False
+                )
 
-            api_key.save()
+                api_key.save()
 
-            messages.success(request, 'API Key successfully generated.')
-            return redirect('/project/'+str(project.id)+'/api-keys')
+                messages.success(request, 'API Key successfully generated.')
+                return redirect('/project/'+str(project.id)+'/api-keys')
+            else:
+                return redirect('/project/'+str(project.id))
         else:
-            return redirect('/project/'+str(project.id))
+            messages.error(request, 'Please select a project.')
+            return redirect('/')
 
 
 class DeleteAPIKey(LoginRequiredMixin, View):
     login_url = '/'
 
-    def get(self, request, project_id, id):
+    def get(self, request, id):
 
-        project = Project.objects.get(id=project_id)
+        if 'selected_project_id' in request.session:
 
-        try:
-            api_key = APIKey.objects.get(id=id, project=project)
+            project = Project.objects.get(id=request.session['selected_project_id'])
 
-            # Check if the master key. Prevent deletion of it
-            if api_key.master:
-                messages.success(request, 'Cannot delete the master API Key.')
-            else:
-                api_key.delete()
+            try:
+                api_key = APIKey.objects.get(id=id, project=project)
 
-            messages.success(request, 'API Key successfully deleted.')
-        except:
-            messages.error(request, 'API Key does not exist.')
+                # Check if the master key. Prevent deletion of it
+                if api_key.master:
+                    messages.success(request, 'Cannot delete the master API Key.')
+                else:
+                    api_key.delete()
 
-        return redirect('/project/'+str(project.id)+'/api-keys')
+                messages.success(request, 'API Key successfully deleted.')
+            except:
+                messages.error(request, 'API Key does not exist.')
 
+            return redirect('/project/'+str(project.id)+'/api-keys')
+
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/')
 
 class RegenerateAPIKey(LoginRequiredMixin, View):
     login_url = '/'
 
-    def get(self, request, project_id, id):
+    def get(self, request, id):
 
-        project = Project.objects.get(id=project_id)
+        if 'selected_project_id' in request.session:
 
-        try:
-            api_key = APIKey.objects.get(id=id, project=project)
+            project = Project.objects.get(id=request.session['selected_project_id'])
 
-            # Now that a project has been created lets generate an API key for it.
-            api_key_not_found = True
+            try:
+                api_key = APIKey.objects.get(id=id, project=project)
 
-            key = ''
+                # Now that a project has been created lets generate an API key for it.
+                api_key_not_found = True
 
-            while api_key_not_found:
-                key = ''.join(random.choices(string.ascii_uppercase + string.digits, k=32))
+                key = ''
 
-                # If it is the master key then use the master key prefix string
-                if api_key.master:
-                    key = 'rb_mstr_key_' + key
-                else:
-                # If not use the normal one
-                    key = 'rb_nrm_key_' + key
+                while api_key_not_found:
+                    key = ''.join(random.choices(string.ascii_uppercase + string.digits, k=32))
 
-                try:
-                    api_key = APIKey.objects.get(key=key)
-                except:
-                    api_key_not_found = False
+                    # If it is the master key then use the master key prefix string
+                    if api_key.master:
+                        key = 'rb_mstr_key_' + key
+                    else:
+                    # If not use the normal one
+                        key = 'rb_nrm_key_' + key
 
-            api_key.key = key
+                    try:
+                        api_key = APIKey.objects.get(key=key)
+                    except:
+                        api_key_not_found = False
 
-            api_key.save()
+                api_key.key = key
 
-            messages.success(request, 'API Key successfully regenerated. New API Key: '+key)
-        except:
-            messages.error(request, 'API Key does not exist.')
+                api_key.save()
 
-        return redirect('/project/'+str(project.id)+'/api-keys')
+                messages.success(request, 'API Key successfully regenerated. New API Key: '+key)
+            except:
+                messages.error(request, 'API Key does not exist.')
+
+            return redirect('/project/'+str(project.id)+'/api-keys')
+
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/')
 
 
 class ResetResource(LoginRequiredMixin, View):
     login_url = '/'
 
-    def get(self, request, project_id):
+    def get(self, request):
 
-        project = Project.objects.get(id=project_id)
+        if 'selected_project_id' in request.session:
 
-        if 'resource' in request.session:
-            del request.session['resource']
+            project = Project.objects.get(id=request.session['selected_project_id'])
 
-        return redirect('/resource/create/'+str(project.id))
+            if 'resource' in request.session:
+                del request.session['resource']
+
+            return redirect('/resource/create/'+str(project.id))
+
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/')

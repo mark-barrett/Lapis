@@ -116,7 +116,6 @@ body {
     margin-top: 10px;
     margin-left: 10px;
     margin-right: 10px;
-    padding-top: 10px;
     padding-bottom: 10px;
     color: #808080;
     text-transform: uppercase;
@@ -507,10 +506,37 @@ body {
     color: white !important;
 }
 
-hr {
-    margin-top: 0 !important;
-}
-
 .select-project {
     margin-bottom: 1rem;
+}
+
+.change-project-dropdown {
+    padding-bottom: 10px;
+}
+
+.bottom-padding {
+    padding-bottom: 10px;
+}
+
+.add-project-card-link {
+    color: #2DC662;
+}
+
+.add-project-card-link:hover {
+    text-decoration: none;
+    color: #25a351
+}
+
+.active-project {
+    background-color: #2DC662;
+    color: #fff;
+}
+
+.page-title {
+    margin-bottom: 20px;
+}
+
+.page-item.active .page-link {
+    background-color: #2DC662;
+    border-color: #2DC662;
 }

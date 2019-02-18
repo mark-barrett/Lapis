@@ -46,6 +46,17 @@ class RequestHandlerPrivate(View):
                             project=api_key.project
                         )
 
+                        # Check to see if the resource is "turned off"
+                        if not resource.status:
+                            response = {
+                                'error': {
+                                    'message': 'The owner of this resource has it disabled/off. Check back later as it may be enabled/turned on',
+                                    'type': 'endpoint_off'
+                                }
+                            }
+
+                            return HttpResponse(json.dumps(response), content_type='application/json')
+
                         # The resource does exist! Now we need to go through the request and check to see
                         # if what is required has been sent.
 
@@ -256,19 +267,19 @@ class RequestHandlerPrivate(View):
                                 # Delete the child value from the data
                                 del data_from_database[relationship.child_table.name]
 
-                                # Cannot connect to the server. Record it and respond
-                                api_request = APIRequest(
-                                    authentication_type='KEY',
-                                    type=request.method,
-                                    resource=request.META['HTTP_RESTBROKER_RESOURCE'],
-                                    url=request.get_full_path(),
-                                    status='200 OK',
-                                    ip_address=get_client_ip(request),
-                                    source=request.META['HTTP_USER_AGENT'],
-                                    api_key=api_key
-                                )
+                            # Cannot connect to the server. Record it and respond
+                            api_request = APIRequest(
+                                authentication_type='KEY',
+                                type=request.method,
+                                resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                url=request.get_full_path(),
+                                status='200 OK',
+                                ip_address=get_client_ip(request),
+                                source=request.META['HTTP_USER_AGENT'],
+                                api_key=api_key
+                            )
 
-                                api_request.save()
+                            api_request.save()
 
                             return HttpResponse(json.dumps(data_from_database), content_type='application/json')
 

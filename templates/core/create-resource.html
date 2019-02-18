@@ -13,13 +13,18 @@
 
 {% block page-content %}
     <div class="page-content">
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-        <h2 class="title-name">Create Resource</h2>
-        <p class="title-description">{% if request.session.resource and request.session.resource.project == project_id %}The Response {% else %}The Request{% endif %}</p>
+        <h2 class="title-name">{{ project.name }} </h2>
+        <p class="title-description">
+            {{ project.description }}
+            {% if project.type == 'public' %}
+                <span class="badge badge-light"><i class="fa fa-users"></i> Public</span>
+            {% else %}
+                <span class="badge badge-light"><i class="fa fa-lock"></i> Private</span>
+            {% endif %}
+        </p>
+        <div class="float-left">
+            <h2><i class="fas fa-plus" aria-hidden="true"></i> Create Resource</h2>
+        </div>
         <div class="inner-page-content">
             <div class="card">
                 <div class="card-body">
@@ -61,7 +66,7 @@
                                             {{ form.description|as_crispy_field }}
                                         </div>
                                     </div>
-                                    <br/>
+
                                     <p class="form-instruction">Request Data</p>
                                     {{ form.request_type|as_crispy_field }}
                                     <label for="headers">Headers</label>

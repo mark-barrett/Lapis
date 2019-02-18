@@ -17,6 +17,9 @@
                 <span class="badge badge-light"><i class="fa fa-lock"></i> Private</span>
             {% endif %}
         </p>
+        <div class="float-left">
+            <h2><i class="fas fa-caret-right" aria-hidden="true"></i> Requests to Resource: {{ api_request.resource }} <small>- {{ api_request.date }}</small></h2>
+        </div>
         <div class="float-right">
             <a href="/project/edit/{{ project.id }}" class="btn btn-light btn-sm">Edit Project</a>&nbsp;
             <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteProject">
@@ -30,59 +33,46 @@
                 {% endfor %}
             {% endif %}
 
-            {% include 'core/project-nav-bar.html' with page='statistics' %}
-
             <div class="card card-no-top-radius">
                 <div class="card-body">
-                    <h5 class="form-instruction">Requests to Resource: {{ api_request.resource }}<br/><small>{{ api_request.date }}</small></h5>
-                    <table class="table table-striped">
-                        <tbody>
-                        <tr>
-                            <th scope="row">ID</th>
-                            <td>{{ api_request.id }}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Status</th>
-                            <td>
-                                {% if '40' in api_request.status %}
-                                    <span class="badge badge-warning request-status">{{ api_request.get_status_display }}</span>
-                                {% elif '200' in api_request.status %}
-                                    <span class="badge badge-success request-status">{{ api_request.get_status_display }}</span>
-                                {% endif %}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Resource</th>
-                            <td>{{ api_request.resource }}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Type</th>
-                            <td>{{ api_request.type }}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">IP Address</th>
-                            <td>{{ api_request.ip_address }}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Date</th>
-                            <td>{{ api_request.date }}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Source</th>
-                            <td>{{ api_request.source }}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Authenticated With</th>
-                            <td>{{ api_request.get_authentication_type_display }}</td>
-                        </tr>
+                    <h5>Summary</h5>
+                    <hr/>
+                    <dl class="row">
+                        <dt class="col-sm-3">ID</dt>
+                        <dd class="col-sm-9">{{ api_request.id }}</dd>
+
+                        <dt class="col-sm-3">Status</dt>
+                        <dd class="col-sm-9">
+                            {% if '40' in api_request.status %}
+                                <span class="badge badge-warning request-status">{{ api_request.get_status_display }}</span>
+                            {% elif '200' in api_request.status %}
+                                <span class="badge badge-success request-status">{{ api_request.get_status_display }}</span>
+                            {% endif %}
+                        </dd>
+
+                        <dt class="col-sm-3">Resource</dt>
+                        <dd class="col-sm-9">{{ api_request.resource }}</dd>
+
+                        <dt class="col-sm-3">Type</dt>
+                        <dd class="col-sm-9">{{ api_request.type }}</dd>
+
+                        <dt class="col-sm-3">IP Address</dt>
+                        <dd class="col-sm-9">{{ api_request.ip_address }}</dd>
+
+                        <dt class="col-sm-3">Date</dt>
+                        <dd class="col-sm-9">{{ api_request.date }}</dd>
+
+                        <dt class="col-sm-3">Source</dt>
+                        <dd class="col-sm-9">{{ api_request.source }}</dd>
+
+                        <dt class="col-sm-3">Authenticated With</dt>
+                        <dd class="col-sm-9">{{ api_request.get_authentication_type_display }}</dd>
+
                         {% if api_request.authentication_type == 'KEY' %}
-                            <tr>
-                                <th scope="row">API Key</th>
-                                <td>{{ api_request.api_key.key }}</td>
-                            </tr>
+                            <dt class="col-sm-3">API Key</dt>
+                            <dd class="col-sm-9">{{ api_request.api_key.key }}</dd>
                         {% endif %}
-                        </tbody>
-                    </table>
+                    </dl>
                 </div>
             </div>
         </div>
