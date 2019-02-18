@@ -59,7 +59,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-5 text-left">
-                                            /{{ resource.resource_url }}<br/>
+                                            {{ resource.name }}<br/>
                                             <small>{{ resource.description }}</small>
                                         </div>
                                         <div class="col-md-3 response-type">
@@ -79,7 +79,7 @@
                                 <div class="card card-not-top-radius-with-border text-left">
                                     <div class="card-body">
                                         <div class="float-right">
-                                            <a href="/project/{{ project.id }}/resource/requests/{{ resource.id }}" class="btn btn-success">View Requests to this Resource</a>
+                                            <a href="/resource/{{ resource.id }}/requests" class="btn btn-success">View Requests to this Resource</a>
                                             <a href="" class="btn btn-primary">Edit</a>
                                             <button data-toggle="modal" data-target="#delete_resource_{{ resource.id }}" class="btn btn-danger">Delete</button>
                                         </div>
@@ -210,7 +210,7 @@
                         All triggers and any other information associated with this resource will be deleted.<br/>
                         Please be sure that you want to delete this resource.
                         <br/><br/>
-                        <a href="/project/{{ project.id }}/resource/delete/{{ resource.id }}" class="btn btn-danger btn-block">I understand, Delete this Resource</a>
+                        <a href="/resource/delete/{{ resource.id }}" class="btn btn-danger btn-block">I understand, Delete this Resource</a>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">Close</button>
@@ -239,9 +239,9 @@
                         {% endif %}
                         <br/><br/>
                         {% if resource.status %}
-                            <a href="/project/{{ project.id }}/resource/status/{{ resource.id }}" class="btn btn-danger btn-block">I understand, Turn this Resource Off</a>
+                            <a href="/resource/status/{{ resource.id }}" class="btn btn-danger btn-block">I understand, Turn this Resource Off</a>
                         {% else %}
-                            <a href="/project/{{ project.id }}/resource/status/{{ resource.id }}" class="btn btn-success btn-block">I understand, Turn this Resource On</a>
+                            <a href="/resource/status/{{ resource.id }}" class="btn btn-success btn-block">I understand, Turn this Resource On</a>
                         {% endif %}
                     </div>
                     <div class="modal-footer">

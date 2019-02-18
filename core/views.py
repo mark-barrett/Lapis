@@ -880,13 +880,13 @@ class ViewRequest(LoginRequiredMixin, View):
 class ChangeResourceStatus(LoginRequiredMixin, View):
     login_url = '/'
 
-    def get(self, request, project_id, resource_id):
+    def get(self, request, resource_id):
 
         if 'selected_project_id' in request.session:
 
             try:
                 # Get the project
-                project = Project.objects.get(id=project_id)
+                project = Project.objects.get(id=request.session['selected_project_id'])
                 # And the resource
                 resource = Resource.objects.get(id=resource_id)
 
@@ -904,7 +904,7 @@ class ChangeResourceStatus(LoginRequiredMixin, View):
                         status = 'off'
 
                     messages.success(request, 'Resource successfully turned '+status+'.')
-                    return redirect('/project/'+str(project.id)+'/resource/view/'+str(resource.id))
+                    return redirect('/resource/view/'+str(resource.id))
                 else:
                     messages.error(request, 'Sorry, we can\'t seem to find what you were looking for.')
                     return redirect('/dashboard')
@@ -1043,7 +1043,7 @@ class GenerateAPIKey(LoginRequiredMixin, View):
                 api_key.save()
 
                 messages.success(request, 'API Key successfully generated.')
-                return redirect('/project/'+str(project.id)+'/api-keys')
+                return redirect('/api-keys')
             else:
                 return redirect('/project/'+str(project.id))
         else:
@@ -1073,11 +1073,12 @@ class DeleteAPIKey(LoginRequiredMixin, View):
             except:
                 messages.error(request, 'API Key does not exist.')
 
-            return redirect('/project/'+str(project.id)+'/api-keys')
+            return redirect('/api-keys')
 
         else:
             messages.error(request, 'Please select a project.')
             return redirect('/')
+
 
 class RegenerateAPIKey(LoginRequiredMixin, View):
     login_url = '/'
@@ -1119,7 +1120,7 @@ class RegenerateAPIKey(LoginRequiredMixin, View):
             except:
                 messages.error(request, 'API Key does not exist.')
 
-            return redirect('/project/'+str(project.id)+'/api-keys')
+            return redirect('/api-keys')
 
         else:
             messages.error(request, 'Please select a project.')

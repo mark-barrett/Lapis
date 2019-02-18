@@ -42,13 +42,13 @@
                             <a class="nav-link {% if 'resource' in request.get_full_path and 'requests' not in request.get_full_path %}active{% endif %}" href="{% url 'resources' %}"><i class="fas fa-table" aria-hidden="true"></i> Resources</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {% if 'settings' in request.get_full_path %}active{% endif %}" href="/project/{{ project.id }}/settings"><i class="fas fa-cogs" aria-hidden="true"></i> Settings</a>
+                            <a class="nav-link {% if 'settings' in request.get_full_path %}active{% endif %}" href="{% url 'project-settings' %}"><i class="fas fa-cogs" aria-hidden="true"></i> Settings</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {% if 'api' in request.get_full_path %}active{% endif %}" href="/project/{{ project.id }}/api-keys"><i class="fas fa-key" aria-hidden="true"></i> API Keys</a>
+                            <a class="nav-link {% if 'api' in request.get_full_path %}active{% endif %}" href="{% url 'api-keys' %}"><i class="fas fa-key" aria-hidden="true"></i> API Keys</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {% if 'statistics' in request.get_full_path or 'requests' in request.get_full_path %}active{% endif %}" href="/project/{{ project.id }}/statistics"><i class="fas fa-chart-bar" aria-hidden="true"></i> Statistics</a>
+                            <a class="nav-link {% if 'statistics' in request.get_full_path or 'requests' in request.get_full_path %}active{% endif %}" href="{% url 'project-statistics' %}"><i class="fas fa-chart-bar" aria-hidden="true"></i> Statistics</a>
                         </li>
 
                         <li class="nav-item">

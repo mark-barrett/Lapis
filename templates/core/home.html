@@ -24,7 +24,7 @@
             <div class="row">
                 {% for project in projects %}
                     <div class="col-md-4">
-                        <div class="card border-dark">
+                        <div class="card border-light">
                             <div class="card-body">
                                 <h5 class="card-title">{{ project.name }} {% if project.type == 'public' %}
                                     <span class="badge badge-light"><i class="fa fa-users"></i> Public</span>
@@ -41,8 +41,8 @@
                     </div>
                 {% endfor %}
                 <div class="col-md-4">
-                    <div class="card border-dark">
-                        <div class="card-body">
+                    <div class="card">
+                        <div class="card-body border-light">
                             <div class="text-center">
                                 <a class="add-project-card-link" href="{% url 'create-project' %}">
                                     <i class="fa fa-plus fa-4x bottom-padding"></i><br/>Create Project
