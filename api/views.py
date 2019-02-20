@@ -254,18 +254,22 @@ class RequestHandlerPrivate(View):
                                 for value, data in data_from_database.items():
                                     # Check to see if the table is a parent
                                     try:
-                                        relationship = ResourceParentChildRelationship.objects.get(resource=resource, parent_table=DatabaseTable.objects.get(database=database, name=value))
+                                        this_relationship = ResourceParentChildRelationship.objects.get(resource=resource, parent_table=DatabaseTable.objects.get(database=database, name=value))
 
                                         for instance in data:
                                             # Delete the column with the name of
-
-                                            instance[relationship.child_table.name] = list(filter(lambda single_instance: single_instance[relationship.child_table_column.name] == instance[relationship.parent_table_column.name], data_from_database[relationship.child_table.name]))
+                                            print(instance)
+                                            instance[this_relationship.child_table.name] = list(filter(lambda single_instance: single_instance[this_relationship.child_table_column.name] == instance[this_relationship.parent_table_column.name], data_from_database[this_relationship.child_table.name]))
 
                                     except Exception as e:
                                         print(e)
 
                                 # Delete the child value from the data
-                                del data_from_database[relationship.child_table.name]
+                                try:
+                                    print(relationship.child_table.name)
+                                    del data_from_database[relationship.child_table.name]
+                                except Exception as e:
+                                    print('Cannot find that value.')
 
                             # Cannot connect to the server. Record it and respond
                             api_request = APIRequest(

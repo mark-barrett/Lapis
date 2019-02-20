@@ -29,7 +29,7 @@
 
             <div class="card card-no-top-radius">
                 <div class="card-body">
-                    <table id="example" class="table table-striped table-bordered" style="width:100%">
+                    <table id="requests" class="table table-striped table-bordered" style="width:100%">
                         <thead>
                         <tr>
                             <th>Status</th>
@@ -50,7 +50,7 @@
                                     {% endif %}
                                 </td>
                                 <td class="text-center">
-                                    {{ api_request.type }}
+                                    <span class="badge resource-type-bg-{{ api_request.type }} text-white">{{ api_request.type }}</span>
                                 </td>
                                 <td>
                                     {{ api_request.api_key.key }}
@@ -59,12 +59,7 @@
                                     {{ api_request.date }}
                                 </td>
                                 <td>
-                                    <button type="button" class="btn action-button btn-light" data-toggle="popover"
-                                            title="Actions" data-html="true"
-                                            data-content="
-                                            <a href='/request/{{ api_request.id }}'>View Request</a>">
-                                        <i class="fas fa-ellipsis-h"></i>
-                                    </button>
+                                    <a href="/request/{{ api_request.id }}" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="View"><i class="fa fa-eye"></i></a>
                                 </td>
                             </tr>
                         {% endfor %}
