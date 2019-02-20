@@ -5,11 +5,12 @@ from core.models import Project
 
 class DocumentationInstance(models.Model):
 
-    project = models.ForeignKey(Project, unique=True)
+    project = models.OneToOneField(Project)
     introduction_text = models.TextField(blank=True, null=True)
     support_email = models.CharField(max_length=256, blank=True, null=True)
-    navbar_colour = models.CharField(max_length=6, blank=True, null=True, default='FFFFFF')
+    navbar_colour = models.CharField(max_length=7, blank=True, null=True, default='FFFFFF')
     logo = models.ImageField(upload_to='static/docs/images/docs-logos', blank=True, null=True)
+    enabled = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = 'Documentation Instances'
@@ -21,7 +22,7 @@ class DocumentationInstance(models.Model):
 class ProgrammingLanguageChoice(models.Model):
     LANGUAGE_CHOICES = (
         ('curl', 'curl'),
-        ('Python', 'Python')
+        ('python', 'Python')
     )
 
     name = models.CharField(max_length=32, choices=LANGUAGE_CHOICES)

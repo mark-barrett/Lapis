@@ -564,3 +564,15 @@ body {
     background-color: #2DC662;
     border-color: #2DC662;
 }
+
+.disabled-setting {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.colour-picker {
+    width: 25%;
+    height: 30px;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: 5px;
+}

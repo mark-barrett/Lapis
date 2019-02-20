@@ -28,12 +28,12 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-3">
-                            <ul class="list-group">
-                                <li class="list-group-item active">Overview</li>
-                                <li class="list-group-item">Documentation</li>
-                                <li class="list-group-item">Security</li>
-                                <li class="list-group-item">Team (Maybe)</li>
-                            </ul>
+                            <div class="list-group">
+                                <a href="{% url 'project-settings' %}" class="list-group-item list-group-item-action active">Overview</a>
+                                <a href="{% url 'documentation-settings' %}" class="list-group-item list-group-item-action">Documentation</a>
+                                <a href="#" class="list-group-item list-group-item-action">Security</a>
+                                <a href="#" class="list-group-item list-group-item-action">Team (Maybe)</a>
+                            </div>
                         </div>
                         <div class="col-md-9">
                             <h4>Overview</h4>

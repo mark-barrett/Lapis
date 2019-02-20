@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils.datetime_safe import datetime
@@ -20,7 +21,7 @@ from sshtunnel import SSHTunnelForwarder
 import MySQLdb as db
 
 from core.tasks import build_database
-from docs.models import DocumentationInstance
+from docs.models import DocumentationInstance, ProgrammingLanguageChoice
 
 
 class Home(View):
@@ -113,6 +114,10 @@ class Logout(View):
 
     def get(self, request):
         if request.user.is_authenticated:
+            # Check if there is a session variable for the project
+            if 'selected_project_id' in request.session:
+                del request.session['selected_project_id']
+
             logout(request)
             messages.success(request, "Logged out. Thanks for stopping by!")
             return redirect('/')
@@ -390,6 +395,8 @@ class DeleteProject(LoginRequiredMixin, View):
             # Confirmed that they own the project. Delete and redirect to the dashboard with a message.
             project.delete()
 
+            # Remove the session of this project
+            del request.session['selected_project_id']
             messages.success(request, 'Successfully deleted project.')
             return redirect('/dashboard')
 
@@ -974,6 +981,95 @@ class ProjectSettings(LoginRequiredMixin, View):
             }
 
             return render(request, 'core/project-settings.html', context)
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/')
+
+
+class DocumentationSettings(LoginRequiredMixin, View):
+    login_url = '/'
+
+    def get(self, request):
+
+        if 'selected_project_id' in request.session:
+
+            project = Project.objects.get(id=request.session['selected_project_id'])
+
+            documentation_instance = DocumentationInstance.objects.get(project=project)
+
+            programming_languages = []
+
+            for programming_language in ProgrammingLanguageChoice.objects.all().filter(documentation_instance=documentation_instance):
+                programming_languages.append(programming_language.name)
+
+            context = {
+                'projects': Project.objects.all().filter(user=request.user),
+                'project': project,
+                'documentation_instance': documentation_instance,
+                'programming_languages': programming_languages
+            }
+
+            return render(request, 'core/documentation-settings.html', context)
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/')
+
+
+    def post(self, request):
+
+        if 'selected_project_id' in request.session:
+
+            project = Project.objects.get(id=request.session['selected_project_id'])
+
+            # Get the documentation instance
+            documentation_instance = DocumentationInstance.objects.get(project=project)
+
+            # Get the required variables and set them to the Documentation Instance
+            # If enable documentation was posted then we want to enable the documentation
+            if 'enable_documentation' in request.POST:
+                documentation_instance.enabled = True
+            # Otherwise disabledit
+            else:
+                documentation_instance.enabled = False
+
+            if 'introduction_text' in request.POST:
+                documentation_instance.introduction_text = request.POST['introduction_text']
+
+            if 'logo' in request.FILES:
+                logo = request.FILES['logo']
+                fs = FileSystemStorage()
+                filename = fs.save(logo.name, logo)
+                uploaded_file_url = fs.url(filename)
+
+                documentation_instance.logo = uploaded_file_url
+
+            if 'nav_colour' in request.POST:
+                documentation_instance.navbar_colour = request.POST['nav_colour']
+
+            if 'support_email' in request.POST:
+                documentation_instance.support_email = request.POST['support_email']
+
+            if 'languages' in request.POST:
+                languages = request.POST.getlist('lang_choice')
+
+                # Get all current languages and delete them
+                programming_languages = ProgrammingLanguageChoice.objects.all().filter(project=project)
+
+                for language in programming_languages:
+                    language.delete()
+
+                # Loop through languages
+                for language in languages:
+                    db_language = ProgrammingLanguageChoice(
+                        name=language,
+                        documentation_instance=documentation_instance
+                    )
+
+                    db_language.save()
+
+            # Save the documentation instance
+            documentation_instance.save()
+
         else:
             messages.error(request, 'Please select a project.')
             return redirect('/')

@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'dashboard', views.Dashboard.as_view(), name='dashboard'),
     url(r'account', views.Account.as_view(), name='account'),
     url(r'^resources', views.Resources.as_view(), name='resources'),
+    url(r'^settings/documentation', views.DocumentationSettings.as_view(), name='documentation-settings'),
     url(r'^settings', views.ProjectSettings.as_view(), name='project-settings'),
     url(r'^statistics', views.ProjectStatistics.as_view(), name='project-statistics'),
     url(r'^api-keys/generate', views.GenerateAPIKey.as_view(), name='generate-api-key'),
