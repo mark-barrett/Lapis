@@ -103,11 +103,9 @@ $('#enable_documentation').click(function() {
         // Checked, so remove the "disabled-setting" class on the different settings
         $('#docs-basic-info').removeClass('disabled-setting');
         $('#programming-languages').removeClass('disabled-setting');
-        $('#save-doc-changes').removeClass('disabled-setting');
     } else {
         $('#docs-basic-info').addClass('disabled-setting');
         $('#programming-languages').addClass('disabled-setting');
-        $('#save-doc-changes').addClass('disabled-setting');
     }
 });
 

@@ -1070,6 +1070,9 @@ class DocumentationSettings(LoginRequiredMixin, View):
             # Save the documentation instance
             documentation_instance.save()
 
+            # Redirect
+            messages.success(request, 'Documentation changes updated.')
+            return redirect('/settings/documentation')
         else:
             messages.error(request, 'Please select a project.')
             return redirect('/')

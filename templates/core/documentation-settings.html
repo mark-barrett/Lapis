@@ -57,9 +57,29 @@
                                                 <label for="support_email">Support Email <small>Where users can send their support queries.</small></label>
                                                 <input type="email" class="form-control" id="support_email" placeholder="name@example.com" value="{% if documentation_instance.support_email %}{{ documentation_instance.support_email }}{% endif %}" name="support_email">
                                             </div>
-                                            <label for="logo">Logo</label>
-                                            <div class="form-group">
-                                                <input type="file" class="form-control-file" id="logo" name="logo">
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label for="logo">Logo</label>
+                                                    <div class="form-group">
+                                                        <input type="file" class="form-control-file" id="logo" name="logo">
+                                                    </div>
+                                                </div>
+                                                {% if documentation_instance.logo %}
+                                                    <div class="col-md-6">
+                                                    <br/>
+                                                        <p>
+                                                            <a class="btn btn-light" data-toggle="collapse" href="#view_current_logo" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                                                <i class="fas fa-image"></i> View Current Logo
+                                                            </a>
+                                                        </p>
+                                                        <div class="collapse" id="view_current_logo">
+                                                            <div class="card card-body">
+                                                                <img src="{{ documentation_instance.logo }}" width="100%">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
                                             </div>
 
                                             <div class="form-group">
@@ -89,11 +109,19 @@
                                                 </div>
                                             </div>
                                         </li>
+                                        <li id="programming-languages" class="list-group-item {% if not documentation_instance.enabled %}disabled-setting{% endif %}">
+                                            <strong>Sub Domain</strong><br/>
+                                            <small>The URL for your documentation contains your project ID. If you want to use a sub domain,
+                                            create a CNAME record.</small>
+                                            <div class="form-group">
+                                                <input type="email" class="form-control" value="{{ request.META.HTTP_HOST }}/docs/{{ project.id }}" disabled>
+                                            </div>
+                                        </li>
                                     </ul>
                                 </div>
                                 <br/>
                                 {% csrf_token %}
-                                <div id="save-doc-changes" class="{% if not documentation_instance.enabled %}disabled-setting{% endif %}">
+                                <div id="save-doc-changes">
                                     <button type="submit" class="btn btn-success btn-block">Save</button>
                                 </div>
                             </form>
