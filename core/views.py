@@ -20,6 +20,7 @@ from sshtunnel import SSHTunnelForwarder
 import MySQLdb as db
 
 from core.tasks import build_database
+from docs.models import DocumentationInstance
 
 
 class Home(View):
@@ -237,6 +238,13 @@ class CreateProject(LoginRequiredMixin, View):
                 project.type = request.POST['type']
 
             project.save()
+
+            # Create a documentation instance for this project
+            documentation_instance = DocumentationInstance(
+                project=project
+            )
+
+            documentation_instance.save()
 
             if project.type == 'private':
                 # Now that a project has been created lets generate an API key for it.

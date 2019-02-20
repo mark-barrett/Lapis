@@ -41,9 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core',
     'api',
+    'docs',
     'crispy_forms',
     'celery',
-    'core.templatetags.util'
+    'core.templatetags.util',
 ]
 
 MIDDLEWARE = [

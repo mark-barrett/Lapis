@@ -114,18 +114,22 @@ $('body').on('click', '#choose-database-as-source', function() {
         columnData += '<option value="'+databaseData.tables[i].id+'">'+databaseData.tables[i].name+'</option>';
     }
 
-    var html = '<div id="database-source-'+num_databases_as_source+'">\
-                    <div class="float-right"><button type="button" id="remove_data_source_'+num_databases_as_source+'" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></div>\
-                    <p class="form-instruction"><i class="fa fa-database"></i> Database Data Source</p>\
-                        <div class="form-group">\
-                            <label for="table-select">Add Columns:</label><br/>\
-                            <select name="table" class="selectpicker" multiple data-width="100%" id="table-'+num_databases_as_source+'">\
-                                '+columnData+'\
-                            </select>\
+    var html = ' <div class="card border-info">\
+                    <div class="card-body">\
+                        <div id="database-source-'+num_databases_as_source+'">\
+                            <div class="float-right"><button type="button" id="remove_data_source_'+num_databases_as_source+'" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></div>\
+                            <p class="form-instruction"><i class="fa fa-database"></i> Database Data Source</p>\
+                                <div class="form-group">\
+                                    <label for="table-select">Add Columns:</label><br/>\
+                                    <select name="table" class="selectpicker" multiple data-width="100%" id="table-'+num_databases_as_source+'">\
+                                        '+columnData+'\
+                                    </select>\
+                                </div>\
+                            </div>\
+                            <div id="column-choices-'+num_databases_as_source+'"></div>\
                         </div>\
                     </div>\
-                <div id="column-choices-'+num_databases_as_source+'"></div>\
-                <hr/>';
+                <br/>';
 
     $('#data-sources').append(html);
 
@@ -154,17 +158,18 @@ $('body').on('click', '#choose-database-as-source', function() {
                 }
             }
 
-            selectedColumns += '<p class="form-instruction">'+tableObj.name+' <small><a class="collapse-data-link" data-toggle="collapse" data-target="#'+tableObj.name+'" href="#collapse1"><i class="fa fa-eye-slash"></i> (Show/Hide)</a></small></p>'
+            selectedColumns += '<p class="form-instruction"><i class="fas fa-table"></i> '+tableObj.name+' <small><a class="collapse-data-link" data-toggle="collapse" data-target="#'+tableObj.name+'" href="#collapse1"><i class="fa fa-eye-slash"></i> (Show/Hide)</a></small></p>'
             selectedColumns += '<ul id="'+tableObj.name+'" class="list-group collapse show">';
 
             // Now loop through all columns
             for(var i = 0; i < tableObj.columns.length; i++) {
                 selectedColumns += '<li class="list-group-item">';
                 selectedColumns += '<div class="row"><div class="col-md-3">';
-                selectedColumns += '<input type="checkbox" value="'+tableObj.columns[i].id+'" name="chosen-column"> '+tableObj.columns[i].name+' ('+tableObj.columns[i].type+')';
+                selectedColumns += '<input type="checkbox" onClick="handleColumnCheck('+tableObj.columns[i].id+','+tableObj.id+')" id="column_checkbox_'+tableObj.columns[i].id+'" value="'+tableObj.columns[i].id+'" name="chosen-column"> '+tableObj.columns[i].name+' ('+tableObj.columns[i].type+')';
 
                 selectedColumns += '</div><div class="col-md-9">';
-                selectedColumns += '<div class="column_tool" id="filter_'+tableObj.columns[i].id+'"><button type="button" class="btn btn-success btn-sm" onClick="addFilter('+tableObj.columns[i].id+','+tableObj.id+'); return false;"><i class="fa fa-filter"></i> Add Filter</button></div><div class="column_tool" id="parent_'+tableObj.columns[i].id+'"> <button type="button" class="btn btn-primary btn-sm" onClick="addParent('+tableObj.columns[i].id+','+tableObj.id+'); return false;"><i class="fa fa-plus-square"></i> Add Parent</button></div>';
+                selectedColumns += '<div id="tools_'+tableObj.columns[i].id+'"></div>';
+                // selectedColumns += '<div class="column_tool" id="filter_'+tableObj.columns[i].id+'"><button type="button" class="btn btn-success btn-sm" onClick="addFilter('+tableObj.columns[i].id+','+tableObj.id+'); return false;"><i class="fa fa-filter"></i> Add Filter</button></div><div class="column_tool" id="parent_'+tableObj.columns[i].id+'"> <button type="button" class="btn btn-primary btn-sm" onClick="addParent('+tableObj.columns[i].id+','+tableObj.id+'); return false;"><i class="fa fa-plus-square"></i> Add Parent</button></div>';
                 selectedColumns += '</div></div>';
                 selectedColumns += '</li>';
             }
@@ -173,6 +178,9 @@ $('body').on('click', '#choose-database-as-source', function() {
         }
 
         $('#column-choices-0').html(selectedColumns);
+
+        // Loop through the columns again and add event listeners
+        // Now put a listener on that check box and add the tools if it is selected
     });
 
 
@@ -216,6 +224,19 @@ $('body').on('click', '#choose-database-as-source', function() {
     num_databases_as_source++;
 });
 
+function handleColumnCheck(columnID, tableID) {
+
+    // Get the column
+    var column = document.getElementById('tools_'+columnID);
+    // Get the element and check if its checked
+    if (document.getElementById('column_checkbox_'+columnID).checked) {
+        // It is, so add the tools.
+        column.innerHTML = '<div class="column_tool" id="filter_'+columnID+'"><button type="button" class="btn btn-success btn-sm" onClick="addFilter('+columnID+','+tableID+'); return false;"><i class="fa fa-filter"></i> Add Filter</button></div><div class="column_tool" id="parent_'+columnID+'"> <button type="button" class="btn btn-primary btn-sm" onClick="addParent('+columnID+','+tableID+'); return false;"><i class="fa fa-plus-square"></i> Add Parent</button></div>';
+    } else {
+        column.innerHTML = '';
+    }
+}
+
 var num_text_as_source = 0;
 
 $('body').on('click', '#choose-text-as-source', function() {
@@ -223,11 +244,15 @@ $('body').on('click', '#choose-text-as-source', function() {
     $('#data-choice-menu').remove();
 
     var html = '<div id="text-source-'+num_text_as_source+'">\
-                  <div class="float-right"><button type="button" id="remove-data-source" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></div>\
-                    <p class="form-instruction"><i class="fa fa-code"></i> Text Data Source</p>\
-                            <div class="form-group">\
-                                <textarea name="text-source" class="form-control" placeholder="JSON" rows="10"></textarea>\
-                            </div>';
+                <div class="card border-dark">\
+                    <div class="card-body">\
+                      <div class="float-right"><button type="button" id="remove-data-source" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></div>\
+                        <p class="form-instruction"><i class="fa fa-code"></i> Text Data Source</p>\
+                                <div class="form-group">\
+                                    <textarea name="text-source" class="form-control" placeholder="JSON" rows="10"></textarea>\
+                                </div>\
+                    </div>\
+                </div><br/>';
     $('#data-sources').append(html);
 
     num_text_as_source++;
