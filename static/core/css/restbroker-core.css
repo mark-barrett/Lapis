@@ -329,8 +329,32 @@ body {
 }
 
 .resource {
-    padding-left: 1rem;
-    height: 80px;
+    position: relative;
+    padding: .75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    text-align: left;
+}
+
+.resource-GET {
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border-color: #16A2B7;
+}
+
+.resource-POST {
+    color: #155724;
+    background-color: #ECFAF4;
+    border-color: #28A645;
+}
+
+.resource-type-bg-GET {
+    background-color: #17a2b8!important;
+}
+
+.resource-type-bg-POST {
+    background-color: #49CC90!important;
 }
 
 .manage-resource {

@@ -266,7 +266,9 @@ class CreateProject(LoginRequiredMixin, View):
             else:
                 messages.success(request, 'Project created successfully.')
 
-            return redirect('/project/'+str(project.id))
+            # Set the id
+            request.session['selected_project_id'] = project.id
+            return redirect('/dashboard')
         else:
             context = {
                 'form': form,

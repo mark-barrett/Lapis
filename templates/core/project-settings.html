@@ -17,15 +17,6 @@
                 <span class="badge badge-light"><i class="fa fa-lock"></i> Private</span>
             {% endif %}
         </p>
-        <div class="float-left">
-            <h2><i class="fa fa-cogs"></i> Settings</h2>
-        </div>
-        <div class="float-right">
-            <a href="/project/edit/{{ project.id }}" class="btn btn-light btn-sm">Edit Project</a>&nbsp;
-            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteProject">
-                Delete Project
-            </button>
-        </div>
         <div class="inner-page-content">
             {% if messages %}
                 {% for message in messages %}
@@ -47,6 +38,39 @@
                         <div class="col-md-9">
                             <h4>Overview</h4>
                             <hr/>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <strong>Edit Project</strong><br/>
+                                            Change the name, description or privacy status of the project.
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="float-right">
+                                                <a href="/project/edit/{{ project.id }}" class="btn btn-secondary btn-sm">Edit Project</a>&nbsp;
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="card border-danger">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <strong>Delete Project</strong><br/>
+                                            Delete this project, resources, API Keys etc (and anything associated with it)
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="float-right">
+                                                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteProject">
+                                                    Delete Project
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
