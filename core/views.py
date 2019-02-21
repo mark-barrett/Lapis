@@ -1049,11 +1049,11 @@ class DocumentationSettings(LoginRequiredMixin, View):
             if 'support_email' in request.POST:
                 documentation_instance.support_email = request.POST['support_email']
 
-            if 'languages' in request.POST:
+            if 'lang_choice' in request.POST:
                 languages = request.POST.getlist('lang_choice')
 
                 # Get all current languages and delete them
-                programming_languages = ProgrammingLanguageChoice.objects.all().filter(project=project)
+                programming_languages = ProgrammingLanguageChoice.objects.all().filter(documentation_instance=documentation_instance)
 
                 for language in programming_languages:
                     language.delete()

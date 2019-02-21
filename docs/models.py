@@ -21,7 +21,7 @@ class DocumentationInstance(models.Model):
 
 class ProgrammingLanguageChoice(models.Model):
     LANGUAGE_CHOICES = (
-        ('curl', 'curl'),
+        ('curl', 'cURL'),
         ('python', 'Python')
     )
 

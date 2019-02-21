@@ -2,82 +2,167 @@
 
 {% block title %}{{ project.name }} - Documentation{% endblock %}
 
+{% load curl_language_generator %}
+{% load python_language_generator %}
+
 {% block content %}
 
 <div class="row">
     <div class="col-md-2">
         <nav id="navbar-example3" class="navbar navbar-light bg-light api-doc-nav">
-            <a class="navbar-brand" href="#">Navbar</a>
+            <a class="navbar-brand" href="/">
+                {% if document.logo %}
+                <img src="{{ document.logo }}" height="75px"/>
+                {% else %}
+                {{ document.project.name }}
+                {% endif %}
+            </a>
+            <hr/>
             <nav class="nav nav-pills flex-column">
-                <a class="nav-link" href="#item-1">Item 1</a>
-                <nav class="nav nav-pills flex-column">
-                    <a class="nav-link ml-3 my-1" href="#item-1-1">Item 1-1</a>
-                    <a class="nav-link ml-3 my-1" href="#item-1-2">Item 1-2</a>
-                </nav>
-                <a class="nav-link" href="#item-2">Item 2</a>
-                <a class="nav-link" href="#item-3">Item 3</a>
-                <nav class="nav nav-pills flex-column">
-                    <a class="nav-link ml-3 my-1" href="#item-3-1">Item 3-1</a>
-                    <a class="nav-link ml-3 my-1" href="#item-3-2">Item 3-2</a>
-                </nav>
+                <p class="sub-heading">Topics</p>
+                <a class="nav-link" href="#introduction">Introduction</a>
+                <a class="nav-link" href="#authentication">Authentication</a>
+                <a class="nav-link" href="#errors">Errors</a>
+                <a class="nav-link" href="#help-support">Help/Support</a>
+                <p class="sub-heading">Resources</p>
+                {% for resource in resources %}
+                    <a class="nav-link" href="#{{ resource.name }}">{{ resource.name }}</a>
+                {% endfor %}
             </nav>
         </nav>
     </div>
     <div class="col-md-10">
         <div data-spy="scroll" data-target="#navbar-example3" data-offset="0" style="overflow-y: scroll; height: 100vh;">
-
             <div class="row">
                 <div class="col-md-6">
-                    Text Here
+                    <br/>
+                    <div class="section">
+                        <h2 id="introduction">Introduction</h2>
+                        <p>{{ document.introduction_text }}</p>
+                    </div>
+                    <hr/>
+                    <div class="section">
+                        <h2 id="authentication">Authentication</h2>
+                        {# If its a public API say theres no authentication #}
+                        {% if project.type == 'public' %}
+                            <p>There is not authentication required to use this API.</p>
+                        {% elif project.type == 'private' %}
+                            <p>The {{ project.name }} API uses API Keys in order to authenticate requests. To get an API key contact the owner or use their tool if available to request one.</p><br/>
+                            <p>Your API key will either start with <code>rb_mstr_key_</code> which means it's a master key, or <code>rb_nrm_key_</code> which means its a normal key.</p><br/>
+                            <p>To authenticate your request, you must use HTTP Basic Authentication. Provide the API key as the username, don't worry about the password.</p>
+                            <p>All authentication to the {{ project.name }} API must be done through HTTPS. Any HTTP requests will be rejected.</p>
+                        {% endif %}
+                    </div>
+                    <hr/>
+                    <h2 id="errors">Errors</h2>
+                    <p>The {{ project.name }} API uses normal HTTP request codes to validate responses, but it will also provide an error type and a description for each request made.</p>
+                    <p>Like HTTP <code>2xx</code> codes mean that the request was fine, whereas <code>4xx</code> mean something went wrong. Look at the table on the right to see a list
+                    of the possible HTTP codes/error types.</p>
                 </div>
+
                 <div class="col-md-6 code">
-                    Code Here
+                    <div class="code-selector-container sticky-top">
+                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                            {% for language in languages %}
+                                {# If its the first language, set it as active #}
+                                {% if forloop.first %}
+                                    <li class="nav-item">
+                                        <a class="nav-link active code-option" id="pills-home-tab" data-toggle="pill" href="#lang-{{ language.name }}" role="tab" aria-controls="lang-{{ language.name }}" aria-selected="true">{{ language.get_name_display }}</a>
+                                    </li>
+                                {% else %}
+                                    <li class="nav-item">
+                                        <a class="nav-link code-option" id="pills-home-tab" data-toggle="pill" href="#lang-{{ language.name }}" role="tab" aria-controls="lang-{{ language.name }}" aria-selected="true">{{ language.get_name_display }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+
+                    <div class="tab-content" id="pills-tabContent">
+                        {% for language in languages %}
+                            {# Show the Base URL #}
+                            <div class="tab-pane fade {% if forloop.first %}show active{% endif %}" id="lang-{{ language.name }}" role="tabpanel" aria-labelledby="pills-home-tab">
+                                <br/>
+                                <div class="section">
+                                    <div class="container">
+                                        <p class="code-normal-font-descriptor">Base URL:</p>
+                                        <div class="card bg-secondary text-white">
+                                            <div class="card-body">
+                                                <code class="text-white">http://{{ request.META.HTTP_HOST }}/api</code>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {# Give example of Authentication #}
+                                <div class="section">
+                                    <div class="container">
+                                        <p class="code-normal-font-descriptor">Example Request:</p>
+                                        {% autoescape off %}
+                                            {% if language.name == 'curl' %}
+                                                {% curl_authentication_example request %}
+                                            {% endif %}
+                                            {% if language.name == 'python' %}
+                                                {% python_authentication_example request %}
+                                            {% endif %}
+                                        {% endautoescape %}
+                                    </div>
+                                </div>
+
+                                {# Now do errors for all languages so just put it once. #}
+                                <br/>
+                                <div class="container">
+                                    <p class="code-normal-font-descriptor">Request Response Codes &amp; Types:</p>
+                                    <table class="table table-bordered table-striped error-codes table-dark">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Code</th>
+                                            <th scope="col">Type</th>
+                                            <th scope="col">Summary</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <th scope="row">200 - OK</th>
+                                            <td>None</td>
+                                            <td>The Request was fine.</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">400 - Bad Request</th>
+                                            <td>missing_parameter</td>
+                                            <td>Missing a GET or POST parameter.</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">400 - Bad Request</th>
+                                            <td>missing_header</td>
+                                            <td>Missing a required header.</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">400 - Bad Request</th>
+                                            <td>missing_parameter</td>
+                                            <td>Missing a GET or POST parameter.</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">400 - Bad Request</th>
+                                            <td>no_resource_provided</td>
+                                            <td>No resource was provided.</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">401 - Unauthorised</th>
+                                            <td>no_api_key</td>
+                                            <td>No API key was provided.</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
 
             <br/>
-            <h4 id="item-1">Item 1</h4>
-            <p>ypesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-
-                Why do we use it?
-                It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-
-
-                Where does it come from?
-                Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
-            <h5 id="item-1-1">Item 1-1</h5>
-            <p>ypesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-
-                Why do we use it?
-                It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-
-
-                Where does it come from?
-                Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
-            <h5 id="item-1-2">Item 1-2</h5>
-            <p>ypesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-
-                Why do we use it?
-                It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-
-
-                Where does it come from?
-                Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
-            <h4 id="item-2">Item 2</h4>
-            <p>ypesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-
-                Why do we use it?
-                It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-
-
-                Where does it come from?
-                Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
-            <h4 id="item-3">Item 3</h4>
-            <p>...</p>
-            <h5 id="item-3-1">Item 3-1</h5>
-            <p>...</p>
-            <h5 id="item-3-2">Item 3-2</h5>
-            <p>...</p>
         </div>
     </div>
 </div>

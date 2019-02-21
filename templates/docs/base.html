@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/bootstrap.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/font-awesome-animation-min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'docs/css/restbroker-docs.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'docs/css/code/atom-one-dark.css' %}">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
 
@@ -34,6 +35,8 @@
 <script src="{% static 'core/js/popper.min.js' %}"></script>
 <script src="{% static 'core/js/bootstrap.bundle.js' %}"></script>
 <script src="{% static 'core/js/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'docs/js/code/highlight.pack.js' %}"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 <script>
     $(document).ready(function () {
         $('.selectpicker').selectpicker();
