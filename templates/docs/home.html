@@ -112,6 +112,17 @@
                 <div class="col-md-6 code">
                     <div class="code-selector-container sticky-top">
                         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                        <style>
+                            {# Create styles for custom nav colours #}
+                            .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+                                color: #fff;
+                                background-color: {{ document.navbar_colour }} !important;
+                            }
+                            .code-option:hover {
+                                color: {{ document.navbar_colour }}
+                            }
+
+                        </style>
                             {% for language in languages %}
                                 {# If its the first language, set it as active #}
                                 {% if forloop.first %}
