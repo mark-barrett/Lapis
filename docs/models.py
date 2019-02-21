@@ -23,7 +23,9 @@ class ProgrammingLanguageChoice(models.Model):
     LANGUAGE_CHOICES = (
         ('curl', 'cURL'),
         ('python', 'Python'),
-        ('java', 'Java')
+        ('java', 'Java'),
+        ('javascript', 'JavaScript'),
+        ('php', 'PHP')
     )
 
     name = models.CharField(max_length=32, choices=LANGUAGE_CHOICES)

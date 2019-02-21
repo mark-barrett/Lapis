@@ -6,6 +6,8 @@
 {% load curl_language_generator %}
 {% load python_language_generator %}
 {% load java_language_generator %}
+{% load javascript_language_generator %}
+{% load php_language_generator %}
 
 {% block content %}
 
@@ -134,6 +136,10 @@
                                                 <i class="fas fa-terminal"></i>
                                             {% elif language.name == 'java' %}
                                                 <i class="fab fa-java"></i>
+                                            {% elif language.name == 'javascript' %}
+                                                <i class="fab fa-js"></i>
+                                            {% elif language.name == 'php' %}
+                                                <i class="fab fa-php"></i>
                                             {% endif %}
                                             {{ language.get_name_display }}</a>
                                     </li>
@@ -146,6 +152,10 @@
                                                 <i class="fas fa-terminal"></i>
                                             {% elif language.name == 'java' %}
                                                 <i class="fab fa-java"></i>
+                                            {% elif language.name == 'javascript' %}
+                                                <i class="fab fa-js"></i>
+                                            {% elif language.name == 'php' %}
+                                                <i class="fab fa-php"></i>
                                             {% endif %}
                                             {{ language.get_name_display }}
                                         </a>
@@ -186,6 +196,12 @@
                                             {% if language.name == 'java' %}
                                                 {% java_authentication_example request %}
                                             {% endif %}
+                                            {% if language.name == 'javascript' %}
+                                                {% javascript_authentication_example request %}
+                                            {% endif %}
+                                            {% if language.name == 'php' %}
+                                                {% php_authentication_example request %}
+                                            {% endif %}
                                         {% endautoescape %}
                                     </div>
                                 </div>
@@ -203,6 +219,12 @@
                                             {% endif %}
                                             {% if language.name == 'java' %}
                                                 {% java_resource_request_example request %}
+                                            {% endif %}
+                                            {% if language.name == 'javascript' %}
+                                                {% javascript_resource_request_example request %}
+                                            {% endif %}
+                                            {% if language.name == 'php' %}
+                                                {% php_resource_request_example request %}
                                             {% endif %}
                                         {% endautoescape %}
                                     </div>
@@ -282,6 +304,12 @@
                                                 {% endif %}
                                                 {% if language.name == 'java' %}
                                                     {% java_generate_resource request resource %}
+                                                {% endif %}
+                                                {% if language.name == 'javascript' %}
+                                                    {% javascript_generate_resource request resource %}
+                                                {% endif %}
+                                                {% if language.name == 'php' %}
+                                                    {% php_generate_resource request resource %}
                                                 {% endif %}
                                             {% endautoescape %}
                                         </div>
