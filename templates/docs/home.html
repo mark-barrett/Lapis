@@ -2,8 +2,10 @@
 
 {% block title %}{{ project.name }} - Documentation{% endblock %}
 
+{% load text_document_generator %}
 {% load curl_language_generator %}
 {% load python_language_generator %}
+{% load java_language_generator %}
 
 {% block content %}
 
@@ -22,11 +24,15 @@
                 <p class="sub-heading">Topics</p>
                 <a class="nav-link" href="#introduction">Introduction</a>
                 <a class="nav-link" href="#authentication">Authentication</a>
+                <a class="nav-link" href="#requesting-a-resource">Requesting a Resource</a>
                 <a class="nav-link" href="#errors">Errors</a>
-                <a class="nav-link" href="#help-support">Help/Support</a>
+                {% if document.support_email %}
+                    <a class="nav-link" href="#help-support">Help/Support</a>
+                {% endif %}
+                <br/>
                 <p class="sub-heading">Resources</p>
                 {% for resource in resources %}
-                    <a class="nav-link" href="#{{ resource.name }}">{{ resource.name }}</a>
+                    <a class="nav-link" href="#resource-{{ resource.name }}">{{ resource.name }}</a>
                 {% endfor %}
             </nav>
         </nav>
@@ -54,10 +60,53 @@
                         {% endif %}
                     </div>
                     <hr/>
-                    <h2 id="errors">Errors</h2>
-                    <p>The {{ project.name }} API uses normal HTTP request codes to validate responses, but it will also provide an error type and a description for each request made.</p>
-                    <p>Like HTTP <code>2xx</code> codes mean that the request was fine, whereas <code>4xx</code> mean something went wrong. Look at the table on the right to see a list
-                    of the possible HTTP codes/error types.</p>
+                    <div class="section">
+                        <h2 id="requesting-a-resource">Requesting a Resource</h2>
+                        <p>The {{ project.name }} API does not specify the resource in the Base URL, instead a header is sent which is used to request the appropriate resource. </p>
+                        <p>To request a resource, the <code>RESTBroker-Resource</code> header has to be sent to the Base URL on every requst.</p>
+
+                    </div>
+                    <hr/>
+                    <div class="section">
+                        <h2 id="errors">Errors</h2>
+                        <p>The {{ project.name }} API uses normal HTTP request codes to validate responses, but it will also provide an error type and a description for each request made.</p>
+                        <p>Like HTTP <code>2xx</code> codes mean that the request was fine, whereas <code>4xx</code> mean something went wrong. Look at the table on the right to see a list
+                        of the possible HTTP codes/error types.</p>
+                    </div>
+
+                    {% if document.support_email %}
+                        <br/><br/><br/><br/>
+                        <hr/>
+                        <div class="section">
+                            <h2 id="help-support">Help/Support</h2>
+                            <p>
+                                For any queries about this API or for further help in it's implementation, email us:
+                                <a class="text-green" href="">{{ document.support_email }}</a>
+                            </p>
+                        </div>
+                    {% else %}
+                    <hr/>
+                    {% endif %}
+
+                    {# Now loop through each resource #}
+                    {% for resource in resources %}
+                        <hr/>
+                        <div class="section">
+                            <div class="float-right">
+                                <h2><span class="badge resource-type-bg-{{ resource.request_type }} text-white">{{ resource.request_type }}</span> </h2>
+                            </div>
+                            <h2 id="resource-{{ resource.name }}">{{ resource.name }}</h2>
+                            <p>{{ resource.description }}</p>
+
+                            {# Call the template tag that will describe the resource #}
+                            {% autoescape off %}
+                                {% generate_resource_information request resource %}
+                            {% endautoescape %}
+                        </div>
+                    {% endfor %}
+                    <br/><br/><br/>
+                    <p> © <script>document.write(new Date().getFullYear())</script> - {{ project.name }} - API Built &amp; Documented by RESTBroker</p>
+
                 </div>
 
                 <div class="col-md-6 code">
@@ -67,11 +116,28 @@
                                 {# If its the first language, set it as active #}
                                 {% if forloop.first %}
                                     <li class="nav-item">
-                                        <a class="nav-link active code-option" id="pills-home-tab" data-toggle="pill" href="#lang-{{ language.name }}" role="tab" aria-controls="lang-{{ language.name }}" aria-selected="true">{{ language.get_name_display }}</a>
+                                        <a class="nav-link active code-option" id="pills-home-tab" data-toggle="pill" href="#lang-{{ language.name }}" role="tab" aria-controls="lang-{{ language.name }}" aria-selected="true">
+                                            {% if language.name == 'python' %}
+                                                <i class="fab fa-python"></i>
+                                            {% elif language.name == 'curl' %}
+                                                <i class="fas fa-terminal"></i>
+                                            {% elif language.name == 'java' %}
+                                                <i class="fab fa-java"></i>
+                                            {% endif %}
+                                            {{ language.get_name_display }}</a>
                                     </li>
                                 {% else %}
                                     <li class="nav-item">
-                                        <a class="nav-link code-option" id="pills-home-tab" data-toggle="pill" href="#lang-{{ language.name }}" role="tab" aria-controls="lang-{{ language.name }}" aria-selected="true">{{ language.get_name_display }}</a>
+                                        <a class="nav-link code-option" id="pills-home-tab" data-toggle="pill" href="#lang-{{ language.name }}" role="tab" aria-controls="lang-{{ language.name }}" aria-selected="true">
+                                            {% if language.name == 'python' %}
+                                                <i class="fab fa-python"></i>
+                                            {% elif language.name == 'curl' %}
+                                                <i class="fas fa-terminal"></i>
+                                            {% elif language.name == 'java' %}
+                                                <i class="fab fa-java"></i>
+                                            {% endif %}
+                                            {{ language.get_name_display }}
+                                        </a>
                                     </li>
                                 {% endif %}
                             {% endfor %}
@@ -106,6 +172,27 @@
                                             {% if language.name == 'python' %}
                                                 {% python_authentication_example request %}
                                             {% endif %}
+                                            {% if language.name == 'java' %}
+                                                {% java_authentication_example request %}
+                                            {% endif %}
+                                        {% endautoescape %}
+                                    </div>
+                                </div>
+
+                                {# Give example of getting a Resource #}
+                                <div class="section">
+                                    <div class="container">
+                                        <p class="code-normal-font-descriptor">Example Request:</p>
+                                        {% autoescape off %}
+                                            {% if language.name == 'curl' %}
+                                                {% curl_resource_request_example request %}
+                                            {% endif %}
+                                            {% if language.name == 'python' %}
+                                                {% python_resource_request_example request %}
+                                            {% endif %}
+                                            {% if language.name == 'java' %}
+                                                {% java_resource_request_example request %}
+                                            {% endif %}
                                         {% endautoescape %}
                                     </div>
                                 </div>
@@ -114,7 +201,7 @@
                                 <br/>
                                 <div class="container">
                                     <p class="code-normal-font-descriptor">Request Response Codes &amp; Types:</p>
-                                    <table class="table table-bordered table-striped error-codes table-dark">
+                                    <table class="table table-borderless table-striped error-codes table-dark">
                                         <thead>
                                         <tr>
                                             <th scope="col">Code</th>
@@ -140,11 +227,6 @@
                                         </tr>
                                         <tr>
                                             <th scope="row">400 - Bad Request</th>
-                                            <td>missing_parameter</td>
-                                            <td>Missing a GET or POST parameter.</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">400 - Bad Request</th>
                                             <td>no_resource_provided</td>
                                             <td>No resource was provided.</td>
                                         </tr>
@@ -153,16 +235,52 @@
                                             <td>no_api_key</td>
                                             <td>No API key was provided.</td>
                                         </tr>
+                                        <tr>
+                                            <th scope="row">401 - Unauthorised</th>
+                                            <td>bad_api_key</td>
+                                            <td>The provided API was invalid.</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">404 - Not Found</th>
+                                            <td>resource_doesnt_exist</td>
+                                            <td>The requested resource does not exist.</td>
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>
+                                <br/><br/><br/>
+                                {# If a support email was provided then have a blank area for that #}
+                                {% if document.support_email %}
+                                    <div class="section">
+                                        &nbsp;
+                                    </div>
+                                {% endif %}
+
+                                {# Now do Resources #}
+                                {% for resource in resources %}
+                                    <br/><br/>
+                                    <div class="section">
+                                        <div class="container">
+                                            <p class="code-normal-font-descriptor">Example Request:</p>
+                                            {% autoescape off %}
+                                                {% if language.name == 'curl' %}
+                                                    {% curl_generate_resource request resource %}
+                                                {% endif %}
+                                                {% if language.name == 'python' %}
+                                                    {% python_generate_resource request resource %}
+                                                {% endif %}
+                                                {% if language.name == 'java' %}
+                                                    {% java_generate_resource request resource %}
+                                                {% endif %}
+                                            {% endautoescape %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
                             </div>
                         {% endfor %}
                     </div>
                 </div>
             </div>
-
-            <br/>
         </div>
     </div>
 </div>

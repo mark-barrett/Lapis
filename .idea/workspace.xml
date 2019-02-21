@@ -2,105 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="693ea1cf-17b0-42f8-8355-71d597cd4bad" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/brown-papersq.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/pojoaque.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/school-book.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/a11y-dark.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/a11y-light.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/agate.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/an-old-hope.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/androidstudio.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/arduino-light.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/arta.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/ascetic.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/atelier-cave-dark.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/atelier-cave-light.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/atelier-dune-dark.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/atelier-dune-light.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/atelier-estuary-dark.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/atelier-estuary-light.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/atelier-forest-dark.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/atelier-forest-light.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/atelier-heath-dark.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/atelier-heath-light.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/atelier-lakeside-dark.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/atelier-lakeside-light.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/atelier-plateau-dark.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/atelier-plateau-light.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/atelier-savanna-dark.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/atelier-savanna-light.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/atelier-seaside-dark.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/atelier-seaside-light.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/atelier-sulphurpool-dark.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/atelier-sulphurpool-light.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/atom-one-dark-reasonable.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/atom-one-dark.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/atom-one-light.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/brown-paper.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/codepen-embed.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/color-brewer.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/darcula.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/dark.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/darkula.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/default.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/docco.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/dracula.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/far.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/foundation.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/github-gist.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/github.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/gml.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/googlecode.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/grayscale.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/gruvbox-dark.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/gruvbox-light.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/hopscotch.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/hybrid.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/idea.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/ir-black.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/isbl-editor-dark.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/isbl-editor-light.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/kimbie.dark.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/kimbie.light.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/lightfair.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/magula.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/mono-blue.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/monokai-sublime.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/monokai.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/nord.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/obsidian.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/ocean.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/paraiso-dark.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/paraiso-light.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/pojoaque.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/purebasic.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/qtcreator_dark.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/qtcreator_light.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/railscasts.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/rainbow.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/routeros.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/school-book.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/shades-of-purple.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/solarized-dark.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/solarized-light.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/sunburst.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/tomorrow-night-blue.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/tomorrow-night-bright.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/tomorrow-night-eighties.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/tomorrow-night.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/tomorrow.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/vs.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/vs2015.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/xcode.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/xt256.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/docs/css/code/zenburn.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/views.py" afterPath="$PROJECT_DIR$/core/views.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/models.py" afterPath="$PROJECT_DIR$/docs/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/views.py" afterPath="$PROJECT_DIR$/docs/views.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/templatetags/curl_language_generator.py" afterPath="$PROJECT_DIR$/docs/templatetags/curl_language_generator.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/templatetags/python_language_generator.py" afterPath="$PROJECT_DIR$/docs/templatetags/python_language_generator.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/docs/css/restbroker-docs.css" afterPath="$PROJECT_DIR$/static/docs/css/restbroker-docs.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/nav-bar.html" afterPath="$PROJECT_DIR$/templates/core/nav-bar.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/docs/base.html" afterPath="$PROJECT_DIR$/templates/docs/base.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/documentation-settings.html" afterPath="$PROJECT_DIR$/templates/core/documentation-settings.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/docs/home.html" afterPath="$PROJECT_DIR$/templates/docs/home.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -119,23 +25,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/docs/views.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="19" column="117" lean-forward="false" selection-start-line="19" selection-start-column="117" selection-end-line="19" selection-end-column="117" />
-              <folding>
-                <element signature="e#0#35#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/docs/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="19" column="0" lean-forward="true" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+            <state relative-caret-position="375">
+              <caret line="25" column="22" lean-forward="false" selection-start-line="25" selection-start-column="22" selection-end-line="25" selection-end-column="22" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
               </folding>
@@ -146,11 +40,21 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="402">
+            <state relative-caret-position="267">
               <caret line="1055" column="132" lean-forward="false" selection-start-line="1055" selection-start-column="132" selection-end-line="1055" selection-end-column="132" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="documentation-settings.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/core/documentation-settings.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-198">
+              <caret line="111" column="157" lean-forward="true" selection-start-line="111" selection-start-column="157" selection-end-line="111" selection-end-column="157" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -168,10 +72,48 @@
       <file leaf-file-name="home.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/docs/home.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="687">
-              <caret line="153" column="71" lean-forward="false" selection-start-line="153" selection-start-column="71" selection-end-line="153" selection-end-column="71" />
+            <state relative-caret-position="498">
+              <caret line="106" column="35" lean-forward="false" selection-start-line="106" selection-start-column="35" selection-end-line="106" selection-end-column="35" />
               <folding>
-                <element signature="e#7005#7010#0#HTML" expanded="true" />
+                <element signature="e#5984#5989#0#HTML" expanded="true" />
+                <element signature="e#12191#12196#0#HTML" expanded="true" />
+                <element signature="e#15471#15477#0#HTML" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="footer.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/core/footer.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="30">
+              <caret line="2" column="84" lean-forward="true" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="84" />
+              <folding>
+                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="java_language_generator.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/docs/templatetags/java_language_generator.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="576">
+              <caret line="108" column="78" lean-forward="false" selection-start-line="108" selection-start-column="78" selection-end-line="108" selection-end-column="78" />
+              <folding>
+                <element signature="e#94#121#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="text_document_generator.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/docs/templatetags/text_document_generator.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="705">
+              <caret line="47" column="83" lean-forward="false" selection-start-line="47" selection-start-column="83" selection-end-line="47" selection-end-column="83" />
+              <folding>
+                <element signature="e#94#121#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -180,9 +122,11 @@
       <file leaf-file-name="curl_language_generator.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/docs/templatetags/curl_language_generator.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="1" column="31" lean-forward="true" selection-start-line="1" selection-start-column="31" selection-end-line="1" selection-end-column="31" />
-              <folding />
+            <state relative-caret-position="441">
+              <caret line="41" column="4" lean-forward="false" selection-start-line="41" selection-start-column="4" selection-end-line="42" selection-end-column="77" />
+              <folding>
+                <element signature="e#94#121#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -190,19 +134,11 @@
       <file leaf-file-name="python_language_generator.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/docs/templatetags/python_language_generator.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="9" column="167" lean-forward="false" selection-start-line="9" selection-start-column="167" selection-end-line="9" selection-end-column="167" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="restbroker-docs.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/static/docs/css/restbroker-docs.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="732">
-              <caret line="55" column="23" lean-forward="false" selection-start-line="55" selection-start-column="23" selection-end-line="55" selection-end-column="23" />
-              <folding />
+            <state relative-caret-position="240">
+              <caret line="16" column="106" lean-forward="false" selection-start-line="16" selection-start-column="106" selection-end-line="16" selection-end-column="106" />
+              <folding>
+                <element signature="e#94#121#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -221,8 +157,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>inner-</find>
-      <find>select</find>
       <find>Resource</find>
       <find>project</find>
       <find>h2</find>
@@ -250,7 +184,9 @@
       <find>create</find>
       <find>font</find>
       <find>form-</find>
+      <find>nas</find>
       <find>stri</find>
+      <find>POST</find>
     </findStrings>
     <replaceStrings>
       <replace>resource</replace>
@@ -263,8 +199,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/templates/core/footer.html" />
-        <option value="$PROJECT_DIR$/templates/core/create-edit-project.html" />
         <option value="$PROJECT_DIR$/core/templatetags/util.py" />
         <option value="$PROJECT_DIR$/templates/core/project-nav.html" />
         <option value="$PROJECT_DIR$/templates/core/project-nav-bar.html" />
@@ -303,16 +237,18 @@
         <option value="$PROJECT_DIR$/templates/core/api-keys.html" />
         <option value="$PROJECT_DIR$/templates/core/resources.html" />
         <option value="$PROJECT_DIR$/static/core/js/restbroker-core.js" />
-        <option value="$PROJECT_DIR$/templates/core/documentation-settings.html" />
         <option value="$PROJECT_DIR$/templates/core/nav-bar.html" />
         <option value="$PROJECT_DIR$/templates/core/base.html" />
         <option value="$PROJECT_DIR$/templates/docs/base.html" />
         <option value="$PROJECT_DIR$/docs/views.py" />
-        <option value="$PROJECT_DIR$/docs/models.py" />
         <option value="$PROJECT_DIR$/core/views.py" />
-        <option value="$PROJECT_DIR$/docs/templatetags/curl_language_generator.py" />
+        <option value="$PROJECT_DIR$/docs/templatetags/text_document_generator.py" />
         <option value="$PROJECT_DIR$/static/docs/css/restbroker-docs.css" />
+        <option value="$PROJECT_DIR$/docs/templatetags/curl_language_generator.py" />
+        <option value="$PROJECT_DIR$/docs/models.py" />
+        <option value="$PROJECT_DIR$/templates/core/documentation-settings.html" />
         <option value="$PROJECT_DIR$/docs/templatetags/python_language_generator.py" />
+        <option value="$PROJECT_DIR$/docs/templatetags/java_language_generator.py" />
         <option value="$PROJECT_DIR$/templates/docs/home.html" />
       </list>
     </option>
@@ -368,19 +304,39 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="templates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="RESTBroker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="RESTBroker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="templates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="RESTBroker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="RESTBroker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="static" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="docs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="code" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -398,7 +354,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="docs" />
+              <option name="myItemId" value="core" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -413,6 +369,14 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="css" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -849,27 +813,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../DonationStoreV2NewSite/api/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="56" column="29" lean-forward="false" selection-start-line="56" selection-start-column="29" selection-end-line="56" selection-end-column="73" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/admin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="31" lean-forward="true" selection-start-line="5" selection-start-column="31" selection-end-line="5" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/tasks.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="576">
@@ -1140,22 +1083,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/core/documentation-settings.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="615">
-          <caret line="116" column="143" lean-forward="false" selection-start-line="116" selection-start-column="143" selection-end-line="116" selection-end-column="143" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/core/css/restbroker-core.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2305">
-          <caret line="172" column="0" lean-forward="false" selection-start-line="172" selection-start-column="0" selection-end-line="172" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../DonationStoreV2/controlpanel/templatetags/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1190,34 +1117,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="402">
-          <caret line="1055" column="132" lean-forward="false" selection-start-line="1055" selection-start-column="132" selection-end-line="1055" selection-end-column="132" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/docs/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="0" lean-forward="true" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/docs/css/restbroker-docs.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="732">
-          <caret line="55" column="23" lean-forward="false" selection-start-line="55" selection-start-column="23" selection-end-line="55" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/docs/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
@@ -1228,19 +1127,97 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/docs/templatetags/curl_language_generator.py">
+    <entry file="file://$PROJECT_DIR$/static/docs/css/restbroker-docs.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="31" lean-forward="true" selection-start-line="1" selection-start-column="31" selection-end-line="1" selection-end-column="31" />
+        <state relative-caret-position="282">
+          <caret line="53" column="0" lean-forward="true" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/core/css/restbroker-core.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="335">
+          <caret line="351" column="0" lean-forward="true" selection-start-line="351" selection-start-column="0" selection-end-line="357" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docs/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="25" column="22" lean-forward="false" selection-start-line="25" selection-start-column="22" selection-end-line="25" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="267">
+          <caret line="1055" column="132" lean-forward="false" selection-start-line="1055" selection-start-column="132" selection-end-line="1055" selection-end-column="132" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/docs/templatetags/python_language_generator.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="167" lean-forward="false" selection-start-line="9" selection-start-column="167" selection-end-line="9" selection-end-column="167" />
+        <state relative-caret-position="240">
+          <caret line="16" column="106" lean-forward="false" selection-start-line="16" selection-start-column="106" selection-end-line="16" selection-end-column="106" />
+          <folding>
+            <element signature="e#94#121#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docs/templatetags/text_document_generator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="705">
+          <caret line="47" column="83" lean-forward="false" selection-start-line="47" selection-start-column="83" selection-end-line="47" selection-end-column="83" />
+          <folding>
+            <element signature="e#94#121#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docs/templatetags/curl_language_generator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="441">
+          <caret line="41" column="4" lean-forward="false" selection-start-line="41" selection-start-column="4" selection-end-line="42" selection-end-column="77" />
+          <folding>
+            <element signature="e#94#121#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/core/documentation-settings.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-198">
+          <caret line="111" column="157" lean-forward="true" selection-start-line="111" selection-start-column="157" selection-end-line="111" selection-end-column="157" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/core/footer.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="84" lean-forward="true" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="84" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docs/templatetags/java_language_generator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="576">
+          <caret line="108" column="78" lean-forward="false" selection-start-line="108" selection-start-column="78" selection-end-line="108" selection-end-column="78" />
+          <folding>
+            <element signature="e#94#121#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1254,10 +1231,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/docs/home.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="687">
-          <caret line="153" column="71" lean-forward="false" selection-start-line="153" selection-start-column="71" selection-end-line="153" selection-end-column="71" />
+        <state relative-caret-position="498">
+          <caret line="106" column="35" lean-forward="false" selection-start-line="106" selection-start-column="35" selection-end-line="106" selection-end-column="35" />
           <folding>
-            <element signature="e#7005#7010#0#HTML" expanded="true" />
+            <element signature="e#5984#5989#0#HTML" expanded="true" />
+            <element signature="e#12191#12196#0#HTML" expanded="true" />
+            <element signature="e#15471#15477#0#HTML" expanded="true" />
           </folding>
         </state>
       </provider>

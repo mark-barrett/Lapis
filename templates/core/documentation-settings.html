@@ -107,6 +107,14 @@
                                                         </label>
                                                     </div>
                                                 </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" id="java" value="java" name="lang_choice" {% if 'java' in programming_languages %}checked{% endif %}>
+                                                        <label class="form-check-label" for="python">
+                                                            Java (1.8.0) <small>(OkHttp)</small>
+                                                        </label>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </li>
                                         <li id="programming-languages" class="list-group-item {% if not documentation_instance.enabled %}disabled-setting{% endif %}">

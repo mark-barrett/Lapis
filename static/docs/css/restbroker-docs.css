@@ -55,3 +55,30 @@ a {
 .hljs {
     border-radius: 5px;
 }
+
+.error-codes {
+    border-radius: 10px;
+}
+
+.text-green {
+    color: #2DC662;
+}
+
+.resource-heading {
+    color: #8898aa;
+    text-transform: uppercase;
+    font-weight: lighter;
+    font-size: 15px;
+}
+
+.resource-type-bg-GET {
+    background-color: #17a2b8!important;
+}
+
+.resource-type-bg-POST {
+    background-color: #49CC90!important;
+}
+
+.resource-parameter-label {
+    font-size: 15px;
+}
