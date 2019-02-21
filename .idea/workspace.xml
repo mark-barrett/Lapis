@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="693ea1cf-17b0-42f8-8355-71d597cd4bad" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/models.py" afterPath="$PROJECT_DIR$/docs/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/documentation-settings.html" afterPath="$PROJECT_DIR$/templates/core/documentation-settings.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/docs/home.html" afterPath="$PROJECT_DIR$/templates/docs/home.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -57,8 +55,8 @@
       <file leaf-file-name="home.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/docs/home.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="570">
-              <caret line="311" column="58" lean-forward="false" selection-start-line="311" selection-start-column="58" selection-end-line="311" selection-end-column="58" />
+            <state relative-caret-position="687">
+              <caret line="335" column="32" lean-forward="false" selection-start-line="335" selection-start-column="32" selection-end-line="335" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -1147,8 +1145,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/docs/home.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="311" column="58" lean-forward="false" selection-start-line="311" selection-start-column="58" selection-end-line="311" selection-end-column="58" />
+        <state relative-caret-position="687">
+          <caret line="335" column="32" lean-forward="false" selection-start-line="335" selection-start-column="32" selection-end-line="335" selection-end-column="32" />
           <folding />
         </state>
       </provider>
