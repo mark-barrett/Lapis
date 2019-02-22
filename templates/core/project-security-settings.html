@@ -4,7 +4,7 @@
 {% load static %}
 
 {# Set the title and background color for the base.html file. #}
-{% block title %}RESTBroker - Project Settings{% endblock %}
+{% block title %}RESTBroker - Project Security Settings{% endblock %}
 
 {% block page-content %}
     <div class="page-content">
@@ -29,48 +29,42 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div class="list-group">
-                                <a href="{% url 'project-settings' %}" class="list-group-item list-group-item-action active">Overview</a>
+                                <a href="{% url 'project-settings' %}" class="list-group-item list-group-item-action">Overview</a>
                                 <a href="{% url 'documentation-settings' %}" class="list-group-item list-group-item-action">Documentation</a>
-                                <a href="{% url 'project-security-settings' %}" class="list-group-item list-group-item-action">Security</a>
+                                <a href="{% url 'project-security-settings' %}" class="list-group-item list-group-item-action active">Security</a>
                                 <a href="#" class="list-group-item list-group-item-action">Team (Maybe)</a>
                             </div>
                         </div>
                         <div class="col-md-9">
-                            <h4>Overview</h4>
+                            <h4>Blocked IPs</h4>
                             <hr/>
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-10">
-                                            <strong>Edit Project</strong><br/>
-                                            Change the name, description or privacy status of the project.
+                            <ul class="list-group">
+                            {% if blocked_ips %}
+                                {% for ip in blocked_ips %}
+                                    <li class="list-group-item">
+                                        <div class="float-right">
+                                            <a href="/blocked-ip/remove/{{ ip.id }}" class="btn btn-danger"><i class="fa fa-trash"></i></a>
                                         </div>
-                                        <div class="col-md-2">
-                                            <div class="float-right">
-                                                <a href="/project/edit/{{ project.id }}" class="btn btn-secondary btn-sm">Edit Project</a>&nbsp;
+                                        {{ ip.ip_address }}
+                                    </li>
+                                {% endfor %}
+                            {% else %}
+                                <li class="list-group-item">
+                                    No IPs Blocked
+                                </li>
+                            {% endif %}
+                                <li class="list-group-item no-bottom-padding">
+                                    <form name="add-blocked-ip" action="" method="post">
+                                        <div class="input-group mb-3">
+                                            <input type="text" class="form-control" placeholder="IP Address" aria-label="IP Address" aria-describedby="basic-addon2" name="ip_address">
+                                            {% csrf_token %}
+                                            <div class="input-group-append">
+                                                <button class="btn btn-outline-success" type="submit"><i class="fa fa-plus"></i> Add to Blacklist</button>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <br/>
-                            <div class="card border-danger">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-10">
-                                            <strong>Delete Project</strong><br/>
-                                            Delete this project, resources, API Keys etc (and anything associated with it)
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="float-right">
-                                                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteProject">
-                                                    Delete Project
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                    </form>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>

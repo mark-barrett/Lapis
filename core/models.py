@@ -219,6 +219,7 @@ class ResourceDataSourceFilter(models.Model):
 
 # This model defines for a given child, its parent table. This allows nesting of results
 class ResourceParentChildRelationship(models.Model):
+
     parent_table = models.ForeignKey(DatabaseTable, related_name='the_parent_table')
     child_table = models.ForeignKey(DatabaseTable, related_name='the_child_table')
     parent_table_column = models.ForeignKey(DatabaseColumn, related_name='the_column_in_the_parent_table_to_match_to_the_child_table')
@@ -232,3 +233,16 @@ class ResourceParentChildRelationship(models.Model):
         return self.parent_table.name + ' is the parent of child '+self.child_table.name+ ' through the field '+\
                self.parent_table_column.name + ' on the parent table matched to '+\
                self.child_table_column.name + ' on the child table'
+
+
+class BlockedIP(models.Model):
+
+    ip_address = models.GenericIPAddressField()
+    project = models.ForeignKey(Project)
+
+    class Meta:
+        unique_together = (('ip_address'), ('project'))
+        verbose_name_plural = 'Blocked IPs'
+
+    def __str__(self):
+        return self.project.name + ': ' + self.ip_address

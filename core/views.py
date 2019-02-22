@@ -986,6 +986,87 @@ class ProjectSettings(LoginRequiredMixin, View):
             return redirect('/')
 
 
+class ProjectSecuritySettings(LoginRequiredMixin, View):
+    login_url = '/'
+
+    def get(self, request):
+
+        if 'selected_project_id' in request.session:
+
+            project = Project.objects.get(id=request.session['selected_project_id'])
+
+            context = {
+                'projects': Project.objects.all().filter(user=request.user),
+                'project': project,
+                'blocked_ips': BlockedIP.objects.all().filter(project=project)
+            }
+
+            return render(request, 'core/project-security-settings.html', context)
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/')
+
+
+    def post(self, request):
+
+        if 'selected_project_id' in request.session:
+
+            # Check to make sure the user is allowed to delete this
+            project = Project.objects.get(id=request.session['selected_project_id'])
+
+            if project.user == request.user:
+
+                # Get the ip
+                try:
+                    # Create an IP object
+                    db_ip = BlockedIP(
+                        ip_address=request.POST['ip_address'],
+                        project=project
+                    )
+
+                    db_ip.save()
+
+                    messages.success(request, 'IP blocked successfully.')
+
+                except Exception as e:
+                    print(e)
+                    messages.error(request, 'Cannot block IP. '+str(e))
+
+                return redirect('/settings/security')
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/')
+
+
+
+class RemoveBlockedIP(LoginRequiredMixin, View):
+    login_url = '/'
+
+    def get(self, request, ip_id):
+
+        if 'selected_project_id' in request.session:
+
+            # Check to make sure the user is allowed to delete this
+            project = Project.objects.get(id=request.session['selected_project_id'])
+
+            if project.user == request.user:
+
+                # Get the ip
+                try:
+                    ip = BlockedIP.objects.get(id=ip_id)
+
+                    ip.delete()
+
+                    messages.success(request, 'IP unblocked/removed from blocked IP list.')
+                except:
+                    messages.error(request, 'Cannot find that IP address')
+
+                return redirect('/settings/security')
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/')
+
+
 class DocumentationSettings(LoginRequiredMixin, View):
     login_url = '/'
 
