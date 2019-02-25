@@ -100,7 +100,7 @@ class Resource(models.Model):
         ('XML', 'XML')
     )
 
-    name = models.CharField(max_length=64, unique=True)
+    name = models.CharField(max_length=64)
     description = models.CharField(max_length=64)
     status = models.BooleanField(default=True)
 
@@ -114,6 +114,7 @@ class Resource(models.Model):
 
     class Meta:
         verbose_name_plural = 'Resources'
+        unique_together = ('name', 'project', 'request_type')
 
     def __str__(self):
         return 'Project: '+self.project.name+' Resource: '+self.name
@@ -172,7 +173,6 @@ class ResourceDataSource(models.Model):
 
     class Meta:
         verbose_name_plural = 'Resource Datasources'
-
 
     def __str__(self):
         return 'Resource: ' + self.resource.name + ' Data Source Type: ' + self.type
@@ -233,6 +233,22 @@ class ResourceParentChildRelationship(models.Model):
         return self.parent_table.name + ' is the parent of child '+self.child_table.name+ ' through the field '+\
                self.parent_table_column.name + ' on the parent table matched to '+\
                self.child_table_column.name + ' on the child table'
+
+
+class ResourceDataBind(models.Model):
+
+    column = models.ForeignKey(DatabaseColumn)
+    key = models.CharField(max_length=256)
+    resource = models.ForeignKey(Resource)
+
+    class Meta:
+        verbose_name_plural = 'Resource Data Binds'
+
+        # Make that key and the resource unique together
+        unique_together = ('key', 'resource')
+
+    def __str__(self):
+        return 'Bind between: '+self.column.name+' and key: '+self.key+' in resource: '+self.resource.name
 
 
 class BlockedIP(models.Model):

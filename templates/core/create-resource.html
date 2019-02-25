@@ -54,6 +54,7 @@
                                 </div>
                             </form>
 
+
                         {% else %}
                             <form name="create-resource" method="post" action="">
                                 <div>
@@ -75,12 +76,30 @@
                                     </div>
                                     <button type="button" id="add-header" class="btn btn-secondary btn-block btn-sm"><i class="fa fa-plus"></i> Add Header</button>
                                     <br/>
-                                    <lable for="parameters">Parameters</lable>
                                     <div id="parameters">
-
+                                        <label for="parameters">Parameters</label>
+                                        <div id="parameter-list"></div>
+                                        <button type="button" id="add-parameter" class="btn btn-secondary btn-block btn-sm"><i class="fa fa-plus"></i> Add Parameters</button>
+                                        <br/>
                                     </div>
-                                    <button type="button" id="add-parameter" class="btn btn-secondary btn-block btn-sm"><i class="fa fa-plus"></i> Add Parameters</button>
-                                    <br/>
+                                    <div id="post-data-binding" style="display: none;">
+                                        <label for="data-binding">Data Binding</label>
+                                        <table class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">Column</th>
+                                                <th scope="col">Key</th>
+                                                <th scope="col"></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="data-bind-column">
+
+                                            <tr>
+                                                <td colspan="3"><button id="add-data-bind-column" type="button" class="btn btn-block btn-outline-success"><i class="fa fa-plus"></i></button></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                     {% csrf_token %}
                                     <button type="submit" class="btn btn-success btn-block">Continue <i class="fa fa-arrow-right"></i></button>
                                     <br/>
@@ -103,10 +122,10 @@
             {% include 'core/footer.html' %}
         </div>
     </div>
-    {% if request.session.resource %}
-        <script id="database-data" type="application/json">
+    <script id="database-data" type="application/json">
             {{ database_data|safe }}
-        </script>
+    </script>
+    {% if request.session.resource %}
         <script id="resource-session-data" type="application/json">
             {{ request.session.resource|to_json|safe }}
         </script>

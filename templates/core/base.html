@@ -9,6 +9,7 @@
     {# Include neccessary Boostrap CSS files from static #}
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/bootstrap.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/restbroker-core.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'docs/css/code/atom-one-dark.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/bootstrap-select.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/font-awesome-animation-min.css' %}">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
@@ -36,6 +37,10 @@
 <script src="{% static 'core/js/bootstrap.bundle.js' %}"></script>
 <script src="{% static 'core/js/restbroker-core.js' %}"></script>
 <script src="{% static 'core/js/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'docs/js/code/highlight.pack.js' %}"></script>
+<script src="{% static 'core/js/ace/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'core/js/ace/mode-javascript.js' %}" type="text/javascript" charset="utf-8"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 <script>
     $(document).ready(function () {
         $('.selectpicker').selectpicker();

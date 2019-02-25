@@ -78,6 +78,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'RESTBroker.wsgi.application'
 
+# Cache information
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'my_cache_table',
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases

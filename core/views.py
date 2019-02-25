@@ -490,44 +490,42 @@ class CreateResource(LoginRequiredMixin, View):
                 'projects': Project.objects.all().filter(user=request.user)
             }
 
-            # If its the second step
-            if 'resource' in request.session:
 
-                database_data = {
-                    'tables': []
+            database_data = {
+                'tables': []
+            }
+
+            # Get the database using the project_id
+            database = Database.objects.get(project=project)
+
+            # Add the database tables and columns to the context
+            tables = DatabaseTable.objects.all().filter(database=database)
+
+            # Loop through all tables
+            for table in tables:
+                table_obj = {
+                    'id': table.id,
+                    'name': table.name,
+                    'columns': []
                 }
 
-                # Get the database using the project_id
-                database = Database.objects.get(project=project)
+                columns = DatabaseColumn.objects.all().filter(table=table)
 
-                # Add the database tables and columns to the context
-                tables = DatabaseTable.objects.all().filter(database=database)
-
-                # Loop through all tables
-                for table in tables:
-                    table_obj = {
-                        'id': table.id,
-                        'name': table.name,
-                        'columns': []
+                # Loop through all columns
+                for column in columns:
+                    column_obj = {
+                        'id': column.id,
+                        'name': column.name,
+                        'type': column.type
                     }
 
-                    columns = DatabaseColumn.objects.all().filter(table=table)
+                    # Append it
+                    table_obj['columns'].append(column_obj)
 
-                    # Loop through all columns
-                    for column in columns:
-                        column_obj = {
-                            'id': column.id,
-                            'name': column.name,
-                            'type': column.type
-                        }
+                # Append the table to the database_data
+                database_data['tables'].append(table_obj)
 
-                        # Append it
-                        table_obj['columns'].append(column_obj)
-
-                    # Append the table to the database_data
-                    database_data['tables'].append(table_obj)
-
-                context['database_data'] = json.dumps(database_data)
+            context['database_data'] = json.dumps(database_data)
 
             return render(request, 'core/create-resource.html', context)
 
@@ -555,7 +553,8 @@ class CreateResource(LoginRequiredMixin, View):
                         'request': {
                             'type': form.cleaned_data['request_type'],
                             'headers': [],
-                            'parameters': []
+                            'parameters': [],
+                            'data_bind_columns': []
                         },
                         'response': {}
                     }
@@ -575,21 +574,39 @@ class CreateResource(LoginRequiredMixin, View):
 
                         resource['request']['headers'].append(header)
 
-                    # Get the parameters as lists
-                    parameter_types = request.POST.getlist('parameter-type')
-                    parameter_keys = request.POST.getlist('parameter-key')
+                    print(resource['request']['type'])
 
-                    # Loop through them and add them to the resource
-                    for index, key in enumerate(parameter_keys):
-                        parameter = {
-                            'type': parameter_types[index],
-                            'key': key
-                        }
+                    # Get the parameters as lists if its a GET request
+                    if resource['request']['type'] == 'GET':
+                        parameter_types = request.POST.getlist('parameter-type')
+                        parameter_keys = request.POST.getlist('parameter-key')
 
-                        resource['request']['parameters'].append(parameter)
+                        # Loop through them and add them to the resource
+                        for index, key in enumerate(parameter_keys):
+                            parameter = {
+                                'type': parameter_types[index],
+                                'key': key
+                            }
+
+                            resource['request']['parameters'].append(parameter)
+
+                    # Get the data binds if a POST request
+                    elif resource['request']['type'] == 'POST':
+                        data_bind_columns = request.POST.getlist('data-bind-column')
+                        data_bind_keys = request.POST.getlist('data-bind-key')
+
+                        for index, key in enumerate(data_bind_keys):
+                            data_bind_column = {
+                                'column': data_bind_columns[index],
+                                'key': key
+                            }
+
+                            resource['request']['data_bind_columns'].append(data_bind_column)
 
                     # Set this as a session variable.
                     request.session['resource'] = resource
+
+                    print(request.session['resource'])
 
                     # Now that the session is set, redirect back to create an resource to create the response
                     return redirect('/resource/create')
@@ -692,15 +709,27 @@ class CreateResource(LoginRequiredMixin, View):
 
                         resource_header.save()
 
-                    # We need to save all the sent in parameters first.
-                    for parameter in request.session['resource']['request']['parameters']:
-                        resource_parameter = ResourceParameter(
-                            key=parameter['key'],
-                            type=parameter['type'],
-                            resource=resource
-                        )
+                    # If it's a GET request then look for parameters.
+                    if request.session['resource']['request']['type'] == 'GET':
+                        # We need to save all the sent in parameters first.
+                        for parameter in request.session['resource']['request']['parameters']:
+                            resource_parameter = ResourceParameter(
+                                key=parameter['key'],
+                                type=parameter['type'],
+                                resource=resource
+                            )
 
-                        resource_parameter.save()
+                            resource_parameter.save()
+                    # If its a POST request look for data binds.
+                    elif request.session['resource']['request']['type'] == 'POST':
+                        for data_bind in request.session['resource']['request']['data_bind_columns']:
+                            data_bind = ResourceDataBind(
+                                column=DatabaseColumn.objects.get(id=int(data_bind['column'])),
+                                key=data_bind['key'],
+                                resource=resource
+                            )
+
+                            data_bind.save()
 
                     # Now we have to loop through each column that is to be returned in the response and add it to the database
                     for column in request.session['resource']['response']['columns']:
@@ -786,12 +815,14 @@ class ViewResource(LoginRequiredMixin, View):
 
                 tables_obj = {}
 
+                # Get the database
+                database = Database.objects.get(project=project)
+
                 # Get all of the columns and their tables etc
                 resource_column_returns = ResourceDataSourceColumn.objects.all().filter(resource=resource)
 
                 for column in resource_column_returns:
                     db_column = DatabaseColumn.objects.get(id=column.column_id)
-                    print(db_column.table.name)
 
                     # Check if this is already in the object
                     if db_column.table.name in tables_obj:
@@ -805,6 +836,47 @@ class ViewResource(LoginRequiredMixin, View):
                         # Create it
                         tables_obj[db_column.table.name] = [db_column]
 
+
+                # Create structure
+                response_structure = {}
+
+                # Now lets look for the parent child relationships
+                parent_child_relationships = ResourceParentChildRelationship.objects.all().filter(resource=resource)
+
+                for column in resource_column_returns:
+                    db_column = DatabaseColumn.objects.get(id=column.column_id)
+
+                    # Loop through the relationships
+                    for relationship in parent_child_relationships:
+                        # Check if this column is a parent
+                        if relationship.parent_table_column == db_column:
+                            # Add it nestedly to the response structure
+                            column_obj = {relationship.child_table.name: response_structure[relationship.child_table.name]}
+                            # Delete the structure that already exists.
+                            del response_structure[relationship.child_table.name]
+
+                            # Check if already exists
+                            if db_column.table.name in response_structure:
+                                # Check if value already in that table section
+                                if column_obj not in response_structure[db_column.table.name]:
+                                    response_structure[db_column.table.name].append(column_obj)
+                            else:
+                                # If it doesn't create the list
+                                response_structure[db_column.table.name] = [column_obj]
+                        else:
+                            # If not in a relationship simply display it as it's column name and type.
+                            column_obj = {db_column.name: db_column.type}
+
+                            # Check if already exists
+                            if db_column.table.name in response_structure:
+                                # If it already exists then don't add it.
+                                if column_obj not in response_structure[db_column.table.name]:
+                                    response_structure[db_column.table.name].append(column_obj)
+                            else:
+                                # If it doesn't create the list
+                                response_structure[db_column.table.name] = [column_obj]
+
+
                 # Check to make sure the user viewing this project is the owner of it
                 if resource.project.user == request.user:
                     context = {
@@ -814,7 +886,9 @@ class ViewResource(LoginRequiredMixin, View):
                         'resource_headers': ResourceHeader.objects.all().filter(resource=resource),
                         'resource_parameters': ResourceParameter.objects.all().filter(resource=resource),
                         'resource_column_returns': tables_obj,
-                        'resources': Resource.objects.all().filter(project=project)
+                        'resources': Resource.objects.all().filter(project=project),
+                        'response_structure': json.dumps(response_structure, sort_keys=True, indent=2),
+                        'data_binds': ResourceDataBind.objects.all().filter(resource=resource)
                     }
 
                     return render(request, 'core/view-resource.html', context)

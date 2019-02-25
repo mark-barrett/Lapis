@@ -580,3 +580,11 @@ body {
 .list-group-item.no-bottom-padding {
     padding-bottom: 0px;
 }
+
+.hljs {
+    border-radius: 5px;
+}
+
+.ace_editor {
+    border-radius: 5px;
+}

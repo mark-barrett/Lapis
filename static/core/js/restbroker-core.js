@@ -109,6 +109,54 @@ $('#enable_documentation').click(function() {
     }
 });
 
+// Listen for request type
+$('#id_request_type').change(function() {
+   // Get the value
+    var chosenRequestType = $(this).find(':selected').text();
+    var parametersDiv = $('#parameters');
+    var postDataBinding = $('#post-data-binding');
+
+    // If its a POST, remove the parameter DIV content
+    if(chosenRequestType == 'POST') {
+        parametersDiv.hide();
+        postDataBinding.show();
+    } else {
+        // Else its a GET so set it.
+        parametersDiv.show();
+
+    }
+});
+
+// Listen for add data bind column
+$('#add-data-bind-column').click(function() {
+    // Get the table body
+    var tableBody = $('#data-bind-column');
+
+    // Get the database data
+    const databaseData = JSON.parse($('#database-data').text());
+
+    var columnData = '';
+
+    // Loop through the databaseData and construct the tableData
+    for(var i=0; i<databaseData.tables.length; i++) {
+        columnData += '<optgroup label="'+databaseData.tables[i].name+'">';
+        for(var j=0; j<databaseData.tables[i].columns.length; j++) {
+            columnData += '<option value="'+databaseData.tables[i].columns[j].id+'">'+databaseData.tables[i].columns[j].name+'</option>';
+        }
+        columnData += '</optgroup>';
+    }
+
+    var columnSelector = '<div class="form-group">\
+                            <select name="data-bind-column" class="form-control" id="data-bind-column">\
+                                '+columnData+'\
+                            </select>\
+                          </div>';
+
+    // Add a row
+    tableBody.prepend('<tr><td>'+columnSelector+'</td><td><div class="form-group"><input type="text" class="form-control" name="data-bind-key" placeholder="Key of the data that will be sent in request."></div></td><td><button class="btn btn-block btn-danger"><i class="fa fa-trash"></i></button></td></tr>');
+
+});
+
 var num_databases_as_source = 0;
 
 $('body').on('click', '#choose-database-as-source', function() {
@@ -262,11 +310,18 @@ $('body').on('click', '#choose-text-as-source', function() {
                       <div class="float-right"><button type="button" id="remove-data-source" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></div>\
                         <p class="form-instruction"><i class="fa fa-code"></i> Text Data Source</p>\
                                 <div class="form-group">\
+                                    <div id="editor" style="height: 500px; width: 100%">\
+                                    </div>\
                                     <textarea name="text-source" class="form-control" placeholder="JSON" rows="10"></textarea>\
                                 </div>\
                     </div>\
                 </div><br/>';
     $('#data-sources').append(html);
+
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/tomorrow_night");
+    var JavaScriptMode = ace.require("ace/mode/javascript").Mode;
+    editor.session.setMode(new JavaScriptMode());
 
     num_text_as_source++;
 });
@@ -296,7 +351,7 @@ $('#add-parameter').click(function() {
                         </div>\
                     </div>';
 
-    $('#parameters').append(html);
+    $('#parameter-list').append(html);
 
     num_parameters++;
 });
