@@ -24,7 +24,7 @@
                         <div class="text-center change-project-dropdown">
                             <div class="dropdown">
                                 <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fa fa-hand-point-up" aria-hidden="true"></i> Select a Project
+                                    <i class="fas fa-mouse-pointer"></i> Select a Project
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     {% for project in projects %}
@@ -58,7 +58,7 @@
                         </li>
                     {% else %}
                         <li class="nav-item">
-                            <a class="nav-link" href="/"><i class="fa fa-hand-point-up" aria-hidden="true"></i> Select Project</a>
+                            <a class="nav-link" href="/"><i class="fas fa-mouse-pointer"></i> Select Project</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'create-project' %}"><i class="fa fa-plus" aria-hidden="true"></i> Create New Project</a>

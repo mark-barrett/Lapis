@@ -155,12 +155,15 @@ class Dashboard(LoginRequiredMixin, View):
 
                     percentage = (change / num_requests_last_month) * 100
 
+            project = Project.objects.get(id=request.session['selected_project_id'])
+
             context = {
                 'projects': Project.objects.all().filter(user=request.user),
                 'api_keys': APIKey.objects.all(),
                 'num_requests_this_month': num_requests_this_month,
                 'percentage': percentage,
-                'project': Project.objects.get(id=request.session['selected_project_id'])
+                'project': project,
+                'recent_api_requests': APIRequest.objects.all().filter(api_key__project=project).order_by('-id')[:5],
             }
 
             return render(request, 'core/dashboard.html', context)

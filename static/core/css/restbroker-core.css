@@ -588,3 +588,18 @@ body {
 .ace_editor {
     border-radius: 5px;
 }
+
+.round-table-corners {
+    border-radius: 10px;
+}
+
+.table-row-no-top-border {
+    border-top: none !important;
+}
+
+.btn-group-xs > .btn, .btn-xs {
+    padding  : .25rem .4rem;
+    font-size  : .875rem;
+    line-height  : .5;
+    border-radius : .2rem;
+}

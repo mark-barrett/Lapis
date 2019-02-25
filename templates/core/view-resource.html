@@ -93,28 +93,57 @@
                                                 {% else %}
                                                     None<br/><br/>
                                                 {% endif %}
-                                                <p class="form-instruction">Parameters</p>
-                                                {% if resource_parameters %}
-                                                    <table class="table table-striped table-sm">
-                                                        <thead>
-                                                        <tr>
-                                                            <th scope="col">Type</th>
-                                                            <th scope="col">Key</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        {% for parameter in resource_parameters %}
+
+                                                {# If its a GET method, show the parameters #}
+                                                {% if resource.request_type == 'GET' %}
+                                                    <p class="form-instruction">Parameters</p>
+                                                    {% if resource_parameters %}
+                                                        <p class="form-instruction">Parameters</p>
+                                                        <table class="table table-striped table-sm">
+                                                            <thead>
                                                             <tr>
-                                                                <td>{{ parameter.type }}</td>
-                                                                <td>{{ parameter.key }}</td>
+                                                                <th scope="col">Type</th>
+                                                                <th scope="col">Key</th>
                                                             </tr>
-                                                        {% endfor %}
-                                                        </tbody>
-                                                    </table>
-                                                {% else %}
-                                                    None<br/><br/>
+                                                            </thead>
+                                                            <tbody>
+                                                            {% for parameter in resource_parameters %}
+                                                                <tr>
+                                                                    <td>{{ parameter.type }}</td>
+                                                                    <td>{{ parameter.key }}</td>
+                                                                </tr>
+                                                            {% endfor %}
+                                                            </tbody>
+                                                        </table>
+                                                    {% else %}
+                                                        None<br/><br/>
+                                                    {% endif %}
                                                 {% endif %}
 
+                                                {# If its a POST method, show the data binding #}
+                                                {% if resource.request_type == 'POST' %}
+                                                    <p class="form-instruction">Data Binding</p>
+                                                    {% if data_binds %}
+                                                        <table class="table table-striped table-sm">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th scope="col">Column</th>
+                                                                    <th scope="col">Key</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            {% for data_bind in data_binds %}
+                                                                <tr>
+                                                                    <td>{{ data_bind.column.name }}</td>
+                                                                    <td>{{ data_bind.key }}</td>
+                                                                </tr>
+                                                            {% endfor %}
+                                                            </tbody>
+                                                        </table>
+                                                    {% else %}
+                                                        None <br/><br/>
+                                                    {% endif %}
+                                                {% endif %}
                                             </div>
                                         </div>
                                     </div>
