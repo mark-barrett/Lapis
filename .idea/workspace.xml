@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="693ea1cf-17b0-42f8-8355-71d597cd4bad" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/views.py" afterPath="$PROJECT_DIR$/core/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/core/css/restbroker-core.css" afterPath="$PROJECT_DIR$/static/core/css/restbroker-core.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/dashboard.html" afterPath="$PROJECT_DIR$/templates/core/dashboard.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/nav-bar.html" afterPath="$PROJECT_DIR$/templates/core/nav-bar.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/view-resource.html" afterPath="$PROJECT_DIR$/templates/core/view-resource.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/views.py" afterPath="$PROJECT_DIR$/api/views.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/api-keys.html" afterPath="$PROJECT_DIR$/templates/core/api-keys.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -25,21 +21,31 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="restbroker-core.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/static/core/css/restbroker-core.css">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/api/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="604" column="1" lean-forward="false" selection-start-line="604" selection-start-column="1" selection-end-line="604" selection-end-column="1" />
+            <state relative-caret-position="234">
+              <caret line="411" column="97" lean-forward="false" selection-start-line="411" selection-start-column="97" selection-end-line="411" selection-end-column="97" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="account.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/core/account.html">
+      <file leaf-file-name="api-keys.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/templates/core/api-keys.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="26" column="16" lean-forward="false" selection-start-line="26" selection-start-column="16" selection-end-line="26" selection-end-column="59" />
+            <state relative-caret-position="165">
+              <caret line="23" column="63" lean-forward="false" selection-start-line="23" selection-start-column="63" selection-end-line="23" selection-end-column="63" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="restbroker-core.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/core/css/restbroker-core.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="375">
+              <caret line="604" column="1" lean-forward="false" selection-start-line="604" selection-start-column="1" selection-end-line="604" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -57,11 +63,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="nav-bar.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="nav-bar.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/core/nav-bar.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="60" column="93" lean-forward="false" selection-start-line="60" selection-start-column="93" selection-end-line="60" selection-end-column="93" />
+            <state relative-caret-position="301">
+              <caret line="71" column="39" lean-forward="true" selection-start-line="71" selection-start-column="39" selection-end-line="71" selection-end-column="39" />
               <folding />
             </state>
           </provider>
@@ -107,16 +113,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="base.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/core/base.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="41" column="54" lean-forward="false" selection-start-line="41" selection-start-column="54" selection-end-line="41" selection-end-column="54" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="home.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/core/home.html">
           <provider selected="true" editor-type-id="text-editor">
@@ -141,7 +137,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Package</find>
       <find>Package(mo</find>
       <find>Create</find>
       <find>Logout</find>
@@ -171,6 +166,7 @@
       <find>POST</find>
       <find>ViewResource</find>
       <find>Dashboard</find>
+      <find>hand</find>
     </findStrings>
     <replaceStrings>
       <replace>resource</replace>
@@ -196,13 +192,11 @@
         <option value="$PROJECT_DIR$/templates/core/view-request.html" />
         <option value="$PROJECT_DIR$/templates/core/project-statistics.html" />
         <option value="$PROJECT_DIR$/templates/core/view-resource-requests.html" />
-        <option value="$PROJECT_DIR$/api/views.py" />
         <option value="$PROJECT_DIR$/templates/core/sign-up.html" />
         <option value="$PROJECT_DIR$/docs/docs.py" />
         <option value="$PROJECT_DIR$/docs/urls.py" />
         <option value="$PROJECT_DIR$/docs/admin.py" />
         <option value="$PROJECT_DIR$/RESTBroker/urls.py" />
-        <option value="$PROJECT_DIR$/templates/core/api-keys.html" />
         <option value="$PROJECT_DIR$/templates/core/resources.html" />
         <option value="$PROJECT_DIR$/templates/docs/base.html" />
         <option value="$PROJECT_DIR$/docs/views.py" />
@@ -234,6 +228,8 @@
         <option value="$PROJECT_DIR$/templates/core/dashboard.html" />
         <option value="$PROJECT_DIR$/core/views.py" />
         <option value="$PROJECT_DIR$/templates/core/nav-bar.html" />
+        <option value="$PROJECT_DIR$/api/views.py" />
+        <option value="$PROJECT_DIR$/templates/core/api-keys.html" />
       </list>
     </option>
   </component>
@@ -855,14 +851,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/core/api-keys.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="34" column="26" lean-forward="false" selection-start-line="34" selection-start-column="26" selection-end-line="34" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/docs/css/code/a11y-dark.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1143,14 +1131,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/api/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="369">
-          <caret line="270" column="54" lean-forward="false" selection-start-line="270" selection-start-column="54" selection-end-line="270" selection-end-column="54" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/core/account.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
@@ -1235,8 +1215,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/core/nav-bar.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="60" column="93" lean-forward="false" selection-start-line="60" selection-start-column="93" selection-end-line="60" selection-end-column="93" />
+        <state relative-caret-position="301">
+          <caret line="71" column="39" lean-forward="true" selection-start-line="71" selection-start-column="39" selection-end-line="71" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="411" column="97" lean-forward="false" selection-start-line="411" selection-start-column="97" selection-end-line="411" selection-end-column="97" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/core/api-keys.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="23" column="63" lean-forward="false" selection-start-line="23" selection-start-column="63" selection-end-line="23" selection-end-column="63" />
           <folding />
         </state>
       </provider>

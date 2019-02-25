@@ -106,7 +106,7 @@ class RequestHandlerPrivate(View):
                                         }
                                     }
 
-                                    return HttpResponse(json.dumps(response), content_type='application/json')
+                                    return HttpResponse(json.dumps(response), content_type='application/json', status=400)
 
                         # If we got here we either have a list with no headers or a list with headers that have values.
                         # Either way, if the incorrect values were given we would not be here.
@@ -155,7 +155,7 @@ class RequestHandlerPrivate(View):
                                         }
                                     }
 
-                                    return HttpResponse(json.dumps(response), content_type='application/json')
+                                    return HttpResponse(json.dumps(response), content_type='application/json', status=400)
 
                         # Like with headers, if we have gotten here we have analysed the correct GET parameters
                         resource_request['parameters'] = provided_parameters
@@ -285,7 +285,7 @@ class RequestHandlerPrivate(View):
 
                             api_request.save()
 
-                            return HttpResponse(json.dumps(data_from_database), content_type='application/json')
+                            return HttpResponse(json.dumps(data_from_database), content_type='application/json', status=200)
 
                         except Exception as e:
                             print(e)
@@ -312,7 +312,7 @@ class RequestHandlerPrivate(View):
                                 }
                             }
 
-                            return HttpResponse(json.dumps(response), content_type='application/json')
+                            return HttpResponse(json.dumps(response), content_type='application/json', status=402)
 
 
                     except Exception as e:
@@ -339,7 +339,7 @@ class RequestHandlerPrivate(View):
                             }
                         }
 
-                        return HttpResponse(json.dumps(response), content_type='application/json')
+                        return HttpResponse(json.dumps(response), content_type='application/json', status=404)
                 else:
                     # The resource was not provided. Record the requst
                     api_request = APIRequest(
@@ -362,7 +362,7 @@ class RequestHandlerPrivate(View):
                         }
                     }
 
-                    return HttpResponse(json.dumps(response), content_type='application/json')
+                    return HttpResponse(json.dumps(response), content_type='application/json', status=400)
 
             except Exception as e:
                 # API Key is not found
@@ -386,7 +386,7 @@ class RequestHandlerPrivate(View):
                     }
                 }
 
-                return HttpResponse(json.dumps(response), content_type='application/json')
+                return HttpResponse(json.dumps(response), content_type='application/json', status=401)
 
         else:
             # It was not provided. Construct a response to send back and log the request.
@@ -409,7 +409,7 @@ class RequestHandlerPrivate(View):
                 }
             }
 
-            return HttpResponse(json.dumps(response), content_type='application/json')
+            return HttpResponse(json.dumps(response), content_type='application/json', status=401)
 
 
 # The main view that handles Public API request. Differs to Private as it requires the project ID as no
