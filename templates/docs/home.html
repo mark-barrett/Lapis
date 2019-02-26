@@ -35,7 +35,7 @@
                         <br/>
                         <p class="sub-heading">Resources</p>
                         {% for resource in resources %}
-                            <a class="nav-link" href="#resource-{{ resource.name }}">{{ resource.name }}</a>
+                            <a class="nav-link" href="#resource-{{ resource.id }}">{{ resource.name }}</a>
                         {% endfor %}
                     </nav>
                 </nav>
@@ -93,12 +93,12 @@
 
                             {# Now loop through each resource #}
                             {% for resource in resources %}
-                                <hr/>
+                                <hr id="resource-{{ resource.id }}"/>
                                 <div class="section">
                                     <div class="float-right">
                                         <h2><span class="badge resource-type-bg-{{ resource.request_type }} text-white">{{ resource.request_type }}</span> </h2>
                                     </div>
-                                    <h2 id="resource-{{ resource.name }}">{{ resource.name }}</h2>
+                                    <h2>{{ resource.name }}</h2>
                                     <p>{{ resource.description }}</p>
 
                                     {# Call the template tag that will describe the resource #}
@@ -292,7 +292,7 @@
 
                                         {# Now do Resources #}
                                         {% for resource in resources %}
-                                            <br/><br/>
+                                            <br/>
                                             <div class="section">
                                                 <div class="container">
                                                     <p class="code-normal-font-descriptor">Example Request:</p>

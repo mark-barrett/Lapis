@@ -237,9 +237,18 @@ class ResourceParentChildRelationship(models.Model):
 
 class ResourceDataBind(models.Model):
 
+    TYPE_CHOICES = (
+        ('Integer', 'Integer'),
+        ('Decimal', 'Decimal'),
+        ('String', 'String'),
+        ('Boolean', 'Boolean')
+    )
+
     column = models.ForeignKey(DatabaseColumn)
     key = models.CharField(max_length=256)
     resource = models.ForeignKey(Resource)
+    type = models.CharField(max_length=32, choices=TYPE_CHOICES)
+    description = models.CharField(max_length=256)
 
     class Meta:
         verbose_name_plural = 'Resource Data Binds'

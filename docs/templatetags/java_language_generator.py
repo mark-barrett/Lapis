@@ -3,7 +3,7 @@
 # https://github.com/mark-barrett
 from django import template
 
-from core.models import ResourceParameter, ResourceHeader
+from core.models import ResourceParameter, ResourceHeader, ResourceDataBind
 
 register = template.Library()
 
@@ -90,11 +90,29 @@ def java_generate_resource(request, resource):
 
     html_to_return += '<br/>String credential = Credentials.basic("rb_nrm_key_examplekey", "");<br/><br/>'
 
+    if resource.request_type == 'POST':
+        html_to_return += 'RequestBody requestBody = new MultipartBody.Builder()<br/>'
+
+        html_to_return += '.setType(MultipartBody.FORM)<br/>'
+
+        # Get the data binds
+        data_binds = ResourceDataBind.objects.all().filter(resource=resource)
+
+        if data_binds:
+            for data_bind in data_binds:
+                html_to_return += '.addFormDataPart("'+data_bind.key+'", "yourValue")<br/>'
+
+        html_to_return += '.build();<br/>'
+        html_to_return += '<br/>'
+
     html_to_return += 'Request request = new Request.Builder()<br/>'
 
     html_to_return += '.url("'+url+'")<br/>'
 
-    html_to_return += '.get()<br/>'
+    if resource.request_type == 'GET':
+        html_to_return += '.get()<br/>'
+    else:
+        html_to_return += '.post(requestBody)<br/>'
 
     html_to_return += '.addHeader("Authorization", credential)<br/>'
 

@@ -3,7 +3,7 @@
 # https://github.com/mark-barrett
 from django import template
 
-from core.models import ResourceHeader, ResourceParameter
+from core.models import ResourceHeader, ResourceParameter, ResourceDataBind
 
 register = template.Library()
 
@@ -22,22 +22,24 @@ def curl_resource_request_example(request):
 def curl_generate_resource(request, resource):
     url = 'https://'+request.META["HTTP_HOST"]+'/api'
 
-    # Get the get parameters
-    resource_parameters = ResourceParameter.objects.all().filter(resource=resource)
+    if resource.request_type == 'GET':
 
-    if resource_parameters:
-        # Append the question mark
-        url += '?'
+        # Get the get parameters
+        resource_parameters = ResourceParameter.objects.all().filter(resource=resource)
 
-        # Loop through all resource parameters
-        for index, parameter in enumerate(resource_parameters):
-            # If the index is greater than 0, i.e more than one parameter
-            if index > 0:
-                url += '&'
+        if resource_parameters:
+            # Append the question mark
+            url += '?'
 
-            url += parameter.key+'=your_value'
+            # Loop through all resource parameters
+            for index, parameter in enumerate(resource_parameters):
+                # If the index is greater than 0, i.e more than one parameter
+                if index > 0:
+                    url += '&'
 
-    html_to_return = '<pre><code class="powershell">$ curl '+url+' \<br/> -u rb_nrm_key_123examplekey:'
+                url += parameter.key+'=your_value'
+
+    html_to_return = '<pre><code class="powershell">$ curl -X '+resource.request_type+' \''+url+'\' \<br/> -u rb_nrm_key_123examplekey:'
 
     # Get the resources headers
     resource_headers = ResourceHeader.objects.all().filter(resource=resource)
@@ -51,6 +53,12 @@ def curl_generate_resource(request, resource):
         for header in resource_headers:
             html_to_return += ' \<br/> -H \''+header.key+': ExampleValue\''
 
+    # Get the POST information
+    if resource.request_type == 'POST':
+        data_binds = ResourceDataBind.objects.all().filter(resource=resource)
+
+        for data_bind in data_binds:
+            html_to_return += ' \<br/> -F '+data_bind.key+'=your_value'
 
     html_to_return += '</code></pre>'
 
