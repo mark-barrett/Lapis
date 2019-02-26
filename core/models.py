@@ -117,7 +117,7 @@ class Resource(models.Model):
         unique_together = ('name', 'project', 'request_type')
 
     def __str__(self):
-        return 'Project: '+self.project.name+' Resource: '+self.name
+        return 'Project: '+self.project.name+' Resource: '+self.name+ ' ('+self.request_type+')'
 
 
 class ResourceHeader(models.Model):

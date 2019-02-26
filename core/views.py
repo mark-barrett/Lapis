@@ -925,7 +925,7 @@ class ViewResourceRequests(LoginRequiredMixin, View):
                         'projects': Project.objects.all().filter(user=request.user),
                         'project': project,
                         'resource': resource,
-                        'api_requests': APIRequest.objects.all().filter(resource=resource.name)
+                        'api_requests': APIRequest.objects.all().filter(resource=resource.name, type=resource.request_type)
                     }
 
                     return render(request, 'core/view-resource-requests.html', context)

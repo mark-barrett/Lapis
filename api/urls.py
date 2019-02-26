@@ -8,6 +8,6 @@ from api import admin
 from api import views
 
 urlpatterns = [
-    url(r'^$', views.RequestHandlerPrivate.as_view(), name='request-handler-private'),
+    url(r'^$', csrf_exempt(views.RequestHandlerPrivate.as_view()), name='request-handler-private'),
     url(r'^/(?P<project_id>[0-9]+)$', views.RequestHandlerPublic.as_view(), name='request-handler-public'),
 ]
