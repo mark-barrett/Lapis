@@ -50,6 +50,7 @@ class APIRequest(models.Model):
     ip_address = models.GenericIPAddressField()
     source = models.CharField(max_length=256)
     api_key = models.ForeignKey(APIKey, null=True, blank=True)
+    response_to_user = models.TextField()
 
     def __str__(self):
        return self.status+' - '+str(self.date)+' - '+self.type

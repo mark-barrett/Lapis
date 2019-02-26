@@ -3,6 +3,9 @@
 {# Load static templating tag to be able to use it to get paths to static files #}
 {% load static %}
 
+{# Load the util template tags #}
+{% load util %}
+
 {# Set the title and background color for the base.html file. #}
 {% block title %}RESTBroker - View Request{% endblock %}
 
@@ -29,6 +32,9 @@
 
             <div class="card card-no-top-radius">
                 <div class="card-body">
+                    <div class="float-right">
+                        <h5><span class="badge resource-type-bg-{{ api_request.type }} text-white">{{ api_request.type }}</span></h5>
+                    </div>
                     <h5>Summary</h5>
                     <hr/>
                     <dl class="row">
@@ -67,6 +73,10 @@
                             <dd class="col-sm-9">{{ api_request.api_key.key }}</dd>
                         {% endif %}
                     </dl>
+                    {% if '4' in api_request.status %}
+                        <div class="bottom-padding"><strong>Generated Error:</strong></div>
+                        <pre><code class="json" id="response">{{ api_request.response_to_user|pretty_json }}</code></pre>
+                    {% endif %}
                 </div>
             </div>
         </div>

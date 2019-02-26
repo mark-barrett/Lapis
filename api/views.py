@@ -10,7 +10,7 @@ import MySQLdb as db
 # The main view that handles Private API requests
 from api.models import APIRequest, APIKey
 from core.models import Resource, ResourceParameter, ResourceHeader, ResourceDataSourceColumn, DatabaseColumn, Database, \
-    ResourceDataSourceFilter, DatabaseTable, ResourceParentChildRelationship, BlockedIP
+    ResourceDataSourceFilter, DatabaseTable, ResourceParentChildRelationship, BlockedIP, ResourceDataBind
 
 
 def get_client_ip(request):
@@ -44,6 +44,13 @@ class RequestHandlerPrivate(View):
                 try:
                     blocked_ip = BlockedIP.objects.get(ip_address=ip)
 
+                    response = json.dumps({
+                        'error': {
+                            'message': 'Requests from this IP are blocked',
+                            'type': 'blocked_ip'
+                        }
+                    })
+
                     # This means it does exist so send a return message.
                     api_request = APIRequest(
                         authentication_type='KEY',
@@ -53,19 +60,13 @@ class RequestHandlerPrivate(View):
                         status='403 ERR',
                         ip_address=get_client_ip(request),
                         source=request.META['HTTP_USER_AGENT'],
-                        api_key=api_key
+                        api_key=api_key,
+                        response_to_user=response
                     )
 
                     api_request.save()
 
-                    response = {
-                        'error': {
-                            'message': 'Requests from this IP are blocked',
-                            'type': 'blocked_ip'
-                        }
-                    }
-
-                    return HttpResponse(json.dumps(response), content_type='application/json', status=403)
+                    return HttpResponse(response, content_type='application/json', status=403)
 
                 except:
                     # If it doesn't exist then just pass and continue
@@ -120,6 +121,13 @@ class RequestHandlerPrivate(View):
                                     # Append it to the users provided headers
                                     provided_headers.append(single_header_object)
                                 else:
+                                    response = json.dumps({
+                                        'error': {
+                                            'message': 'Your request is missing a required header. Missing header is: ' + header.key,
+                                            'type': 'missing_header'
+                                        }
+                                    })
+
                                     # This means a required header is not provided so record it and respond
                                     api_request = APIRequest(
                                         authentication_type='KEY',
@@ -129,19 +137,13 @@ class RequestHandlerPrivate(View):
                                         status='400 ERR',
                                         ip_address=get_client_ip(request),
                                         source=request.META['HTTP_USER_AGENT'],
-                                        api_key=api_key
+                                        api_key=api_key,
+                                        response_to_user=response
                                     )
 
                                     api_request.save()
 
-                                    response = {
-                                        'error': {
-                                            'message': 'Your request is missing a required header. Missing header is: '+header.key,
-                                            'type': 'missing_header'
-                                        }
-                                    }
-
-                                    return HttpResponse(json.dumps(response), content_type='application/json', status=400)
+                                    return HttpResponse(response, content_type='application/json', status=400)
 
                         # If we got here we either have a list with no headers or a list with headers that have values.
                         # Either way, if the incorrect values were given we would not be here.
@@ -169,6 +171,13 @@ class RequestHandlerPrivate(View):
                                     # Append it to the list of provided parameters
                                     provided_parameters.append(single_parameter_obj)
                                 else:
+                                    response = json.dumps({
+                                        'error': {
+                                            'message': 'Your request is missing a required GET parameter. Missing parameter is: ' + parameter.key,
+                                            'type': 'missing_parameter'
+                                        }
+                                    })
+
                                     # This means a required header is not provided so record it and respond
                                     api_request = APIRequest(
                                         authentication_type='KEY',
@@ -178,19 +187,13 @@ class RequestHandlerPrivate(View):
                                         status='400 ERR',
                                         ip_address=get_client_ip(request),
                                         source=request.META['HTTP_USER_AGENT'],
-                                        api_key=api_key
+                                        api_key=api_key,
+                                        response_to_user=response
                                     )
 
                                     api_request.save()
 
-                                    response = {
-                                        'error': {
-                                            'message': 'Your request is missing a required GET parameter. Missing parameter is: ' + parameter.key,
-                                            'type': 'missing_parameter'
-                                        }
-                                    }
-
-                                    return HttpResponse(json.dumps(response), content_type='application/json', status=400)
+                                    return HttpResponse(response, content_type='application/json', status=400)
 
                         # Like with headers, if we have gotten here we have analysed the correct GET parameters
                         resource_request['parameters'] = provided_parameters
@@ -324,6 +327,15 @@ class RequestHandlerPrivate(View):
 
                         except Exception as e:
                             print(e)
+                            # Create a response
+                            response = json.dumps({
+                                'error': {
+                                    'message': 'There was an error with the interaction between us and your database. Please see the error generated by your server below.',
+                                    'type': 'error_connecting_to_database',
+                                    'database_error': str(e)
+                                }
+                            })
+
                             # Cannot connect to the server. Record it and respond
                             api_request = APIRequest(
                                 authentication_type='KEY',
@@ -333,25 +345,25 @@ class RequestHandlerPrivate(View):
                                 status='402 ERR',
                                 ip_address=get_client_ip(request),
                                 source=request.META['HTTP_USER_AGENT'],
-                                api_key=api_key
+                                api_key=api_key,
+                                response_to_user=response
                             )
 
                             api_request.save()
 
-                            # Create a response
-                            response = {
-                                'error': {
-                                    'message': 'There was an error with the interaction between us and your database. Please see the error generated by your server below.',
-                                    'type': 'error_connecting_to_database',
-                                    'database_error': str(e)
-                                }
-                            }
-
-                            return HttpResponse(json.dumps(response), content_type='application/json', status=402)
+                            return HttpResponse(response, content_type='application/json', status=402)
 
 
                     except Exception as e:
                         print(e)
+                        # Create a response
+                        response = json.dumps({
+                            'error': {
+                                'message': 'The resource that was requested does not exist.',
+                                'type': 'resource_doesnt_exist'
+                            }
+                        })
+
                         # Resource does not exist. Record the request.
                         api_request = APIRequest(
                             authentication_type='KEY',
@@ -361,21 +373,22 @@ class RequestHandlerPrivate(View):
                             status='404 ERR',
                             ip_address=get_client_ip(request),
                             source=request.META['HTTP_USER_AGENT'],
-                            api_key=api_key
+                            api_key=api_key,
+                            response_to_user=response
                         )
 
                         api_request.save()
 
-                        # Create a response
-                        response = {
-                            'error': {
-                                'message': 'The resource that was requested does not exist.',
-                                'type': 'resource_doesnt_exist'
-                            }
-                        }
-
-                        return HttpResponse(json.dumps(response), content_type='application/json', status=404)
+                        return HttpResponse(response, content_type='application/json', status=404)
                 else:
+                    # Create a response
+                    response = json.dumps({
+                        'error': {
+                            'message': 'No resource was provided. RESTBroker cannot tell what you are trying to access.',
+                            'type': 'no_resource_provided'
+                        }
+                    })
+
                     # The resource was not provided. Record the requst
                     api_request = APIRequest(
                         authentication_type='KEY',
@@ -384,23 +397,24 @@ class RequestHandlerPrivate(View):
                         status='400 ERR',
                         ip_address=get_client_ip(request),
                         source=request.META['HTTP_USER_AGENT'],
-                        api_key=api_key
+                        api_key=api_key,
+                        response_to_user=response
                     )
 
                     api_request.save()
 
-                    # Create a response
-                    response = {
-                        'error': {
-                            'message': 'No resource was provided. RESTBroker cannot tell what you are trying to access.',
-                            'type': 'no_resource_provided'
-                        }
-                    }
-
-                    return HttpResponse(json.dumps(response), content_type='application/json', status=400)
+                    return HttpResponse(response, content_type='application/json', status=400)
 
             except Exception as e:
                 # API Key is not found
+                # Create a response
+                response = json.dumps({
+                    'error': {
+                        'message': 'The provided API Key is invalid. Please ensure it is correctly inputted.',
+                        'type': 'bad_api_key'
+                    }
+                })
+
                 # It was not provided. Construct a response to send back and log the request.
                 api_request = APIRequest(
                     authentication_type='NO_AUTH',
@@ -408,22 +422,23 @@ class RequestHandlerPrivate(View):
                     url=request.get_full_path(),
                     status='401 ERR',
                     ip_address=get_client_ip(request),
-                    source=request.META['HTTP_USER_AGENT']
+                    source=request.META['HTTP_USER_AGENT'],
+                    response_to_user=response
                 )
 
                 api_request.save()
 
-                # Create a response
-                response = {
-                    'error': {
-                        'message': 'The provided API Key is invalid. Please ensure it is correctly inputted.',
-                        'type': 'bad_api_key'
-                    }
-                }
-
-                return HttpResponse(json.dumps(response), content_type='application/json', status=401)
+                return HttpResponse(response, content_type='application/json', status=401)
 
         else:
+            # Create a response
+            response = json.dumps({
+                'error': {
+                    'message': 'API Key not provided. Please provide a relevant API key in the HTTP_AUTHORIZATION header in the username field.',
+                    'type': 'no_api_key'
+                }
+            })
+
             # It was not provided. Construct a response to send back and log the request.
             api_request = APIRequest(
                 authentication_type='NO_AUTH',
@@ -431,20 +446,13 @@ class RequestHandlerPrivate(View):
                 url=request.get_full_path(),
                 status='401 ERR',
                 ip_address=get_client_ip(request),
-                source=request.META['HTTP_USER_AGENT']
+                source=request.META['HTTP_USER_AGENT'],
+                response_to_user=response,
             )
 
             api_request.save()
 
-            # Create a response
-            response = {
-                'error': {
-                    'message': 'API Key not provided. Please provide a relevant API key in the HTTP_AUTHORIZATION header in the username field.',
-                    'type': 'no_api_key'
-                }
-            }
-
-            return HttpResponse(json.dumps(response), content_type='application/json', status=401)
+            return HttpResponse(response, content_type='application/json', status=401)
 
 
     # First handle POST requests
@@ -468,6 +476,13 @@ class RequestHandlerPrivate(View):
                 try:
                     blocked_ip = BlockedIP.objects.get(ip_address=ip)
 
+                    response = json.dumps({
+                        'error': {
+                            'message': 'Requests from this IP are blocked',
+                            'type': 'blocked_ip'
+                        }
+                    })
+
                     # This means it does exist so send a return message.
                     api_request = APIRequest(
                         authentication_type='KEY',
@@ -477,19 +492,13 @@ class RequestHandlerPrivate(View):
                         status='403 ERR',
                         ip_address=get_client_ip(request),
                         source=request.META['HTTP_USER_AGENT'],
-                        api_key=api_key
+                        api_key=api_key,
+                        response_to_user=response
                     )
 
                     api_request.save()
 
-                    response = {
-                        'error': {
-                            'message': 'Requests from this IP are blocked',
-                            'type': 'blocked_ip'
-                        }
-                    }
-
-                    return HttpResponse(json.dumps(response), content_type='application/json', status=403)
+                    return HttpResponse(response, content_type='application/json', status=403)
 
                 except:
                     # If it doesn't exist then just pass and continue
@@ -507,14 +516,14 @@ class RequestHandlerPrivate(View):
 
                         # Check to see if the resource is "turned off"
                         if not resource.status:
-                            response = {
+                            response = json.dumps({
                                 'error': {
                                     'message': 'The owner of this resource has it disabled/off. Check back later as it may be enabled/turned on',
                                     'type': 'endpoint_off'
                                 }
-                            }
+                            })
 
-                            return HttpResponse(json.dumps(response), content_type='application/json')
+                            return HttpResponse(response, content_type='application/json')
 
                         # The resource does exist! Now we need to go through the request and check to see
                         # if what is required has been sent.
@@ -545,6 +554,14 @@ class RequestHandlerPrivate(View):
                                     # Append it to the users provided headers
                                     provided_headers.append(single_header_object)
                                 else:
+
+                                    response = json.dumps({
+                                        'error': {
+                                            'message': 'Your request is missing a required header. Missing header is: ' + header.key,
+                                            'type': 'missing_header'
+                                        }
+                                    })
+
                                     # This means a required header is not provided so record it and respond
                                     api_request = APIRequest(
                                         authentication_type='KEY',
@@ -554,29 +571,61 @@ class RequestHandlerPrivate(View):
                                         status='400 ERR',
                                         ip_address=get_client_ip(request),
                                         source=request.META['HTTP_USER_AGENT'],
-                                        api_key=api_key
+                                        api_key=api_key,
+                                        response_to_user=response
                                     )
 
                                     api_request.save()
 
-                                    response = {
-                                        'error': {
-                                            'message': 'Your request is missing a required header. Missing header is: ' + header.key,
-                                            'type': 'missing_header'
-                                        }
-                                    }
-
-                                    return HttpResponse(json.dumps(response), content_type='application/json',
+                                    return HttpResponse(response, content_type='application/json',
                                                         status=400)
 
                         # If we got here we either have a list with no headers or a list with headers that have values.
                         # Either way, if the incorrect values were given we would not be here.
                         resource_request['headers'] = provided_headers
 
-                        # DO POST STUFF
+                        # Get the databinds
+                        data_binds = ResourceDataBind.objects.all().filter(resource=resource)
+
+                        if data_binds:
+                            for data_bind in data_binds:
+                                if data_bind.key not in request.POST:
+
+                                    response = json.dumps({
+                                        'error': {
+                                            'message': 'Your request is missing a POST attribute. Missing attribute is: ' + data_bind.key,
+                                            'type': 'missing_attribute'
+                                        }
+                                    })
+
+                                    # This means a required header is not provided so record it and respond
+                                    api_request = APIRequest(
+                                        authentication_type='KEY',
+                                        type=request.method,
+                                        resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                        url=request.get_full_path(),
+                                        status='400 ERR',
+                                        ip_address=get_client_ip(request),
+                                        source=request.META['HTTP_USER_AGENT'],
+                                        api_key=api_key,
+                                        response_to_user=response
+                                    )
+
+                                    api_request.save()
+
+                                    return HttpResponse(response, content_type='application/json',
+                                                        status=400)
 
                     except Exception as e:
-                        print(e)
+
+                        # Create a response
+                        response = json.dumps({
+                            'error': {
+                                'message': 'The resource that was requested does not exist.',
+                                'type': 'resource_doesnt_exist'
+                            }
+                        })
+
                         # Resource does not exist. Record the request.
                         api_request = APIRequest(
                             authentication_type='KEY',
@@ -586,21 +635,23 @@ class RequestHandlerPrivate(View):
                             status='404 ERR',
                             ip_address=get_client_ip(request),
                             source=request.META['HTTP_USER_AGENT'],
-                            api_key=api_key
+                            api_key=api_key,
+                            response_to_user=response
                         )
 
                         api_request.save()
 
-                        # Create a response
-                        response = {
-                            'error': {
-                                'message': 'The resource that was requested does not exist.',
-                                'type': 'resource_doesnt_exist'
-                            }
-                        }
-
-                        return HttpResponse(json.dumps(response), content_type='application/json', status=404)
+                        return HttpResponse(response, content_type='application/json', status=404)
                 else:
+
+                    # Create a response
+                    response = json.dumps({
+                        'error': {
+                            'message': 'No resource was provided. RESTBroker cannot tell what you are trying to access.',
+                            'type': 'no_resource_provided'
+                        }
+                    })
+
                     # The resource was not provided. Record the requst
                     api_request = APIRequest(
                         authentication_type='KEY',
@@ -609,22 +660,24 @@ class RequestHandlerPrivate(View):
                         status='400 ERR',
                         ip_address=get_client_ip(request),
                         source=request.META['HTTP_USER_AGENT'],
-                        api_key=api_key
+                        api_key=api_key,
+                        response_to_user=response
                     )
 
                     api_request.save()
 
-                    # Create a response
-                    response = {
-                        'error': {
-                            'message': 'No resource was provided. RESTBroker cannot tell what you are trying to access.',
-                            'type': 'no_resource_provided'
-                        }
-                    }
-
-                    return HttpResponse(json.dumps(response), content_type='application/json', status=400)
+                    return HttpResponse(response, content_type='application/json', status=400)
 
             except Exception as e:
+
+                # Create a response
+                response = json.dumps({
+                    'error': {
+                        'message': 'The provided API Key is invalid. Please ensure it is correctly inputted.',
+                        'type': 'bad_api_key'
+                    }
+                })
+
                 # API Key is not found
                 # It was not provided. Construct a response to send back and log the request.
                 api_request = APIRequest(
@@ -633,22 +686,24 @@ class RequestHandlerPrivate(View):
                     url=request.get_full_path(),
                     status='401 ERR',
                     ip_address=get_client_ip(request),
-                    source=request.META['HTTP_USER_AGENT']
+                    source=request.META['HTTP_USER_AGENT'],
+                    response_to_user=response
                 )
 
                 api_request.save()
 
-                # Create a response
-                response = {
-                    'error': {
-                        'message': 'The provided API Key is invalid. Please ensure it is correctly inputted.',
-                        'type': 'bad_api_key'
-                    }
-                }
-
-                return HttpResponse(json.dumps(response), content_type='application/json', status=401)
+                return HttpResponse(response, content_type='application/json', status=401)
 
         else:
+
+            # Create a response
+            response = json.dumps({
+                'error': {
+                    'message': 'API Key not provided. Please provide a relevant API key in the HTTP_AUTHORIZATION header in the username field.',
+                    'type': 'no_api_key'
+                }
+            })
+
             # It was not provided. Construct a response to send back and log the request.
             api_request = APIRequest(
                 authentication_type='NO_AUTH',
@@ -656,20 +711,13 @@ class RequestHandlerPrivate(View):
                 url=request.get_full_path(),
                 status='401 ERR',
                 ip_address=get_client_ip(request),
-                source=request.META['HTTP_USER_AGENT']
+                source=request.META['HTTP_USER_AGENT'],
+                response_to_user=response
             )
 
             api_request.save()
 
-            # Create a response
-            response = {
-                'error': {
-                    'message': 'API Key not provided. Please provide a relevant API key in the HTTP_AUTHORIZATION header in the username field.',
-                    'type': 'no_api_key'
-                }
-            }
-
-            return HttpResponse(json.dumps(response), content_type='application/json', status=401)
+            return HttpResponse(response, content_type='application/json', status=401)
 
 # The main view that handles Public API request. Differs to Private as it requires the project ID as no
 # API is required

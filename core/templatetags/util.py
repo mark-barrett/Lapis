@@ -16,3 +16,10 @@ def to_json(value):
 def check_if_project_active_nav(url, project):
     if '/project/'+str(project.id) in url:
         return "active"
+
+@register.filter(name='pretty_json')
+def pretty_json(input_json):
+
+    parsed = json.loads(input_json)
+
+    return str(json.dumps(parsed, indent=4))
