@@ -193,13 +193,13 @@ $('#delete-add-data-bind-column').click(function() {
     }
 
     var columnSelector = '<div class="form-group">\
-                            <select name="data-bind-column" class="form-control" id="data-bind-column">\
+                            <select name="delete-data-bind-column" class="form-control" id="data-bind-column">\
                                 '+columnData+'\
                             </select>\
                           </div>';
 
     var types = '<div class="form-group">\
-                    <select name="data-bind-type" class="form-control" id="data-bind=type">\
+                    <select name="delete-data-bind-type" class="form-control" id="data-bind=type">\
                         <option value="Integer">Integer</option>\
                         <option value="Decimal">Decimal</option>\
                         <option value="String">String</option>\
@@ -208,7 +208,7 @@ $('#delete-add-data-bind-column').click(function() {
                 </div>';
 
     // Add a row
-    tableBody.prepend('<tr><td>'+columnSelector+'</td><td><div class="form-group"><input type="text" class="form-control" name="data-bind-key" placeholder="Key of the data that will be sent in request."></div></td><td>'+types+'</td><td><div class="form-group"><input type="text" class="form-control" name="data-bind-description" placeholder="Description displayed in the docs."></div></td><td><button class="btn btn-block btn-danger"><i class="fa fa-trash"></i></button></td></tr>');
+    tableBody.prepend('<tr><td>'+columnSelector+'</td><td><div class="form-group"><input type="text" class="form-control" name="delete-data-bind-key" placeholder="Key of the data that will be sent in request."></div></td><td>'+types+'</td><td><div class="form-group"><input type="text" class="form-control" name="delete-data-bind-description" placeholder="Description displayed in the docs."></div></td><td><button class="btn btn-block btn-danger"><i class="fa fa-trash"></i></button></td></tr>');
 
 });
 

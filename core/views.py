@@ -558,7 +558,8 @@ class CreateResource(LoginRequiredMixin, View):
                             'type': form.cleaned_data['request_type'],
                             'headers': [],
                             'parameters': [],
-                            'data_bind_columns': []
+                            'data_bind_columns': [],
+                            'delete_data_bind_columns': []
                         },
                         'response': {}
                     }
@@ -608,6 +609,23 @@ class CreateResource(LoginRequiredMixin, View):
                             }
 
                             resource['request']['data_bind_columns'].append(data_bind_column)
+
+                    # Get the data binds if a DELETE request
+                    elif resource['request']['type'] == 'DELETE':
+                        data_bind_columns = request.POST.getlist('delete-data-bind-column')
+                        data_bind_keys = request.POST.getlist('delete-data-bind-key')
+                        data_bind_types = request.POST.getlist('delete-data-bind-type')
+                        data_bind_descriptions = request.POST.getlist('delete-data-bind-description')
+
+                        for index, key in enumerate(data_bind_keys):
+                            data_bind_column = {
+                                'column': data_bind_columns[index],
+                                'key': key,
+                                'type': data_bind_types[index],
+                                'description': data_bind_descriptions[index]
+                            }
+
+                            resource['request']['delete_data_bind_columns'].append(data_bind_column)
 
                     # Set this as a session variable.
                     request.session['resource'] = resource
@@ -736,6 +754,20 @@ class CreateResource(LoginRequiredMixin, View):
                             )
 
                             data_bind.save()
+
+                    # If its a DELETE request look for data binds
+                    elif request.session['resource']['request']['type'] == 'DELETE':
+                        for data_bind in request.session['resource']['request']['delete_data_bind_columns']:
+                            data_bind = ResourceDataBind(
+                                column=DatabaseColumn.objects.get(id=int(data_bind['column'])),
+                                key=data_bind['key'],
+                                type=data_bind['type'],
+                                description=data_bind['description'],
+                                resource=resource
+                            )
+
+                            data_bind.save()
+
 
                     # Now we have to loop through each column that is to be returned in the response and add it to the database
                     for column in request.session['resource']['response']['columns']:
