@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'docs/css/code/atom-one-dark.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/bootstrap-select.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/font-awesome-animation-min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'core/css/chartist/chartist.min.css' %}">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
 
@@ -40,6 +41,7 @@
 <script src="{% static 'docs/js/code/highlight.pack.js' %}"></script>
 <script src="{% static 'core/js/ace/ace.js' %}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'core/js/ace/mode-javascript.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'core/js/chartist/chartist.min.js' %}" type="text/javascript" charset="utf-8"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 <script>
     $(document).ready(function () {
@@ -62,5 +64,68 @@
         });
     } );
 </script>
+{# Graph for requests to a Resource over 7 days #}
+{% if requests_over_days %}
+<script>
+    // Create a simple line chart
+    var data = {
+        // A labels array that can contain any sort of values
+        labels: [{% for request_for_day in requests_over_days %}'{{ request_for_day.date }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+        // Our series array that contains series objects or in this case series data arrays
+        series: [
+            [{% for request_for_day in requests_over_days %}{{ request_for_day.requests }}{% if not forloop.last %}, {% endif %}{% endfor %}]
+        ]
+    };
+
+    // As options we currently only set a static size of 300x200 px
+    var options = {
+        height: '300px',
+        showArea: true,
+        chartPadding: 0
+    };
+
+    // In the global name space Chartist we call the Line function to initialize a line chart. As a first parameter we pass in a selector where we would like to get our chart created. Second parameter is the actual data object and as a third parameter we pass in our options
+    new Chartist.Line('#requests_this_week', data, options);
+</script>
+{% endif %}
+{# Chart to show different types of requests #}
+{% if request_types %}
+    <script>
+        var data = {
+            labels: [{% for request_type, number in request_types.items %}'{{ request_type }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+            series: [
+                {% for request_type, number in request_types.items %}
+                {
+                    value: {{ number }},
+                {% if '200' in request_type %}
+                    className: "green"
+                {% endif %}
+                }{% if not forloop.last %}, {% endif %}{% endfor %}]
+        };
+
+        var options = {
+            labelInterpolationFnc: function(value) {
+                return value[0]
+            }
+        };
+
+        var responsiveOptions = [
+            ['screen and (min-width: 640px)', {
+                chartPadding: 30,
+                labelOffset: 100,
+                labelDirection: 'explode',
+                labelInterpolationFnc: function(value) {
+                    return value;
+                }
+            }],
+            ['screen and (min-width: 1024px)', {
+                labelOffset: 80,
+                chartPadding: 20
+            }]
+        ];
+
+        new Chartist.Pie('#request_types', data, options, responsiveOptions);
+    </script>
+{% endif %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </html>

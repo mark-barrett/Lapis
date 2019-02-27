@@ -587,34 +587,135 @@ class RequestHandlerPrivate(View):
                         # Get the databinds
                         data_binds = ResourceDataBind.objects.all().filter(resource=resource)
 
+                        data_bind_tables = {
+
+                        }
+
                         if data_binds:
+                            full_sql = ''
+
+                            # We need to basically loop through each data bind and make it so that they are sorted by table.
+                            # This way we can execute multiple INSERTS to different tables.
                             for data_bind in data_binds:
-                                if data_bind.key not in request.POST:
 
-                                    response = json.dumps({
-                                        'error': {
-                                            'message': 'Your request is missing a POST attribute. Missing attribute is: ' + data_bind.key,
-                                            'type': 'missing_attribute'
-                                        }
-                                    })
+                                # If the table is already listed then just append this data bind.
+                                if data_bind.column.table.name in data_bind_tables:
+                                    data_bind_tables[data_bind.column.table.name].append(data_bind)
+                                else:
+                                    data_bind_tables[data_bind.column.table.name] = [data_bind]
 
-                                    # This means a required header is not provided so record it and respond
-                                    api_request = APIRequest(
-                                        authentication_type='KEY',
-                                        type=request.method,
-                                        resource=request.META['HTTP_RESTBROKER_RESOURCE'],
-                                        url=request.get_full_path(),
-                                        status='400 ERR',
-                                        ip_address=get_client_ip(request),
-                                        source=request.META['HTTP_USER_AGENT'],
-                                        api_key=api_key,
-                                        response_to_user=response
-                                    )
+                            print(data_bind_tables)
 
-                                    api_request.save()
+                            # Now we have it in a dictionary form.
+                            for table, columns in data_bind_tables.items():
+                                # This is one single table so do this
+                                sql = 'INSERT INTO '+table+' ('
 
-                                    return HttpResponse(response, content_type='application/json',
-                                                        status=400)
+                                # Map through the columns
+                                column_part = ', '.join(list(map(lambda column: column.column.name, columns)))
+
+                                sql += column_part+') '
+
+                                values_part = ''
+
+                                # Now get the values for the insert
+                                for index, column in enumerate(columns):
+                                    if column.key not in request.POST:
+
+                                        response = json.dumps({
+                                            'error': {
+                                                'message': 'Your request is missing a POST attribute. Missing attribute is: ' + column.key,
+                                                'type': 'missing_attribute'
+                                            }
+                                        })
+
+                                        # This means a required header is not provided so record it and respond
+                                        api_request = APIRequest(
+                                            authentication_type='KEY',
+                                            type=request.method,
+                                            resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                            url=request.get_full_path(),
+                                            status='400 ERR',
+                                            ip_address=get_client_ip(request),
+                                            source=request.META['HTTP_USER_AGENT'],
+                                            api_key=api_key,
+                                            response_to_user=response
+                                        )
+
+                                        api_request.save()
+
+                                        return HttpResponse(response, content_type='application/json',
+                                                            status=400)
+                                    else:
+                                        # It is present, so first get the value
+                                        posted_value = request.POST[column.key]
+
+                                        if column.type == 'String':
+                                            values_part += '"' + posted_value + '"'
+                                        else:
+                                            values_part += posted_value
+
+                                        if index < (len(columns)) - 1:
+                                            values_part += ', '
+                                        else:
+                                            values_part += ')'
+
+                                sql += 'VALUES ('+values_part+'; '
+
+                                # Add it to the big whole SQL statement
+                                full_sql += sql
+
+                            print(full_sql)
+
+                            # Try connect to the server and do database things.
+                            try:
+                                database = Database.objects.get(project=resource.project)
+
+                                conn = db.connect(host=database.server_address, port=3306,
+                                                  user=database.user, password=database.password,
+                                                  database=database.name, connect_timeout=4)
+
+                                # Create a cursor
+                                cursor = conn.cursor()
+
+                                # Now that we have the single query, execute it.
+                                cursor.execute(full_sql)
+
+                                # Commit the result
+                                conn.commit()
+
+                                for row in cursor:
+                                    print(row)
+
+                                conn.close()
+
+                            except Exception as e:
+                                print(e)
+                                # Create a response
+                                response = json.dumps({
+                                    'error': {
+                                        'message': 'There was an error with the interaction between us and your database. Please see the error generated by your server below.',
+                                        'type': 'error_connecting_to_database',
+                                        'database_error': str(e)
+                                    }
+                                })
+
+                                # Cannot connect to the server. Record it and respond
+                                api_request = APIRequest(
+                                    authentication_type='KEY',
+                                    type=request.method,
+                                    resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                    url=request.get_full_path(),
+                                    status='402 ERR',
+                                    ip_address=get_client_ip(request),
+                                    source=request.META['HTTP_USER_AGENT'],
+                                    api_key=api_key,
+                                    response_to_user=response
+                                )
+
+                                api_request.save()
+
+                                return HttpResponse(response, content_type='application/json', status=402)
 
                     except Exception as e:
 

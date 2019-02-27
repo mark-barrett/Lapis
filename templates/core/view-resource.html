@@ -98,7 +98,6 @@
                                                 {% if resource.request_type == 'GET' %}
                                                     <p class="form-instruction">Parameters</p>
                                                     {% if resource_parameters %}
-                                                        <p class="form-instruction">Parameters</p>
                                                         <table class="table table-striped table-sm">
                                                             <thead>
                                                             <tr>
@@ -160,6 +159,22 @@
                                         </div>
                                     </div>
                                 </div>
+                                <br/>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="bottom-padding"><strong>Requests to this Resource</strong></div>
+                                        <div>
+                                            <div id="requests_this_week" class="ct-chart ct-perfect-fourth"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="bottom-padding"><strong>Requests Types</strong></div>
+                                        <div>
+                                            <div id="request_types" class="ct-chart ct-perfect-fourth"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                         <br/>

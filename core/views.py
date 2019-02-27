@@ -1,6 +1,7 @@
 import json
 import random
 import string
+from datetime import timedelta, date
 
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -803,6 +804,11 @@ class CreateResource(LoginRequiredMixin, View):
             return redirect('/')
 
 
+def daterange(start_date, end_date):
+    for n in range(int ((end_date - start_date).days)):
+        yield start_date + timedelta(n)
+
+
 class ViewResource(LoginRequiredMixin, View):
     login_url = '/'
 
@@ -882,6 +888,46 @@ class ViewResource(LoginRequiredMixin, View):
 
                 # Check to make sure the user viewing this project is the owner of it
                 if resource.project.user == request.user:
+
+                    requests_over_days = []
+
+                    # Lets get the number of requests over the last 7 days
+                    today = datetime.today()
+
+                    # Generate all of the information for the chart
+                    start_date = date(today.year, today.month, today.day-6)
+                    end_date = date(today.year, today.month, today.day+1)
+
+                    for single_date in daterange(start_date, end_date):
+                        # Now we have the date
+                        api_requests = APIRequest.objects.all().filter(date__day=single_date.day,
+                                                                       date__month=single_date.month,
+                                                                       date__year=single_date.year,
+                                                                       resource=resource.name,
+                                                                       type=resource.request_type).count()
+
+                        requests_over_days.append({
+                            'date': single_date,
+                            'requests': api_requests
+                        })
+
+
+                    request_types = {}
+
+                    # Get the number of 400 requests vs 200 requests
+                    api_requests = APIRequest.objects.all().filter(resource=resource.name, type=resource.request_type)
+
+                    # Loop through each api_request
+                    for api_request in api_requests:
+                        # If already in the dictionary then increment
+                        if api_request.status in request_types:
+                            request_types[api_request.status] += 1
+                        # Else just set it to 1
+                        else:
+                            request_types[api_request.status] = 1
+
+                    print(request_types)
+
                     context = {
                         'projects': Project.objects.all().filter(user=request.user),
                         'project': project,
@@ -891,7 +937,9 @@ class ViewResource(LoginRequiredMixin, View):
                         'resource_column_returns': tables_obj,
                         'resources': Resource.objects.all().filter(project=project),
                         'response_structure': json.dumps(response_structure, sort_keys=True, indent=2),
-                        'data_binds': ResourceDataBind.objects.all().filter(resource=resource)
+                        'data_binds': ResourceDataBind.objects.all().filter(resource=resource),
+                        'requests_over_days': requests_over_days,
+                        'request_types': request_types
                     }
 
                     return render(request, 'core/view-resource.html', context)
@@ -921,6 +969,7 @@ class ViewResourceRequests(LoginRequiredMixin, View):
 
                 # Check to make sure the user viewing this project is the owner of it
                 if resource.project.user == request.user:
+
                     context = {
                         'projects': Project.objects.all().filter(user=request.user),
                         'project': project,

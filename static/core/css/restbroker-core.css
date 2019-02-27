@@ -603,3 +603,22 @@ body {
     line-height  : .5;
     border-radius : .2rem;
 }
+
+.green {
+    fill: #2FC663 !important;
+}
+
+.ct-series-a .ct-line,
+.ct-series-a .ct-point {
+    stroke: #2FC663 !important;
+}
+
+
+.ct-series-a .ct-line {
+    stroke: #4BCB76 !important;
+    stroke-width: 5px;
+}
+
+.ct-series-a .ct-area, .ct-series-a .ct-slice-donut-solid, .ct-series-a .ct-slice-pie {
+    fill: #4BCB76 !important;
+}
