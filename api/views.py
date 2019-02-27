@@ -306,6 +306,7 @@ class RequestHandlerPrivate(View):
                                 try:
                                     print(relationship.child_table.name)
                                     del data_from_database[relationship.child_table.name]
+
                                 except Exception as e:
                                     print('Cannot find that value.')
 
@@ -689,6 +690,22 @@ class RequestHandlerPrivate(View):
 
                                 conn.close()
 
+                                # Cannot connect to the server. Record it and respond
+                                api_request = APIRequest(
+                                    authentication_type='KEY',
+                                    type=request.method,
+                                    resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                    url=request.get_full_path(),
+                                    status='200 OK',
+                                    ip_address=get_client_ip(request),
+                                    source=request.META['HTTP_USER_AGENT'],
+                                    api_key=api_key
+                                )
+
+                                api_request.save()
+
+                                # DO POST RESPONSE STUFF
+
                             except Exception as e:
                                 print(e)
                                 # Create a response
@@ -716,6 +733,369 @@ class RequestHandlerPrivate(View):
                                 api_request.save()
 
                                 return HttpResponse(response, content_type='application/json', status=402)
+
+                    except Exception as e:
+
+                        # Create a response
+                        response = json.dumps({
+                            'error': {
+                                'message': 'The resource that was requested does not exist.',
+                                'type': 'resource_doesnt_exist'
+                            }
+                        })
+
+                        # Resource does not exist. Record the request.
+                        api_request = APIRequest(
+                            authentication_type='KEY',
+                            type=request.method,
+                            resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                            url=request.get_full_path(),
+                            status='404 ERR',
+                            ip_address=get_client_ip(request),
+                            source=request.META['HTTP_USER_AGENT'],
+                            api_key=api_key,
+                            response_to_user=response
+                        )
+
+                        api_request.save()
+
+                        return HttpResponse(response, content_type='application/json', status=404)
+                else:
+
+                    # Create a response
+                    response = json.dumps({
+                        'error': {
+                            'message': 'No resource was provided. RESTBroker cannot tell what you are trying to access.',
+                            'type': 'no_resource_provided'
+                        }
+                    })
+
+                    # The resource was not provided. Record the requst
+                    api_request = APIRequest(
+                        authentication_type='KEY',
+                        type=request.method,
+                        url=request.get_full_path(),
+                        status='400 ERR',
+                        ip_address=get_client_ip(request),
+                        source=request.META['HTTP_USER_AGENT'],
+                        api_key=api_key,
+                        response_to_user=response
+                    )
+
+                    api_request.save()
+
+                    return HttpResponse(response, content_type='application/json', status=400)
+
+            except Exception as e:
+
+                # Create a response
+                response = json.dumps({
+                    'error': {
+                        'message': 'The provided API Key is invalid. Please ensure it is correctly inputted.',
+                        'type': 'bad_api_key'
+                    }
+                })
+
+                # API Key is not found
+                # It was not provided. Construct a response to send back and log the request.
+                api_request = APIRequest(
+                    authentication_type='NO_AUTH',
+                    type=request.method,
+                    url=request.get_full_path(),
+                    status='401 ERR',
+                    ip_address=get_client_ip(request),
+                    source=request.META['HTTP_USER_AGENT'],
+                    response_to_user=response
+                )
+
+                api_request.save()
+
+                return HttpResponse(response, content_type='application/json', status=401)
+
+        else:
+
+            # Create a response
+            response = json.dumps({
+                'error': {
+                    'message': 'API Key not provided. Please provide a relevant API key in the HTTP_AUTHORIZATION header in the username field.',
+                    'type': 'no_api_key'
+                }
+            })
+
+            # It was not provided. Construct a response to send back and log the request.
+            api_request = APIRequest(
+                authentication_type='NO_AUTH',
+                type=request.method,
+                url=request.get_full_path(),
+                status='401 ERR',
+                ip_address=get_client_ip(request),
+                source=request.META['HTTP_USER_AGENT'],
+                response_to_user=response
+            )
+
+            api_request.save()
+
+            return HttpResponse(response, content_type='application/json', status=401)
+
+
+    def delete(self, request):
+        # The first thing we need to do is check to see if the header information has been sent for authorisation etc.
+        if 'HTTP_AUTHORIZATION' in request.META:
+            # Access GET params: print(request.GET)
+            # The key was provided so check it. First we need to base64 decode the key.
+            # Extract the key from the string. Base64decode, remove the last colon, and decode to utf-8 rather than bytes
+            api_key = base64.b64decode(request.META['HTTP_AUTHORIZATION'].split('Basic ', 1)[1])[:-1].decode(
+                'utf-8')
+
+            # Look up API key
+            try:
+                api_key = APIKey.objects.get(key=api_key)
+
+                # Check to see if the requesters IP is blocked
+                ip = get_client_ip(request)
+
+                try:
+                    blocked_ip = BlockedIP.objects.get(ip_address=ip)
+
+                    response = json.dumps({
+                        'error': {
+                            'message': 'Requests from this IP are blocked',
+                            'type': 'blocked_ip'
+                        }
+                    })
+
+                    # This means it does exist so send a return message.
+                    api_request = APIRequest(
+                        authentication_type='KEY',
+                        type=request.method,
+                        resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                        url=request.get_full_path(),
+                        status='403 ERR',
+                        ip_address=get_client_ip(request),
+                        source=request.META['HTTP_USER_AGENT'],
+                        api_key=api_key,
+                        response_to_user=response
+                    )
+
+                    api_request.save()
+
+                    return HttpResponse(response, content_type='application/json', status=403)
+
+                except:
+                    # If it doesn't exist then just pass and continue
+                    pass
+
+                # API Key is found. No check for a resource.
+                if 'HTTP_RESTBROKER_RESOURCE' in request.META:
+                    # Now that we know they provided a resource, let's check to see if it exists.
+                    try:
+                        resource = Resource.objects.get(
+                            name=request.META['HTTP_RESTBROKER_RESOURCE'],
+                            project=api_key.project,
+                            request_type=request.method
+                        )
+
+                        # Check to see if the resource is "turned off"
+                        if not resource.status:
+                            response = json.dumps({
+                                'error': {
+                                    'message': 'The owner of this resource has it disabled/off. Check back later as it may be enabled/turned on',
+                                    'type': 'endpoint_off'
+                                }
+                            })
+
+                            return HttpResponse(response, content_type='application/json')
+
+                        # The resource does exist! Now we need to go through the request and check to see
+                        # if what is required has been sent.
+
+                        # Create a resource_request object that holds all data as we move futher through
+                        resource_request = {}
+
+                        # HEADERS CHECK
+                        # We need to check and see if there are headers.
+                        resource_headers = ResourceHeader.objects.all().filter(resource=resource)
+
+                        # Create a list of the provided headers and their values
+                        provided_headers = []
+
+                        # If there are headers
+                        if resource_headers:
+                            # Loop through each header and check to see if it exists in the request
+                            for header in resource_headers:
+                                # Check to see if that one is present. HTTP_+header name with dashes replaced with underscores.
+                                if 'HTTP_' + header.key.upper().replace('-', '_') in request.META:
+                                    # Does exist.
+                                    single_header_object = {
+                                        'obj': header,
+                                        'provided_value': request.META[
+                                            'HTTP_' + header.key.upper().replace('-', '_')]
+                                    }
+
+                                    # Append it to the users provided headers
+                                    provided_headers.append(single_header_object)
+                                else:
+
+                                    response = json.dumps({
+                                        'error': {
+                                            'message': 'Your request is missing a required header. Missing header is: ' + header.key,
+                                            'type': 'missing_header'
+                                        }
+                                    })
+
+                                    # This means a required header is not provided so record it and respond
+                                    api_request = APIRequest(
+                                        authentication_type='KEY',
+                                        type=request.method,
+                                        resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                        url=request.get_full_path(),
+                                        status='400 ERR',
+                                        ip_address=get_client_ip(request),
+                                        source=request.META['HTTP_USER_AGENT'],
+                                        api_key=api_key,
+                                        response_to_user=response
+                                    )
+
+                                    api_request.save()
+
+                                    return HttpResponse(response, content_type='application/json',
+                                                        status=400)
+
+                        # If we got here we either have a list with no headers or a list with headers that have values.
+                        # Either way, if the incorrect values were given we would not be here.
+                        resource_request['headers'] = provided_headers
+
+                        # Get the databinds
+                        data_binds = ResourceDataBind.objects.all().filter(resource=resource)
+
+                        data_bind_tables = {
+
+                        }
+
+                        if data_binds:
+                            full_sql = []
+
+                            # We need to basically loop through each data bind and make it so that they are sorted by table.
+                            # This way we can execute multiple INSERTS to different tables.
+                            for data_bind in data_binds:
+
+                                # If the table is already listed then just append this data bind.
+                                if data_bind.column.table.name in data_bind_tables:
+                                    data_bind_tables[data_bind.column.table.name].append(data_bind)
+                                else:
+                                    data_bind_tables[data_bind.column.table.name] = [data_bind]
+
+
+                            # We need to loop through each table HOWEVER!!
+                            # unlike POST, we don't need to use all elements in the columns as only one should delete
+                            # a given row so we use columns[0]
+                            try:
+                                # So Django doesn't actually support DELETE requests so we need to use URL parameters.
+                                for table, columns in data_bind_tables.items():
+
+                                    if columns[0].key not in request.GET:
+
+                                        response = json.dumps({
+                                            'error': {
+                                                'message': 'Your request is missing a DELETE attribute. Set it as a URL parameter (just like a GET request). Missing attribute is: ' + columns[0].key,
+                                                'type': 'missing_attribute'
+                                            }
+                                        })
+
+                                        # This means a required header is not provided so record it and respond
+                                        api_request = APIRequest(
+                                            authentication_type='KEY',
+                                            type=request.method,
+                                            resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                            url=request.get_full_path(),
+                                            status='400 ERR',
+                                            ip_address=get_client_ip(request),
+                                            source=request.META['HTTP_USER_AGENT'],
+                                            api_key=api_key,
+                                            response_to_user=response
+                                        )
+
+                                        api_request.save()
+
+                                        return HttpResponse(response, content_type='application/json',
+                                                            status=400)
+                                    else:
+                                        sql = 'DELETE FROM '+table+' WHERE '+columns[0].column.name+'='
+
+                                        if columns[0].type == 'String':
+                                            sql += '"'+request.GET[columns[0].key]+'"; '
+                                        else:
+                                            sql += request.GET[columns[0].key]+'; '
+
+                                        full_sql.append(sql)
+
+                                # Try connect to the server and do database things.
+                                try:
+                                    database = Database.objects.get(project=resource.project)
+
+                                    conn = db.connect(host=database.server_address, port=3306,
+                                                      user=database.user, password=database.password,
+                                                      database=database.name, connect_timeout=4)
+
+                                    # Create a cursor
+                                    cursor = conn.cursor()
+
+                                    for sql_command in full_sql:
+                                        # Now that we have the single query, execute it.
+                                        cursor.execute(sql_command)
+
+                                    # Commit the result
+                                    conn.commit()
+
+
+                                    conn.close()
+
+                                    # Cannot connect to the server. Record it and respond
+                                    api_request = APIRequest(
+                                        authentication_type='KEY',
+                                        type=request.method,
+                                        resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                        url=request.get_full_path(),
+                                        status='200 OK',
+                                        ip_address=get_client_ip(request),
+                                        source=request.META['HTTP_USER_AGENT'],
+                                        api_key=api_key
+                                    )
+
+                                    api_request.save()
+
+                                    # DO DELETE RESPONSE STUFF
+
+                                except Exception as e:
+                                    print(e)
+                                    # Create a response
+                                    response = json.dumps({
+                                        'error': {
+                                            'message': 'There was an error with the interaction between us and your database. Please see the error generated by your server below.',
+                                            'type': 'error_connecting_to_database',
+                                            'database_error': str(e)
+                                        }
+                                    })
+
+                                    # Cannot connect to the server. Record it and respond
+                                    api_request = APIRequest(
+                                        authentication_type='KEY',
+                                        type=request.method,
+                                        resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                        url=request.get_full_path(),
+                                        status='402 ERR',
+                                        ip_address=get_client_ip(request),
+                                        source=request.META['HTTP_USER_AGENT'],
+                                        api_key=api_key,
+                                        response_to_user=response
+                                    )
+
+                                    api_request.save()
+
+                                    return HttpResponse(response, content_type='application/json', status=402)
+
+                            except Exception as e:
+                                print(e)
 
                     except Exception as e:
 

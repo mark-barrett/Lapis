@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="693ea1cf-17b0-42f8-8355-71d597cd4bad" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/views.py" afterPath="$PROJECT_DIR$/core/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/core/js/restbroker-core.js" afterPath="$PROJECT_DIR$/static/core/js/restbroker-core.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/views.py" afterPath="$PROJECT_DIR$/api/views.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/view-request.html" afterPath="$PROJECT_DIR$/templates/core/view-request.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -24,11 +24,11 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/api/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="131">
-              <caret line="677" column="40" lean-forward="false" selection-start-line="677" selection-start-column="40" selection-end-line="677" selection-end-column="40" />
+            <state relative-caret-position="196">
+              <caret line="1046" column="55" lean-forward="true" selection-start-line="1046" selection-start-column="55" selection-end-line="1046" selection-end-column="55" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
-                <marker date="1551283138538" expanded="true" signature="31027:31038" ph="INSERT INTO " />
+                <marker date="1551292970739" expanded="true" signature="31028:31039" ph="INSERT INTO " />
               </folding>
             </state>
           </provider>
@@ -49,6 +49,26 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="125">
               <caret line="74" column="26" lean-forward="false" selection-start-line="74" selection-start-column="26" selection-end-line="74" selection-end-column="26" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="view-resource.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/core/view-resource.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="128">
+              <caret line="189" column="120" lean-forward="false" selection-start-line="189" selection-start-column="120" selection-end-line="189" selection-end-column="120" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="view-request.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/core/view-request.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="158">
+              <caret line="78" column="217" lean-forward="false" selection-start-line="78" selection-start-column="217" selection-end-line="78" selection-end-column="217" />
               <folding />
             </state>
           </provider>
@@ -89,8 +109,8 @@
       <file leaf-file-name="create-resource.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/core/create-resource.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="382">
-              <caret line="129" column="42" lean-forward="true" selection-start-line="129" selection-start-column="42" selection-end-line="129" selection-end-column="42" />
+            <state relative-caret-position="67">
+              <caret line="108" column="39" lean-forward="true" selection-start-line="108" selection-start-column="39" selection-end-line="110" selection-end-column="46" />
               <folding>
                 <element signature="e#4269#4291#0#HTML" expanded="true" />
                 <element signature="e#5998#6020#0#HTML" expanded="true" />
@@ -174,7 +194,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Overview</find>
       <find>date</find>
       <find>Documentation</find>
       <find>ProjectSet</find>
@@ -204,6 +223,7 @@
       <find>Resource</find>
       <find>POST</find>
       <find>CreateResource</find>
+      <find>Error</find>
     </findStrings>
     <replaceStrings>
       <replace>resource</replace>
@@ -254,19 +274,19 @@
         <option value="$PROJECT_DIR$/api/urls.py" />
         <option value="$PROJECT_DIR$/api/models.py" />
         <option value="$PROJECT_DIR$/core/templatetags/util.py" />
-        <option value="$PROJECT_DIR$/templates/core/view-request.html" />
         <option value="$PROJECT_DIR$/static/core/css/chartist/chartist.min.css" />
         <option value="$PROJECT_DIR$/static/core/js/chartist/chartist.min.js" />
         <option value="$PROJECT_DIR$/templates/core/api-keys.html" />
         <option value="$PROJECT_DIR$/templates/core/base.html" />
-        <option value="$PROJECT_DIR$/templates/core/view-resource.html" />
-        <option value="$PROJECT_DIR$/api/views.py" />
         <option value="$PROJECT_DIR$/core/forms.py" />
         <option value="$PROJECT_DIR$/core/models.py" />
         <option value="$PROJECT_DIR$/static/core/css/restbroker-core.css" />
         <option value="$PROJECT_DIR$/templates/core/create-resource.html" />
         <option value="$PROJECT_DIR$/static/core/js/restbroker-core.js" />
         <option value="$PROJECT_DIR$/core/views.py" />
+        <option value="$PROJECT_DIR$/templates/core/view-resource.html" />
+        <option value="$PROJECT_DIR$/templates/core/view-request.html" />
+        <option value="$PROJECT_DIR$/api/views.py" />
       </list>
     </option>
   </component>
@@ -1069,14 +1089,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/core/view-request.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="35" column="114" lean-forward="false" selection-start-line="35" selection-start-column="114" selection-end-line="35" selection-end-column="114" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/api/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="406">
@@ -1084,14 +1096,6 @@
           <folding>
             <element signature="e#0#43#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/core/view-resource.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="99" column="80" lean-forward="false" selection-start-line="99" selection-start-column="80" selection-end-line="99" selection-end-column="80" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1148,17 +1152,6 @@
         <state relative-caret-position="-1750">
           <caret line="108" column="49" lean-forward="false" selection-start-line="108" selection-start-column="49" selection-end-line="108" selection-end-column="49" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/core/create-resource.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="382">
-          <caret line="129" column="42" lean-forward="true" selection-start-line="129" selection-start-column="42" selection-end-line="129" selection-end-column="42" />
-          <folding>
-            <element signature="e#4269#4291#0#HTML" expanded="true" />
-            <element signature="e#5998#6020#0#HTML" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1247,13 +1240,40 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/core/create-resource.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="67">
+          <caret line="108" column="39" lean-forward="true" selection-start-line="108" selection-start-column="39" selection-end-line="110" selection-end-column="46" />
+          <folding>
+            <element signature="e#4269#4291#0#HTML" expanded="true" />
+            <element signature="e#5998#6020#0#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/core/view-resource.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="189" column="120" lean-forward="false" selection-start-line="189" selection-start-column="120" selection-end-line="189" selection-end-column="120" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/core/view-request.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="158">
+          <caret line="78" column="217" lean-forward="false" selection-start-line="78" selection-start-column="217" selection-end-line="78" selection-end-column="217" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/api/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="131">
-          <caret line="677" column="40" lean-forward="false" selection-start-line="677" selection-start-column="40" selection-end-line="677" selection-end-column="40" />
+        <state relative-caret-position="196">
+          <caret line="1046" column="55" lean-forward="true" selection-start-line="1046" selection-start-column="55" selection-end-line="1046" selection-end-column="55" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
-            <marker date="1551283138538" expanded="true" signature="31027:31038" ph="INSERT INTO " />
+            <marker date="1551292970739" expanded="true" signature="31028:31039" ph="INSERT INTO " />
           </folding>
         </state>
       </provider>

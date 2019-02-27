@@ -74,7 +74,12 @@
                         {% endif %}
                     </dl>
                     {% if '4' in api_request.status %}
-                        <div class="bottom-padding"><strong>Generated Error:</strong></div>
+                        <div class="bottom-padding">
+                            <div class="float-right">
+                                <i class="fa fa-question" data-container="body" data-toggle="popover" data-placement="left" data-content="This is the error that was sent back to the client when they made this request."></i>
+                            </div>
+                            <strong>Generated Error:</strong>
+                        </div>
                         <pre><code class="json" id="response">{{ api_request.response_to_user|pretty_json }}</code></pre>
                     {% endif %}
                 </div>
