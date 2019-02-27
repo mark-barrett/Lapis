@@ -92,7 +92,8 @@ class DatabaseColumn(models.Model):
 class Resource(models.Model):
     REQUEST_CHOICES = (
         ('GET', 'GET'),
-        ('POST', 'POST')
+        ('POST', 'POST'),
+        ('DELETE', 'DELETE')
     )
 
     RESPONSE_CHOICES = (
@@ -105,7 +106,7 @@ class Resource(models.Model):
     status = models.BooleanField(default=True)
 
     # The Request
-    request_type = models.CharField(max_length=4, choices=REQUEST_CHOICES)
+    request_type = models.CharField(max_length=10, choices=REQUEST_CHOICES)
 
     # The Response
     response_format = models.CharField(max_length=4, choices=RESPONSE_CHOICES)

@@ -71,7 +71,8 @@ class DatabaseBuilderForm(forms.Form):
 class ResourceForm(forms.Form):
     REQUEST_CHOICES = (
         ('GET', 'GET'),
-        ('POST', 'POST')
+        ('POST', 'POST'),
+        ('DELETE', 'DELETE')
     )
 
     RESPONSE_CHOICES = (

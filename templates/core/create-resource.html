@@ -83,23 +83,52 @@
                                         <br/>
                                     </div>
                                     <div id="post-data-binding" style="display: none;">
+                                        <div class="float-right">
+                                            <i class="fa fa-question" data-container="body" data-toggle="popover" data-placement="left" data-content="These are the POST attributes you expect in the POST request and what they map to in your database for inserting."></i>
+                                        </div>
                                         <label for="data-binding">Data Binding</label>
                                         <table class="table table-bordered">
                                             <thead>
                                             <tr>
                                                 <th scope="col">Column</th>
                                                 <th scope="col">Key</th>
+                                                <th scope="col">Type</th>
+                                                <th scope="col">Description</th>
                                                 <th scope="col"></th>
                                             </tr>
                                             </thead>
                                             <tbody id="data-bind-column">
 
                                             <tr>
-                                                <td colspan="3"><button id="add-data-bind-column" type="button" class="btn btn-block btn-outline-success"><i class="fa fa-plus"></i></button></td>
+                                                <td colspan="5"><button id="add-data-bind-column" type="button" class="btn btn-block btn-outline-success"><i class="fa fa-plus"></i></button></td>
                                             </tr>
                                             </tbody>
                                         </table>
                                     </div>
+                                    <div id="delete-data-binding" style="display: none;">
+                                        <div class="float-right">
+                                            <i class="fa fa-question" data-container="body" data-toggle="popover" data-placement="left" data-content="These are the attributes you expect in the DELETE request that specify what row(s) to delete in the database."></i>
+                                        </div>
+                                        <label for="data-binding">Data Binding Columns to Delete Row(s)</label>
+                                        <table class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">Column</th>
+                                                <th scope="col">Key</th>
+                                                <th scope="col">Type</th>
+                                                <th scope="col">Description</th>
+                                                <th scope="col"></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="delete-data-bind-column">
+
+                                            <tr>
+                                                <td colspan="5"><button id="delete-add-data-bind-column" type="button" class="btn btn-block btn-outline-success"><i class="fa fa-plus"></i></button></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
                                     {% csrf_token %}
                                     <button type="submit" class="btn btn-success btn-block">Continue <i class="fa fa-arrow-right"></i></button>
                                     <br/>

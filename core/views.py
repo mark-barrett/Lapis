@@ -578,8 +578,6 @@ class CreateResource(LoginRequiredMixin, View):
 
                         resource['request']['headers'].append(header)
 
-                    print(resource['request']['type'])
-
                     # Get the parameters as lists if its a GET request
                     if resource['request']['type'] == 'GET':
                         parameter_types = request.POST.getlist('parameter-type')
@@ -598,19 +596,21 @@ class CreateResource(LoginRequiredMixin, View):
                     elif resource['request']['type'] == 'POST':
                         data_bind_columns = request.POST.getlist('data-bind-column')
                         data_bind_keys = request.POST.getlist('data-bind-key')
+                        data_bind_types = request.POST.getlist('data-bind-type')
+                        data_bind_descriptions = request.POST.getlist('data-bind-description')
 
                         for index, key in enumerate(data_bind_keys):
                             data_bind_column = {
                                 'column': data_bind_columns[index],
-                                'key': key
+                                'key': key,
+                                'type': data_bind_types[index],
+                                'description': data_bind_descriptions[index]
                             }
 
                             resource['request']['data_bind_columns'].append(data_bind_column)
 
                     # Set this as a session variable.
                     request.session['resource'] = resource
-
-                    print(request.session['resource'])
 
                     # Now that the session is set, redirect back to create an resource to create the response
                     return redirect('/resource/create')
@@ -730,6 +730,8 @@ class CreateResource(LoginRequiredMixin, View):
                             data_bind = ResourceDataBind(
                                 column=DatabaseColumn.objects.get(id=int(data_bind['column'])),
                                 key=data_bind['key'],
+                                type=data_bind['type'],
+                                description=data_bind['description'],
                                 resource=resource
                             )
 

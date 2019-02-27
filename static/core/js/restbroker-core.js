@@ -115,19 +115,26 @@ $('#id_request_type').change(function() {
     var chosenRequestType = $(this).find(':selected').text();
     var parametersDiv = $('#parameters');
     var postDataBinding = $('#post-data-binding');
+    var deleteDataBinding = $('#delete-data-binding');
 
     // If its a POST, remove the parameter DIV content
     if(chosenRequestType == 'POST') {
         parametersDiv.hide();
         postDataBinding.show();
-    } else {
-        // Else its a GET so set it.
+        deleteDataBinding.hide();
+    } else if(chosenRequestType == 'GET') {
+        // Else if its a GET so set it.
         parametersDiv.show();
-
+        deleteDataBinding.hide();
+    } else if(chosenRequestType == 'DELETE') {
+        // If its DELETE request then hide post and parametersDiv.
+        parametersDiv.hide();
+        postDataBinding.hide();
+        deleteDataBinding.show();
     }
 });
 
-// Listen for add data bind column
+// Listen for add data bind column (POST)
 $('#add-data-bind-column').click(function() {
     // Get the table body
     var tableBody = $('#data-bind-column');
@@ -152,8 +159,56 @@ $('#add-data-bind-column').click(function() {
                             </select>\
                           </div>';
 
+    var types = '<div class="form-group">\
+                    <select name="data-bind-type" class="form-control" id="data-bind=type">\
+                        <option value="Integer">Integer</option>\
+                        <option value="Decimal">Decimal</option>\
+                        <option value="String">String</option>\
+                        <option value="Integer">Boolean</option>\
+                    </select>\
+                </div>';
+
     // Add a row
-    tableBody.prepend('<tr><td>'+columnSelector+'</td><td><div class="form-group"><input type="text" class="form-control" name="data-bind-key" placeholder="Key of the data that will be sent in request."></div></td><td><button class="btn btn-block btn-danger"><i class="fa fa-trash"></i></button></td></tr>');
+    tableBody.prepend('<tr><td>'+columnSelector+'</td><td><div class="form-group"><input type="text" class="form-control" name="data-bind-key" placeholder="Key of the data that will be sent in request."></div></td><td>'+types+'</td><td><div class="form-group"><input type="text" class="form-control" name="data-bind-description" placeholder="Description displayed in the docs."></div></td><td><button class="btn btn-block btn-danger"><i class="fa fa-trash"></i></button></td></tr>');
+
+});
+
+// Listen for add data bind column (DELETE)
+$('#delete-add-data-bind-column').click(function() {
+    // Get the table body
+    var tableBody = $('#delete-data-bind-column');
+
+    // Get the database data
+    const databaseData = JSON.parse($('#database-data').text());
+
+    var columnData = '';
+
+    // Loop through the databaseData and construct the tableData
+    for(var i=0; i<databaseData.tables.length; i++) {
+        columnData += '<optgroup label="'+databaseData.tables[i].name+'">';
+        for(var j=0; j<databaseData.tables[i].columns.length; j++) {
+            columnData += '<option value="'+databaseData.tables[i].columns[j].id+'">'+databaseData.tables[i].columns[j].name+'</option>';
+        }
+        columnData += '</optgroup>';
+    }
+
+    var columnSelector = '<div class="form-group">\
+                            <select name="data-bind-column" class="form-control" id="data-bind-column">\
+                                '+columnData+'\
+                            </select>\
+                          </div>';
+
+    var types = '<div class="form-group">\
+                    <select name="data-bind-type" class="form-control" id="data-bind=type">\
+                        <option value="Integer">Integer</option>\
+                        <option value="Decimal">Decimal</option>\
+                        <option value="String">String</option>\
+                        <option value="Integer">Boolean</option>\
+                    </select>\
+                </div>';
+
+    // Add a row
+    tableBody.prepend('<tr><td>'+columnSelector+'</td><td><div class="form-group"><input type="text" class="form-control" name="data-bind-key" placeholder="Key of the data that will be sent in request."></div></td><td>'+types+'</td><td><div class="form-group"><input type="text" class="form-control" name="data-bind-description" placeholder="Description displayed in the docs."></div></td><td><button class="btn btn-block btn-danger"><i class="fa fa-trash"></i></button></td></tr>');
 
 });
 

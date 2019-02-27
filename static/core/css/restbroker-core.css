@@ -338,15 +338,21 @@ body {
 }
 
 .resource-GET {
-    color: #0c5460;
+    color: black;
     background-color: #d1ecf1;
-    border-color: #16A2B7;
+    border-color: #17a2b8;
 }
 
 .resource-POST {
-    color: #155724;
+    color: black;
     background-color: #ECFAF4;
-    border-color: #28A645;
+    border-color: #49CC90;
+}
+
+.resource-DELETE {
+    color: black;
+    background-color: #FEEBEB;
+    border-color: #F93E3E;
 }
 
 .resource-type-bg-GET {
@@ -355,6 +361,10 @@ body {
 
 .resource-type-bg-POST {
     background-color: #49CC90!important;
+}
+
+.resource-type-bg-DELETE {
+    background-color: #F93E3E!important;
 }
 
 .manage-resource {
@@ -515,7 +525,6 @@ body {
     font-weight: bold;
     background-color: #2FC663;
     border: 1px solid rgba(0,0,0,.125);
-
 }
 
 .request-status {
@@ -619,6 +628,6 @@ body {
     stroke-width: 5px;
 }
 
-.ct-series-a .ct-area, .ct-series-a .ct-slice-donut-solid, .ct-series-a .ct-slice-pie {
+.ct-series-a .ct-area, .ct-series-a .ct-slice-donut-solid, .ct-series-a {
     fill: #4BCB76 !important;
 }
