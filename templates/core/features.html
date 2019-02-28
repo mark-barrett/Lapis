@@ -1,0 +1,148 @@
+{% extends 'core/base.html' %}
+
+{# Load static templating tag to be able to use it to get paths to static files #}
+{% load static %}
+
+{# Set the title and background color for the base.html file. #}
+{% block title %}RESTBroker - Features{% endblock %}
+{% block background-color %}secondary-background{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12 login-left">
+            <div class="float-left">
+                <img class="logo" src="{% static 'core/images/logo-white.png' %}">
+            </div>
+            <div class="float-right login-sign-up-nav">
+                <br/>
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Learn</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'sign-up' %}">Signup</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <br/><br/>
+    <div class="container">
+        <div class="row h-50">
+            <div class="col-md-4">
+                <div class="feature-one">
+                    <i class="fas fa-exchange-alt fa-5x text-white"></i>
+                    <br/><br/>
+                    <h4 class="text-white">Many Resources, One Request</h4>
+                    <p class="text-white">You can define resources to include data from multiple different tables all nested and
+                    serialised the way it should be.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-two">
+                    <i class="fas fa-door-open fa-5x text-white"></i>
+                    <br/><br/>
+                    <h4 class="text-white">Single Point of Entry</h4>
+                    <p class="text-white">No need to remember different endpoint names. Name your resource and send all requests to
+                    restbroker.com/api.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-three">
+                    <i class="fas fa-memory fa-5x text-white"></i>
+                    <br/><br/>
+                    <h4 class="text-white">Cache Results for Efficiency</h4>
+                    <p class="text-white">RESTBroker can cache commonly requested resources so that your database does not always have
+                    to be contacted.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+
+            </div>
+            <div class="col-md-4">
+                <br/>
+                <div class="main-buttons text-center">
+                    <a class="btn btn-light">Get Started</a>
+                    <a class="btn btn-light">Learn</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+
+            </div>
+        </div>
+    </div>
+    <br/><br/>
+    <div class="card main-feature-content">
+        <div class="card-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="terminal-window">
+                            <div class="terminal-top-bar">
+                                <div class="terminal-close-button" onClick="closeTerminal()"></div>
+                                <div class="terminal-minimise-button"></div>
+                                <div class="terminal-expand-button"></div>
+                            </div>
+                            <div class="terminal-content">
+                                <p>$ <span class="typer typer-stop" id="main" data-delete-last="false" data-loop="1" data-words="curl -X GET 'https://restbroker.com/api' -u 'api_key' -H 'RESTBroker-Resource: Profile' " data-colors="white" data-delay="50"></span>
+                                    <span class="cursor" data-owner="first-typer"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 text-center">
+                        <br/><br/><br/><br/>
+                        <i class="fa fa-arrow-right fa-5x faa-passing animated"></i>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="terminal-window">
+                            <div class="terminal-top-bar">
+                                <div class="terminal-close-button"></div>
+                                <div class="terminal-minimise-button"></div>
+                                <div class="terminal-expand-button"></div>
+                            </div>
+                            <div class="terminal-content-response">
+                                <p>
+                                    {<br/>
+                                    &nbsp;&nbsp;"username": "Mark",<br/>
+                                    &nbsp;&nbsp;"posts": [{<br/>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;"body": "RESTBroker is awesome!",
+                                    &nbsp;&nbsp;&nbsp;&nbsp;"likes": 100,<br/>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;"comments": [{<br/>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"body": "I agree",<br/>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"likes": 50<br/>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;}]<br/>
+                                    &nbsp;&nbsp;}]
+                                    <br/>
+                                    }
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <Br/><br/>
+    <!-- Modal -->
+    <div class="modal fade" id="closeTerminalModal" tabindex="-1" role="dialog" aria-labelledby="closeTerminalModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="text-center">
+                        <i class="far fa-grin-squint fa-5x"></i><br/><br/>
+                        <p>Why would you want to close this beautiful custom made terminal window with it's awesome example?</p>
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Your right, it's pretty neat..</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    function closeTerminal() {
+        $('#closeTerminalModal').modal();
+    }
+    </script>
+{% endblock %}

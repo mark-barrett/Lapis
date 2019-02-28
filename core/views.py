@@ -25,6 +25,13 @@ from core.tasks import build_database
 from docs.models import DocumentationInstance, ProgrammingLanguageChoice
 
 
+class Features(View):
+
+    def get(self, request):
+
+        return render(request, 'core/features.html')
+
+
 class Home(View):
 
     def get(self, request):
