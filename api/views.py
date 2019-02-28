@@ -1040,13 +1040,13 @@ class RequestHandlerPrivate(View):
                                     # Create a cursor
                                     cursor = conn.cursor()
 
+                                    # DELETEs have to be done one after another so do that.
                                     for sql_command in full_sql:
                                         # Now that we have the single query, execute it.
                                         cursor.execute(sql_command)
 
                                     # Commit the result
                                     conn.commit()
-
 
                                     conn.close()
 
