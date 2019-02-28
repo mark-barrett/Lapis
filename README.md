@@ -1,8 +1,14 @@
-<div style="text-align: center;">
-    <a href="https://restbroker.com">
-    	<img src="https://raw.githubusercontent.com/mark-barrett/RESTBroker/master/static/core/images/logo-green.png?token=APbo7HUZ5tqtXY51LFSOwet4zCGI96ftks5cgSFiwA%3D%3D" width="400"/>
-    </a>
-</div>
+<p align="center">
+  <a href="https://restbroker.com">
+    <img
+      alt="RESTBroker"
+      src="https://raw.githubusercontent.com/mark-barrett/RESTBroker/master/static/core/images/logo-green.png?token=APbo7HUZ5tqtXY51LFSOwet4zCGI96ftks5cgSFiwA%3D%3D"
+      width="500"
+    />
+  </a>
+</p>
+
+
 
 
 
