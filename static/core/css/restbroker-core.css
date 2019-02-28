@@ -771,8 +771,10 @@ body {
     height: 12px;
     width: 12px;
     margin-left: 10px;
-    padding-top: 10px;
+    text-align: center;
+    font-size: 8px;
     border-radius: 6px;
+    color: #BBBBBB;
 }
 
 .terminal-minimise-button {
