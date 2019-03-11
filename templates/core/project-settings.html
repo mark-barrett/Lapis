@@ -71,6 +71,70 @@
                                     </div>
                                 </div>
                             </div>
+                            <br/>
+                            <form name="change-cache-settings" action="" method="post" enctype="multipart/form-data">
+                                <div class="card">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="enable_caching" name="enable_caching" {% if project.caching %}checked{% endif %}>
+                                                <label class="custom-control-label" for="enable_caching"><strong>Enable Caching</strong></label><br/>
+                                                <small>Allow RESTBroker to cache resource which are commonly accessed/requested. Any unchanged resource will be returned from RESTBroker rather than your database.</small>
+                                            </div>
+                                        </li>
+                                        <li id="cache-expiry" class="list-group-item {% if not project.caching %}disabled-setting{% endif %}">
+                                            <strong>Expiry</strong><br/>
+                                            <small>The time for which data will expire and be deleted from the RESTBroker servers.</small>
+                                            <div class="form-group">
+                                                <select id="cache-expiry" class="custom-select" name="cache-select">
+                                                    <option value="1" {% if project.caching_expiry == '1' %}selected{% endif %}>1 hour</option>
+                                                    <option value="2" {% if project.caching_expiry == '2' %}selected{% endif %}>2 hours</option>
+                                                    <option value="4" {% if project.caching_expiry == '4' %}selected{% endif %}>4 hours</option>
+                                                    <option value="8" {% if project.caching_expiry == '8' %}selected{% endif %}>8 hours</option>
+                                                    <option value="12" {% if project.caching_expiry == '12' %}selected{% endif %}>12 hours</option>
+                                                    <option value="24" {% if project.caching_expiry == '24' %}selected{% endif %}>24 hours</option>
+                                                </select>
+                                            </div>
+                                        </li>
+                                        <li id="clear-cache" class="list-group-item {% if not project.caching %}disabled-setting{% endif %}">
+                                            <strong>Clear Cache</strong><br/>
+                                            <small>Completely clear the current cache for this project.</small>
+                                            <button type="button" class="btn btn-danger btn-block" data-toggle="modal" data-target="#clearCache">
+                                                Clear Cache
+                                            </button>
+
+                                        </li>
+                                    </ul>
+                                </div>
+                                <br/>
+                                {% csrf_token %}
+                                <div id="save-doc-changes">
+                                    <button type="submit" class="btn btn-success btn-block">Save</button>
+                                </div>
+                            </form>
+                            <!-- Modal -->
+                            <div class="modal fade" id="clearCache" tabindex="-1" role="dialog" aria-labelledby="clearCache" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Clear Cache</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            You are about to clear the cache for the following project: <br/><br/>
+                                            <strong>{{ project.name }}</strong><br/><br/>
+                                            This action cannot be undone, please be sure.
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a href="" class="btn btn-danger btn-block">I understand, clear {{ project.name }}'s cache</a>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

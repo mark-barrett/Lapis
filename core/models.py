@@ -38,11 +38,22 @@ class Project(models.Model):
         ('public', 'Public')
     )
 
+    CACHE_EXPIRY = (
+        ('1', '1 Hour'),
+        ('2', '2 Hours'),
+        ('4', '4 Hours'),
+        ('8', '8 Hours'),
+        ('12', '12 Hours'),
+        ('24', '14 Hours'),
+    )
+
     name = models.CharField(max_length=64)
     description = models.TextField(null=True, default='No description')
     user = models.ForeignKey(User)
     database_built = models.BooleanField(default=False)
     type = models.CharField(max_length=25, choices=TYPE_CHOICES, null=True, default='private')
+    caching = models.BooleanField(default=False)
+    caching_expiry = models.CharField(max_length=2, choices=CACHE_EXPIRY, null=True, blank=True)
 
     class Meta:
         unique_together = (('name', 'user'))
@@ -179,7 +190,7 @@ class ResourceDataSource(models.Model):
         return 'Resource: ' + self.resource.name + ' Data Source Type: ' + self.type
 
 
-# Each instance defines a column that needs to be returned
+# Each instance defines a column that needs to beurned
 class ResourceDataSourceColumn(models.Model):
     # In form, the available column names are received when building the table but filtered by the selected table.
     column_id = models.IntegerField()

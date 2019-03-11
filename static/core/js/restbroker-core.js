@@ -109,6 +109,20 @@ $('#enable_documentation').click(function() {
     }
 });
 
+// Listen for clicks on the enable documentation button.
+$('#enable_caching').click(function() {
+    console.log("Heya");
+    // Check if its checked or not
+    if($(this).is(':checked')) {
+        // Checked, so remove the "disabled-setting" class on the different settings
+        $('#cache-expiry').removeClass('disabled-setting');
+        $('#clear-cache').removeClass('disabled-setting');
+    } else {
+        $('#cache-expiry').addClass('disabled-setting');
+        $('#clear-cache').addClass('disabled-setting');
+    }
+});
+
 // Listen for request type
 $('#id_request_type').change(function() {
    // Get the value

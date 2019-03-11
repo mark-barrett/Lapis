@@ -1152,6 +1152,36 @@ class ProjectSettings(LoginRequiredMixin, View):
             messages.error(request, 'Please select a project.')
             return redirect('/')
 
+    def post(self, request):
+        if 'selected_project_id' in request.session:
+            # Check if the user who is logged in has access to this project
+            project = Project.objects.get(id=request.session['selected_project_id'])
+
+            if project.user == request.user:
+
+                if 'cache-select' in request.POST:
+                    project.caching_expiry = request.POST['cache-select']
+
+                # Look for enable/disable caching
+                if 'enable_caching' in request.POST:
+                    project.caching = True
+                # Otherwise disable it
+                else:
+                    project.caching = False
+                    project.caching_expiry = '1'
+
+                project.save()
+
+                messages.success(request, 'Settings updated successfully.')
+                return redirect('/settings')
+            else:
+                messages.error(request, 'What your looking for is not found.')
+                return redirect('/')
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/')
+
+
 
 class ProjectSecuritySettings(LoginRequiredMixin, View):
     login_url = '/'
