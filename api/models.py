@@ -33,7 +33,7 @@ class APIRequest(models.Model):
     )
 
     STATUS = (
-        ('200 OK', '200 OK - Request was fine'),
+        ('200 OK', '200 OK - Request was fine.'),
         ('400 ERR', '400 ERR - The request was incorrect.'),
         ('401 ERR', '401 ERR - No API key or the provided key is invalid.'),
         ('402 ERR', '402 ERR - The parameters were valid but the request failed.'),
@@ -51,6 +51,7 @@ class APIRequest(models.Model):
     source = models.CharField(max_length=256)
     api_key = models.ForeignKey(APIKey, null=True, blank=True)
     response_to_user = models.TextField()
+    cached_result = models.BooleanField(default=False)
 
     def __str__(self):
        return self.status+' - '+str(self.date)+' - '+self.type

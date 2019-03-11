@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'celery',
     'core.templatetags.util',
+    'redis'
 ]
 
 MIDDLEWARE = [

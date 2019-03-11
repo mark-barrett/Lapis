@@ -1,5 +1,6 @@
 import base64
 import json
+from datetime import datetime
 
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -8,6 +9,8 @@ from django.views import View
 import MySQLdb as db
 
 # The main view that handles Private API requests
+import redis
+
 from api.models import APIRequest, APIKey
 from core.models import Resource, ResourceParameter, ResourceHeader, ResourceDataSourceColumn, DatabaseColumn, Database, \
     ResourceDataSourceFilter, DatabaseTable, ResourceParentChildRelationship, BlockedIP, ResourceDataBind
@@ -198,162 +201,241 @@ class RequestHandlerPrivate(View):
                         # Like with headers, if we have gotten here we have analysed the correct GET parameters
                         resource_request['parameters'] = provided_parameters
 
-                        # GET THE COLUMNS TO RETURN
-                        # Now we need to start constructing a response.
-                        # We first need to find out what columns and from what tables need to be returned before we generate SQL.
-                        data_source_columns = ResourceDataSourceColumn.objects.all().filter(resource=resource)
+                        # Value to determine if the resulting response should be saved to Redis
+                        need_to_be_cached = False
 
-                        # Create empty dictionary of columns that need to be returned
-                        columns_to_return = {}
+                        # Let us check to see if the user has caching on. If they do then we can check Redis for cached results
+                        if resource.project.caching:
+                            # Now that we know that caching is enabled. Check to see if there has been any stores today of this cache
+                            # Let's connect to Redis
+                            r = redis.Redis(host='localhost', port=6379, db=0)
 
-                        for data_source_column in data_source_columns:
-                            # Get its relevant database column from the database
-                            database_column = DatabaseColumn.objects.get(id=int(data_source_column.column_id))
+                            # Now we have a connection, check to see if there is a cache with todays timestamp
+                            if r.get(datetime.now().strftime('%Y-%m-%d:%H')):
+                                # So there is a cache from the last hour. This means that we now need to basically look
+                                # through all requests to this resource and see if any of them have happened in this hour
+                                # of this day. If they have then we must let SQL do its thing, else we can just returned the
+                                # Redis cache.
+                                day = datetime.today().strftime('%d')
+                                month = datetime.today().strftime('%m')
+                                year = datetime.today().strftime('%Y')
+                                hour = datetime.today().strftime('%H')
 
-                            # Check if the table that this column is part of is already in the list
-                            if database_column.table.name in columns_to_return:
-                                # Then add just this column to the list of columns to return from this table
-                                columns_to_return[database_column.table.name].append(database_column)
+                                # Get all POST requests
+                                post_requests = APIRequest.objects.all().filter(
+                                    type='POST',
+                                    resource=resource.name,
+                                    date__day=day,
+                                    date__month=month,
+                                    date__year=year,
+                                    date__hour=hour
+                                )
+
+                                # Get all DELETE requests
+                                delete_requests = APIRequest.objects.all().filter(
+                                    type='DELETE',
+                                    resource=resource.name,
+                                    date__day=day,
+                                    date__month=month,
+                                    date__year=year,
+                                    date__hour=hour
+                                )
+
+                                # So if neither have entries then we can return the Redis result
+                                # Any future checks here to whether or not the data has been modified
+                                # would go here
+                                if not post_requests and not delete_requests:
+                                    data = json.loads(r.get(datetime.today().strftime('%Y-%m-%d:%H')))
+
+                                    # Add the API request
+                                    api_request = APIRequest(
+                                        authentication_type='KEY',
+                                        type=request.method,
+                                        resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                        url=request.get_full_path(),
+                                        status='200 OK',
+                                        ip_address=get_client_ip(request),
+                                        source=request.META['HTTP_USER_AGENT'],
+                                        api_key=api_key,
+                                        cached_result=True
+                                    )
+
+                                    api_request.save()
+
+                                    need_to_be_cached = False
+
+                                    return HttpResponse(json.dumps(data), content_type='application/json',
+                                                        status=200)
+                                else:
+                                    # If not then we need to cache
+                                    need_to_be_cached = True
                             else:
-                                # It doesn't exist so create it.
-                                columns_to_return[database_column.table.name] = [database_column]
+                                # There is no cache so just run the SQL and save the cache for later.
+                                need_to_be_cached = True
 
-                        # Now add it to the resource_request
-                        resource_request['columns_to_return'] = columns_to_return
+                        if need_to_be_cached:
+                            # GET THE COLUMNS TO RETURN
+                            # Now we need to start constructing a response.
+                            # We first need to find out what columns and from what tables need to be returned before we generate SQL.
+                            data_source_columns = ResourceDataSourceColumn.objects.all().filter(resource=resource)
 
-                        # GET THE FILTERS AND CHECK THAT THEY ARE POSSIBLE AND RETURN IF SO.
+                            # Create empty dictionary of columns that need to be returned
+                            columns_to_return = {}
 
-                        # DO SOME SQL.
-                        # Get the SQL information
-                        database = Database.objects.get(project=resource.project)
+                            for data_source_column in data_source_columns:
+                                # Get its relevant database column from the database
+                                database_column = DatabaseColumn.objects.get(id=int(data_source_column.column_id))
 
-                        # Dictionary to hold the data that is returned from the database.
-                        data_from_database = {}
+                                # Check if the table that this column is part of is already in the list
+                                if database_column.table.name in columns_to_return:
+                                    # Then add just this column to the list of columns to return from this table
+                                    columns_to_return[database_column.table.name].append(database_column)
+                                else:
+                                    # It doesn't exist so create it.
+                                    columns_to_return[database_column.table.name] = [database_column]
 
-                        # Try connect to the server and do database things.
-                        try:
-                            conn = db.connect(host=database.server_address, port=3306,
-                                              user=database.user, password=database.password,
-                                              database=database.name, connect_timeout=4)
+                            # Now add it to the resource_request
+                            resource_request['columns_to_return'] = columns_to_return
 
-                            # Construct the sql query
-                            sql_query = ''
+                            # GET THE FILTERS AND CHECK THAT THEY ARE POSSIBLE AND RETURN IF SO.
 
-                            # Loop through each table
-                            for table_index, (table, columns) in enumerate(resource_request['columns_to_return'].items()):
+                            # DO SOME SQL.
+                            # Get the SQL information
+                            database = Database.objects.get(project=resource.project)
 
-                                # Create a cursor
-                                cursor = conn.cursor()
+                            # Dictionary to hold the data that is returned from the database.
+                            data_from_database = {}
 
-                                single_table_query = 'SELECT '
-                                # Loop through columns
-                                for index, column in enumerate(columns):
-                                    single_table_query += column.name
+                            # Try connect to the server and do database things.
+                            try:
+                                conn = db.connect(host=database.server_address, port=3306,
+                                                  user=database.user, password=database.password,
+                                                  database=database.name, connect_timeout=4)
 
-                                    # If we are in any iteration apart from the last add a comma and space
-                                    if(index < len(columns)-1):
-                                        single_table_query += ', '
+                                # Construct the sql query
+                                sql_query = ''
 
-                                # Add the table
-                                single_table_query += ' FROM '+table+''
+                                # Loop through each table
+                                for table_index, (table, columns) in enumerate(resource_request['columns_to_return'].items()):
 
-                                # Append the end with a semi colon to end the query
-                                single_table_query += ';'
+                                    # Create a cursor
+                                    cursor = conn.cursor()
 
-                                # Now that we have the single query, execute it.
-                                cursor.execute(single_table_query)
+                                    single_table_query = 'SELECT '
+                                    # Loop through columns
+                                    for index, column in enumerate(columns):
+                                        single_table_query += column.name
 
-                                column_names = [i[0] for i in cursor.description]
+                                        # If we are in any iteration apart from the last add a comma and space
+                                        if(index < len(columns)-1):
+                                            single_table_query += ', '
 
-                                # Loop through the results
-                                for row in cursor:
-                                    single_table_object = {}
+                                    # Add the table
+                                    single_table_query += ' FROM '+table+''
 
-                                    # We need to loop through the columns in this row and match them to the column names
-                                    for index, db_column in enumerate(row):
-                                        # Put whatever column name in order that we got from SQL matched with its value
-                                        single_table_object[column_names[index]] = db_column
+                                    # Append the end with a semi colon to end the query
+                                    single_table_query += ';'
 
-                                    # Check to see if the table is already in the data_from_database dict
-                                    if table in data_from_database:
-                                        # If it is then we append.
-                                        data_from_database[table].append(single_table_object)
-                                    else:
-                                        # If not we create
-                                        data_from_database[table] = [single_table_object]
+                                    # Now that we have the single query, execute it.
+                                    cursor.execute(single_table_query)
 
-                            conn.close()
+                                    column_names = [i[0] for i in cursor.description]
 
-                            # Now lets look for the parent child relationships
-                            parent_child_relationships = ResourceParentChildRelationship.objects.all().filter(resource=resource)
+                                    # Loop through the results
+                                    for row in cursor:
+                                        single_table_object = {}
 
-                            for relationship in parent_child_relationships:
-                                # Loop through the data
-                                for value, data in data_from_database.items():
-                                    # Check to see if the table is a parent
+                                        # We need to loop through the columns in this row and match them to the column names
+                                        for index, db_column in enumerate(row):
+                                            # Put whatever column name in order that we got from SQL matched with its value
+                                            single_table_object[column_names[index]] = db_column
+
+                                        # Check to see if the table is already in the data_from_database dict
+                                        if table in data_from_database:
+                                            # If it is then we append.
+                                            data_from_database[table].append(single_table_object)
+                                        else:
+                                            # If not we create
+                                            data_from_database[table] = [single_table_object]
+
+                                conn.close()
+
+                                # Now lets look for the parent child relationships
+                                parent_child_relationships = ResourceParentChildRelationship.objects.all().filter(resource=resource)
+
+                                for relationship in parent_child_relationships:
+                                    # Loop through the data
+                                    for value, data in data_from_database.items():
+                                        # Check to see if the table is a parent
+                                        try:
+                                            this_relationship = ResourceParentChildRelationship.objects.get(resource=resource, parent_table=DatabaseTable.objects.get(database=database, name=value))
+
+                                            for instance in data:
+                                                # Delete the column with the name of
+                                                print(instance)
+                                                instance[this_relationship.child_table.name] = list(filter(lambda single_instance: single_instance[this_relationship.child_table_column.name] == instance[this_relationship.parent_table_column.name], data_from_database[this_relationship.child_table.name]))
+
+                                        except Exception as e:
+                                            print(e)
+
+                                    # Delete the child value from the data
                                     try:
-                                        this_relationship = ResourceParentChildRelationship.objects.get(resource=resource, parent_table=DatabaseTable.objects.get(database=database, name=value))
-
-                                        for instance in data:
-                                            # Delete the column with the name of
-                                            print(instance)
-                                            instance[this_relationship.child_table.name] = list(filter(lambda single_instance: single_instance[this_relationship.child_table_column.name] == instance[this_relationship.parent_table_column.name], data_from_database[this_relationship.child_table.name]))
+                                        print(relationship.child_table.name)
+                                        del data_from_database[relationship.child_table.name]
 
                                     except Exception as e:
-                                        print(e)
+                                        print('Cannot find that value.')
 
-                                # Delete the child value from the data
-                                try:
-                                    print(relationship.child_table.name)
-                                    del data_from_database[relationship.child_table.name]
+                                # Cannot connect to the server. Record it and respond
+                                api_request = APIRequest(
+                                    authentication_type='KEY',
+                                    type=request.method,
+                                    resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                    url=request.get_full_path(),
+                                    status='200 OK',
+                                    ip_address=get_client_ip(request),
+                                    source=request.META['HTTP_USER_AGENT'],
+                                    api_key=api_key
+                                )
 
-                                except Exception as e:
-                                    print('Cannot find that value.')
+                                api_request.save()
 
-                            # Cannot connect to the server. Record it and respond
-                            api_request = APIRequest(
-                                authentication_type='KEY',
-                                type=request.method,
-                                resource=request.META['HTTP_RESTBROKER_RESOURCE'],
-                                url=request.get_full_path(),
-                                status='200 OK',
-                                ip_address=get_client_ip(request),
-                                source=request.META['HTTP_USER_AGENT'],
-                                api_key=api_key
-                            )
+                                # Let's check to see if we were meant to save the cache
+                                if need_to_be_cached:
+                                    r = redis.Redis(host='localhost', port=6379, db=0)
 
-                            api_request.save()
+                                    # Set the dict
+                                    r.psetex(name=datetime.now().strftime('%Y-%m-%d:%H'), time_ms=((int(resource.project.caching_expiry)*60)*60)*1000, value=str(json.dumps(data_from_database)))
 
-                            return HttpResponse(json.dumps(data_from_database), content_type='application/json', status=200)
+                                return HttpResponse(json.dumps(data_from_database), content_type='application/json', status=200)
 
-                        except Exception as e:
-                            print(e)
-                            # Create a response
-                            response = json.dumps({
-                                'error': {
-                                    'message': 'There was an error with the interaction between us and your database. Please see the error generated by your server below.',
-                                    'type': 'error_connecting_to_database',
-                                    'database_error': str(e)
-                                }
-                            })
+                            except Exception as e:
+                                print(e)
+                                # Create a response
+                                response = json.dumps({
+                                    'error': {
+                                        'message': 'There was an error with the interaction between us and your database. Please see the error generated by your server below.',
+                                        'type': 'error_connecting_to_database',
+                                        'database_error': str(e)
+                                    }
+                                })
 
-                            # Cannot connect to the server. Record it and respond
-                            api_request = APIRequest(
-                                authentication_type='KEY',
-                                type=request.method,
-                                resource=request.META['HTTP_RESTBROKER_RESOURCE'],
-                                url=request.get_full_path(),
-                                status='402 ERR',
-                                ip_address=get_client_ip(request),
-                                source=request.META['HTTP_USER_AGENT'],
-                                api_key=api_key,
-                                response_to_user=response
-                            )
+                                # Cannot connect to the server. Record it and respond
+                                api_request = APIRequest(
+                                    authentication_type='KEY',
+                                    type=request.method,
+                                    resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                    url=request.get_full_path(),
+                                    status='402 ERR',
+                                    ip_address=get_client_ip(request),
+                                    source=request.META['HTTP_USER_AGENT'],
+                                    api_key=api_key,
+                                    response_to_user=response
+                                )
 
-                            api_request.save()
+                                api_request.save()
 
-                            return HttpResponse(response, content_type='application/json', status=402)
-
+                                return HttpResponse(response, content_type='application/json', status=402)
 
                     except Exception as e:
                         print(e)

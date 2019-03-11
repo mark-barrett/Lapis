@@ -1,6 +1,7 @@
 import json
 import random
 import string
+import redis
 from datetime import timedelta, date
 
 from django.contrib.auth import authenticate, logout, login
@@ -28,6 +29,10 @@ from docs.models import DocumentationInstance, ProgrammingLanguageChoice
 class Features(View):
 
     def get(self, request):
+
+        r = redis.Redis(host='localhost', port=6379, db=0)
+
+        r.set('foo', 'bar')
 
         return render(request, 'core/features.html')
 
