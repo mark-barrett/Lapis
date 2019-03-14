@@ -8,13 +8,13 @@ from core import admin
 from core import views
 
 urlpatterns = [
-    url(r'^$', views.Home.as_view(), name='home'),
-    url(r'features', views.Features.as_view(), name='features'),
+    url(r'^$', views.Features.as_view(), name='features'),
+    url(r'my-account', views.Account.as_view(), name='account'),
+    url(r'account', views.Home.as_view(), name='home'),
     url(r'sign-up', views.SignUp.as_view(), name='sign-up'),
     url(r'logout', views.Logout.as_view(), name='logout'),
     url(r'^dashboard/(?P<project_id>[0-9]+)$', views.DashboardSetSelectedProject.as_view(), name='set-selected-project'),
     url(r'dashboard', views.Dashboard.as_view(), name='dashboard'),
-    url(r'account', views.Account.as_view(), name='account'),
     url(r'^resources', views.Resources.as_view(), name='resources'),
     url(r'^settings/documentation', views.DocumentationSettings.as_view(), name='documentation-settings'),
     url(r'^settings/security', views.ProjectSecuritySettings.as_view(), name='project-security-settings'),

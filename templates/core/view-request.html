@@ -68,6 +68,9 @@
                         <dt class="col-sm-3">Authenticated With</dt>
                         <dd class="col-sm-9">{{ api_request.get_authentication_type_display }}</dd>
 
+                        <dt class="col-sm-3">Cached Result</dt>
+                        <dd class="col-md-9">{% if api_request.cached_result %}<span class="badge badge-primary">Yes</span>{% else %}<span class="badge badge-secondary">No</span>{% endif %}</dd>
+
                         {% if api_request.authentication_type == 'KEY' %}
                             <dt class="col-sm-3">API Key</dt>
                             <dd class="col-sm-9">{{ api_request.api_key.key }}</dd>

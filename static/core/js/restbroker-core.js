@@ -148,6 +148,19 @@ $('#id_request_type').change(function() {
     }
 });
 
+// Listen for change on dropdown for changing charts on Statistics Overview
+$('#chartSelectorMain').change(function() {
+    var chosenChart = $(this).find(':selected').text();
+
+    if(chosenChart == 'This Week') {
+        $('#requestsThisWeekDiv').fadeIn();
+        $('#requestsTodayDiv').hide();
+    } else if(chosenChart == 'Today') {
+        $('#requestsThisWeekDiv').hide();
+        $('#requestsTodayDiv').fadeIn();
+    }
+});
+
 // Listen for add data bind column (POST)
 $('#add-data-bind-column').click(function() {
     // Get the table body

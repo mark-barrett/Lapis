@@ -30,10 +30,6 @@ class Features(View):
 
     def get(self, request):
 
-        r = redis.Redis(host='localhost', port=6379, db=0)
-
-        r.set('foo', 'bar')
-
         return render(request, 'core/features.html')
 
 
@@ -66,10 +62,10 @@ class Home(View):
         if user is not None:
             login(request, user)
             messages.success(request, 'Hey ' + user.first_name + ', welcome back!')
-            return redirect('/')
+            return redirect('/account')
         else:
             messages.error(request, 'Invalid username or password.')
-            return redirect('/')
+            return redirect('/account')
 
 
 class SignUp(View):
@@ -133,7 +129,7 @@ class Logout(View):
 
             logout(request)
             messages.success(request, "Logged out. Thanks for stopping by!")
-            return redirect('/')
+            return redirect('/account')
 
 
 class Dashboard(LoginRequiredMixin, View):
@@ -1134,6 +1130,8 @@ class Account(LoginRequiredMixin, View):
 
     def get(self, request):
 
+        print("Hello World")
+
         context = {
             'projects': Project.objects.all().filter(user=request.user)
         }
@@ -1164,21 +1162,29 @@ class ProjectSettings(LoginRequiredMixin, View):
 
             if project.user == request.user:
 
-                if 'cache-select' in request.POST:
-                    project.caching_expiry = request.POST['cache-select']
+                if 'clear-cache' in request.POST:
+                    # Clear the cache
+                    r = redis.Redis(host='localhost', port=6379, db=0)
 
-                # Look for enable/disable caching
-                if 'enable_caching' in request.POST:
-                    project.caching = True
-                # Otherwise disable it
+                    r.flushall()
+                    messages.success(request, 'Successfully cleared the stored cache.')
+                    return redirect('/settings')
                 else:
-                    project.caching = False
-                    project.caching_expiry = '1'
+                    if 'cache-select' in request.POST:
+                        project.caching_expiry = request.POST['cache-select']
 
-                project.save()
+                    # Look for enable/disable caching
+                    if 'enable_caching' in request.POST:
+                        project.caching = True
+                    # Otherwise disable it
+                    else:
+                        project.caching = False
+                        project.caching_expiry = '1'
 
-                messages.success(request, 'Settings updated successfully.')
-                return redirect('/settings')
+                    project.save()
+
+                    messages.success(request, 'Settings updated successfully.')
+                    return redirect('/settings')
             else:
                 messages.error(request, 'What your looking for is not found.')
                 return redirect('/')
@@ -1367,9 +1373,50 @@ class ProjectStatistics(LoginRequiredMixin, View):
     def get(self, request):
 
         if 'selected_project_id' in request.session:
+
+            # The first statistic we want to get is the actual total requests over the last 7 days
+            requests_over_days = []
+            requests_today = []
+
+            # Lets get the number of requests over the last 7 days
+            today = datetime.today()
+
+            # Generate all of the information for the chart
+            start_date = date(today.year, today.month, today.day - 6)
+            end_date = date(today.year, today.month, today.day + 1)
+
+            for single_date in daterange(start_date, end_date):
+                # Now we have the date
+                api_requests = APIRequest.objects.all().filter(date__day=single_date.day,
+                                                               date__month=single_date.month,
+                                                               date__year=single_date.year).count()
+
+                requests_over_days.append({
+                    'date': single_date,
+                    'requests': api_requests
+                })
+
+            # Get the number of requests today
+            for x in range(1, today.hour):
+                api_requests = APIRequest.objects.all().filter(date__day=today.day,
+                                                               date__month=today.month,
+                                                               date__year=today.year,
+                                                               date__hour=x).count()
+
+                requests_today.append({
+                    'hour': x,
+                    'requests': api_requests
+                })
+
             context = {
                 'projects': Project.objects.all().filter(user=request.user),
-                'project': Project.objects.get(id=request.session['selected_project_id'])
+                'project': Project.objects.get(id=request.session['selected_project_id']),
+                'requests_over_days': requests_over_days,
+                'requests_today_graph': requests_today,
+                'requests_today': APIRequest.objects.all().filter(date__day=today.day,
+                                                                  date__month=today.month,
+                                                                  date__year=today.year).count(),
+                'requests_this_month': APIRequest.objects.all().filter(date__month=today.month).count()
             }
 
             return render(request, 'core/project-statistics.html', context)

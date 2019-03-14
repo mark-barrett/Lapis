@@ -19,12 +19,18 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'home' %}">Learn</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'home' %}">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'sign-up' %}">Signup</a>
-                    </li>
+                    {% if request.user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'home' %}"><i class="fas fa-user text-white"></i>{{ request.user.first_name }}</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'home' %}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'sign-up' %}">Signup</a>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
@@ -65,7 +71,7 @@
             <div class="col-md-4">
                 <br/>
                 <div class="main-buttons text-center">
-                    <a class="btn btn-light">Get Started</a>
+                    <a href="/login" class="btn btn-light">Get Started</a>
                     <a class="btn btn-light">Learn</a>
                 </div>
             </div>
@@ -123,9 +129,34 @@
                     </div>
                 </div>
             </div>
+            <br/><br/>
         </div>
     </div>
-    <Br/><br/>
+
+    <br/>
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-6">
+                <br/>
+                <h3 class="text-white">Self Documenting and Code Autogeneration</h3>
+                <p class="text-white">RESTBroker is self documenting which mades once you change some thing in your defintion, the documentation with update appropriately.<br/>
+                    It will also generate code examples in multiple languages of your choices:</p>
+                <p class="text-white"><i class="fa fa-code fa-2x"></i> &nbsp; <i class="fab fa-python fa-2x"></i> &nbsp; <i class="fab fa-java fa-2x"></i> &nbsp; <i class="fab fa-js fa-2x"></i> &nbsp; <i class="fab fa-php fa-2x"></i></p>
+            </div>
+            <div class="col-md-6">
+                <div class="terminal-top-bar">
+                    <div class="terminal-top-bar">
+                        <div class="terminal-close-button" onClick="closeTerminal()"></div>
+                        <div class="terminal-minimise-button"></div>
+                        <div class="terminal-expand-button"></div>
+                    </div>
+                </div>
+                <img src="{% static 'core/images/docs.png' %}" width="100%" style="border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;"/>
+            </div>
+        </div>
+    </div>
+    <br/><br/>
     <!-- Modal -->
     <div class="modal fade" id="closeTerminalModal" tabindex="-1" role="dialog" aria-labelledby="closeTerminalModal" aria-hidden="true">
         <div class="modal-dialog" role="document">

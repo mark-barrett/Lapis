@@ -128,9 +128,12 @@
                                             This action cannot be undone, please be sure.
                                         </div>
                                         <div class="modal-footer">
-                                            <a href="" class="btn btn-danger btn-block">I understand, clear {{ project.name }}'s cache</a>
+                                            <form name="clear-cache" action="" method="post">
+                                                <input type="hidden" value="1" name="clear-cache">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-danger btn-block">I understand, clear {{ project.name }}'s cache</button>
+                                            </form>
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-
                                         </div>
                                     </div>
                                 </div>

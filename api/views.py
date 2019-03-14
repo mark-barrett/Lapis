@@ -273,7 +273,7 @@ class RequestHandlerPrivate(View):
                                 # There is no cache so just run the SQL and save the cache for later.
                                 need_to_be_cached = True
 
-                        if need_to_be_cached:
+                        if need_to_be_cached or resource.project.caching is False:
                             # GET THE COLUMNS TO RETURN
                             # Now we need to start constructing a response.
                             # We first need to find out what columns and from what tables need to be returned before we generate SQL.

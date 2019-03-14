@@ -686,6 +686,11 @@ body {
     animation: fadein 4s, 3s ease-out 0s 1 slideUp;
 }
 
+.nav-link:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
 @keyframes fadein {
     from { opacity: 0; }
     to   { opacity: 1; }
@@ -798,7 +803,71 @@ body {
 }
 
 .main-feature-content {
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
+    border-radius: 0px;
     border: none;
+}
+
+.feature-card {
+    box-shadow: 0 0.75rem 1.5rem rgba(18, 38, 63, 0.03);
+}
+
+.soft-green {
+    color: #4DBC8C;
+}
+
+.main-stat-title {
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 0px;
+}
+
+.main-stat-value-blue {
+    color: #12CDEF;
+    margin-bottom: 0px;
+    font-size: 35px;
+}
+
+.main-stat-value-orange {
+    color: #F96340;
+    margin-bottom: 0px;
+    font-size: 35px;
+}
+
+.main-stat-value-yellow {
+    color: #FFD400;
+    margin-bottom: 0px;
+    font-size: 35px;
+}
+
+.view-stat-link {
+    margin-bottom: 0px;
+    font-size: 10px;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.stat-card {
+    border-radius: .375rem;
+    -webkit-box-shadow: 0 7px 14px 0 rgba(59,65,94,.1), 0 3px 6px 0 rgba(0,0,0,.07);
+    box-shadow: 0 0px 14px 0 rgba(59,65,94,.1), 0 3px 6px 0 rgba(0,0,0,.07);
+    border: none;
+}
+
+.stat-graph-card {
+    border-radius: .375rem;
+    background-color: #2DC662;
+    -webkit-box-shadow: 0 7px 14px 0 rgba(59,65,94,.1), 0 3px 6px 0 rgba(0,0,0,.07);
+    box-shadow: 0 0px 14px 0 rgba(59,65,94,.1), 0 3px 6px 0 rgba(0,0,0,.07);
+    border: none;
+}
+
+.view-stat-link > a {
+    color: #2EC663;
+}
+
+.inner-chart-title {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #FFFFFF;
+    font-weight: bold;
 }
