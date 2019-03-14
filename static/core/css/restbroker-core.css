@@ -871,3 +871,30 @@ body {
     color: #FFFFFF;
     font-weight: bold;
 }
+
+.most-popular-request-type {
+    font-size: 15px;
+}
+
+.to-icon {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+
+.less-top-margin {
+    padding-top: 10px;
+}
+
+.statistic-selector-title {
+    padding-bottom: 10px;
+    font-weight: bold;
+}
+
+.list-group-item a {
+    color: #424548;
+}
+
+.active-li {
+    color: white;
+}

@@ -4,7 +4,7 @@
 {% load static %}
 
 {# Set the title and background color for the base.html file. #}
-{% block title %}RESTBroker - Project Statistics{% endblock %}
+{% block title %}RESTBroker - Request Statistics{% endblock %}
 
 {% block page-content %}
     <div class="page-content">
@@ -32,68 +32,65 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div class="list-group">
-                                <a href="{% url 'project-statistics' %}" class="list-group-item list-group-item-action active">Overview</a>
-                                <a href="{% url 'request-statistics' %}" class="list-group-item list-group-item-action">Requests</a>
+                                <a href="{% url 'project-statistics' %}" class="list-group-item list-group-item-action">Overview</a>
+                                <a href="{% url 'request-statistics' %}" class="list-group-item list-group-item-action active">Requests</a>
                                 <a href="" class="list-group-item list-group-item-action">API Keys</a>
                                 <a href="#" class="list-group-item list-group-item-action">Alerts</a>
                             </div>
                         </div>
                         <div class="col-md-9">
-                            <h4>Overview</h4>
+                            <h4>Requests</h4>
                             <hr/>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="stat-card card">
-                                        <div class="card-body">
-                                            <p class="main-stat-title">Requests Today</p>
-                                            <p class="main-stat-value-orange">{{ requests_today }}</p>
-                                            <p class="view-stat-link"><a href="">View Request Statistics <i class="fa fa-arrow-right"></i></a></p>
+                            <div class="stat-card card">
+                                <div class="card-body less-top-margin">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="text-center">
+                                                <div class="statistic-selector-title">Start/End Date</div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="stat-card card">
-                                        <div class="card-body">
-                                            <p class="main-stat-title">Requests this Month</p>
-                                            <p class="main-stat-value-blue">{{ requests_this_month }}</p>
-                                            <p class="view-stat-link"><a href="">View Request Statistics<i class="fa fa-arrow-right"></i></a></p>
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-3">
+                                            <div class="text-center">
+                                                <div class="statistic-selector-title">Resource</div>
+                                            </div>
                                         </div>
+                                        <div class="col-md-2"></div>
                                     </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="stat-card card">
-                                        <div class="card-body">
-                                            <p class="main-stat-title">Most Popular Resource</p>
-                                            <p class="main-stat-value-yellow">{{ most_popular.resource }} <small class="badge resource-type-bg-{{ most_popular.type }} text-white most-popular-request-type">{{ most_popular.type }}</small></p>
-                                            <p class="view-stat-link"><a href="">View Resource Statistics <i class="fa fa-arrow-right"></i></a></p>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <div class="form-group no-bottom-margin">
+                                                <input type="text" class="form-control form-control-sm" name="start_date" value="10/24/1984">
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <br/>
-
-                            <div class="stat-graph-card card">
-                                <div class="card-body">
-                                    <div class="float-right">
-                                        <select class="form-control" id="chartSelectorMain">
-                                            <option value="week">This Week</option>
-                                            <option value="today">Today</option>
-                                        </select>
-                                    </div>
-                                    <div id="requestsThisWeekDiv">
-                                        <div class="inner-chart-title">Requests this Week</div>
-                                        <div>
-                                            <canvas id="requestsThisWeek" width="400" height="150"></canvas>
+                                        <div class="col-md-1">
+                                            <div class="text-center">
+                                                <i class="fa fa-arrow-right"></i>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div id="requestsTodayDiv">
-                                        <div class="inner-chart-title">Requests Today</div>
-                                        <div>
-                                            <canvas id="requestsToday" width="400" height="150"></canvas>
+                                        <div class="col-md-2">
+                                            <div class="form-group no-bottom-margin">
+                                                <input type="text" class="form-control form-control-sm" name="end_date" value="10/24/1984">
+                                            </div>
                                         </div>
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-3">
+                                            <div class="float-right">
+                                                <div class="form-group no-bottom-margin">
+                                                    <select name="resource" id="resource" class="form-control">
+                                                        {% for resource in resources %}
+                                                            <option value="{{ resource.id }}">{{ resource.name }} ({{ resource.request_type }})</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2"></div>
                                     </div>
                                 </div>
                             </div>
+                        Graph<br/>
+                        List of Requests
                         </div>
                     </div>
                 </div>

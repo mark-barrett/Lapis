@@ -2,18 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="693ea1cf-17b0-42f8-8355-71d597cd4bad" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dump.rdb" afterPath="$PROJECT_DIR$/dump.rdb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/views.py" afterPath="$PROJECT_DIR$/api/views.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/urls.py" afterPath="$PROJECT_DIR$/core/urls.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/views.py" afterPath="$PROJECT_DIR$/core/views.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/core/css/restbroker-core.css" afterPath="$PROJECT_DIR$/static/core/css/restbroker-core.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/core/js/restbroker-core.js" afterPath="$PROJECT_DIR$/static/core/js/restbroker-core.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/base.html" afterPath="$PROJECT_DIR$/templates/core/base.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/features.html" afterPath="$PROJECT_DIR$/templates/core/features.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/project-settings.html" afterPath="$PROJECT_DIR$/templates/core/project-settings.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/project-statistics.html" afterPath="$PROJECT_DIR$/templates/core/project-statistics.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/view-request.html" afterPath="$PROJECT_DIR$/templates/core/view-request.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -31,31 +26,31 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="project-settings.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/core/project-settings.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="525">
+              <caret line="35" column="34" lean-forward="true" selection-start-line="30" selection-start-column="28" selection-end-line="35" selection-end-column="34" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="11" column="64" lean-forward="false" selection-start-line="11" selection-start-column="64" selection-end-line="11" selection-end-column="64" />
+            <state relative-caret-position="270">
+              <caret line="22" column="95" lean-forward="false" selection-start-line="22" selection-start-column="95" selection-end-line="22" selection-end-column="95" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="nav-bar.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/core/nav-bar.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="439">
-              <caret line="71" column="39" lean-forward="false" selection-start-line="71" selection-start-column="39" selection-end-line="71" selection-end-column="39" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="736">
-              <caret line="1407" column="29" lean-forward="false" selection-start-line="1407" selection-start-column="29" selection-end-line="1407" selection-end-column="29" />
+            <state relative-caret-position="286">
+              <caret line="1460" column="74" lean-forward="false" selection-start-line="1460" selection-start-column="74" selection-end-line="1460" selection-end-column="74" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -63,11 +58,51 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/api/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="553">
+              <caret line="53" column="53" lean-forward="false" selection-start-line="53" selection-start-column="53" selection-end-line="53" selection-end-column="53" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="245">
+              <caret line="102" column="14" lean-forward="false" selection-start-line="102" selection-start-column="6" selection-end-line="102" selection-end-column="14" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="request-statistics.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/templates/core/request-statistics.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="435">
+              <caret line="32" column="46" lean-forward="true" selection-start-line="32" selection-start-column="46" selection-end-line="32" selection-end-column="46" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="project-statistics.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/core/project-statistics.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="409">
-              <caret line="88" column="61" lean-forward="false" selection-start-line="88" selection-start-column="61" selection-end-line="88" selection-end-column="61" />
+            <state relative-caret-position="435">
+              <caret line="38" column="34" lean-forward="true" selection-start-line="33" selection-start-column="28" selection-end-line="38" selection-end-column="34" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="features.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/core/features.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="109">
+              <caret line="130" column="18" lean-forward="false" selection-start-line="130" selection-start-column="18" selection-end-line="130" selection-end-column="18" />
               <folding />
             </state>
           </provider>
@@ -76,70 +111,9 @@
       <file leaf-file-name="base.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/core/base.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="173" column="74" lean-forward="false" selection-start-line="173" selection-start-column="74" selection-end-line="173" selection-end-column="74" />
+            <state relative-caret-position="394">
+              <caret line="51" column="18" lean-forward="true" selection-start-line="51" selection-start-column="18" selection-end-line="51" selection-end-column="18" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="restbroker-core.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/static/core/js/restbroker-core.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="178">
-              <caret line="158" column="38" lean-forward="false" selection-start-line="158" selection-start-column="38" selection-end-line="158" selection-end-column="38" />
-              <folding>
-                <marker date="1552583947733" expanded="true" signature="184:1572" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="227:1544" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="279:528" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="337:492" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="581:834" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="639:798" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="887:1152" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="945:1116" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="1205:1511" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="1263:1475" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="2943:4457" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="3064:4428" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="3116:3713" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="3185:3677" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="3252:3637" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="3766:4395" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="3835:4359" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="3902:4319" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="7648:7874" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="7753:7840" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="7919:8329" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="8012:8305" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="9642:9875" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="9754:9841" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="9920:10337" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="10020:10313" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="11565:12625" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="11610:12597" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="11690:12476" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="12062:12440" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="12297:12400" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="18505:19283" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="18553:19278" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="18598:19254" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="18924:19226" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="18987:19013" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="19014:19058" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="19653:20874" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="19696:20846" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="19748:20143" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="19806:20107" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="19895:20067" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="20196:20448" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="20254:20412" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="20501:20813" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="20559:20777" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="26815:26909" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="26910:26916" ph=" " />
-                <marker date="1552583947733" expanded="true" signature="28901:28995" ph="..." />
-                <marker date="1552583947733" expanded="true" signature="28996:29002" ph=" " />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -147,28 +121,8 @@
       <file leaf-file-name="restbroker-core.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/core/css/restbroker-core.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="577">
-              <caret line="869" column="24" lean-forward="false" selection-start-line="869" selection-start-column="24" selection-end-line="869" selection-end-column="24" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/docs/views.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="23" column="0" lean-forward="true" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/docs/urls.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="637">
+              <caret line="898" column="17" lean-forward="false" selection-start-line="898" selection-start-column="17" selection-end-line="898" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -181,15 +135,13 @@
       <list>
         <option value="Python Script" />
         <option value="CSS File" />
-        <option value="HTML File" />
         <option value="JavaScript File" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>hand</find>
-      <find>index</find>
       <find>enum</find>
       <find>ViewResourceReq</find>
       <find>Resource(ode</find>
@@ -199,7 +151,6 @@
       <find>database</find>
       <find>database =</find>
       <find>CreateResou</find>
-      <find>Resource</find>
       <find>POST</find>
       <find>CreateResource</find>
       <find>Error</find>
@@ -218,6 +169,9 @@
       <find>request</find>
       <find>ch</find>
       <find>ProjectStat</find>
+      <find>Resource</find>
+      <find>no-bottom</find>
+      <find>GET</find>
     </findStrings>
     <replaceStrings>
       <replace>resource</replace>
@@ -230,7 +184,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/templates/core/login.html" />
         <option value="$PROJECT_DIR$/templates/core/home.html" />
         <option value="$PROJECT_DIR$/templates/core/view-resource-requests.html" />
         <option value="$PROJECT_DIR$/templates/core/sign-up.html" />
@@ -271,16 +224,17 @@
         <option value="$PROJECT_DIR$/api/models.py" />
         <option value="$PROJECT_DIR$/api/views.py" />
         <option value="$PROJECT_DIR$/templates/core/project-settings.html" />
-        <option value="$PROJECT_DIR$/templates/core/features.html" />
         <option value="$PROJECT_DIR$/templates/core/view-request.html" />
-        <option value="$PROJECT_DIR$/core/urls.py" />
         <option value="$PROJECT_DIR$/templates/core/view-resource.html" />
         <option value="$PROJECT_DIR$/static/core/js/chartjs/chart.bundle.min.js" />
-        <option value="$PROJECT_DIR$/static/core/css/restbroker-core.css" />
-        <option value="$PROJECT_DIR$/core/views.py" />
-        <option value="$PROJECT_DIR$/templates/core/base.html" />
-        <option value="$PROJECT_DIR$/templates/core/project-statistics.html" />
         <option value="$PROJECT_DIR$/static/core/js/restbroker-core.js" />
+        <option value="$PROJECT_DIR$/templates/core/features.html" />
+        <option value="$PROJECT_DIR$/core/urls.py" />
+        <option value="$PROJECT_DIR$/templates/core/base.html" />
+        <option value="$PROJECT_DIR$/core/views.py" />
+        <option value="$PROJECT_DIR$/static/core/css/restbroker-core.css" />
+        <option value="$PROJECT_DIR$/templates/core/project-statistics.html" />
+        <option value="$PROJECT_DIR$/templates/core/request-statistics.html" />
       </list>
     </option>
   </component>
@@ -866,7 +820,7 @@
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3270142" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17604166" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17604166" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24959612" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3270142" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -915,13 +869,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/docs/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="27" column="20" lean-forward="false" selection-start-line="27" selection-start-column="20" selection-end-line="27" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/docs/css/restbroker-docs.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
@@ -1111,24 +1058,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/api/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="395">
-          <caret line="53" column="53" lean-forward="false" selection-start-line="53" selection-start-column="53" selection-end-line="53" selection-end-column="53" />
-          <folding>
-            <marker date="1552318372194" expanded="true" signature="721:2163" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="55" column="95" lean-forward="false" selection-start-line="55" selection-start-column="95" selection-end-line="55" selection-end-column="95" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/core/documentation-settings.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1447">
@@ -1145,33 +1074,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/core/project-settings.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="382">
-          <caret line="132" column="61" lean-forward="false" selection-start-line="132" selection-start-column="61" selection-end-line="132" selection-end-column="61" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/core/home.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-131">
           <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/core/features.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="217">
-          <caret line="144" column="50" lean-forward="false" selection-start-line="144" selection-start-column="50" selection-end-line="144" selection-end-column="50" />
-          <folding>
-            <element signature="e#6941#6947#0#HTML" expanded="true" />
-            <element signature="e#6984#6990#0#HTML" expanded="true" />
-            <element signature="e#7025#7031#0#HTML" expanded="true" />
-            <element signature="e#7064#7070#0#HTML" expanded="true" />
-            <element signature="e#7614#7686#0#HTML" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1202,22 +1109,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/docs/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="11" column="64" lean-forward="false" selection-start-line="11" selection-start-column="64" selection-end-line="11" selection-end-column="64" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/core/js/chartjs/chart.bundle.min.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
@@ -1230,38 +1121,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="232">
           <caret line="164" column="68" lean-forward="false" selection-start-line="164" selection-start-column="68" selection-end-line="164" selection-end-column="68" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/core/css/restbroker-core.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="577">
-          <caret line="869" column="24" lean-forward="false" selection-start-line="869" selection-start-column="24" selection-end-line="869" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/core/nav-bar.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="439">
-          <caret line="71" column="39" lean-forward="false" selection-start-line="71" selection-start-column="39" selection-end-line="71" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/core/base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="173" column="74" lean-forward="false" selection-start-line="173" selection-start-column="74" selection-end-line="173" selection-end-column="74" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/core/project-statistics.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="409">
-          <caret line="88" column="61" lean-forward="false" selection-start-line="88" selection-start-column="61" selection-end-line="88" selection-end-column="61" />
           <folding />
         </state>
       </provider>
@@ -1325,13 +1184,101 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/core/nav-bar.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" column="4" lean-forward="false" selection-start-line="13" selection-start-column="4" selection-end-line="13" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docs/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="22" column="95" lean-forward="false" selection-start-line="22" selection-start-column="95" selection-end-line="22" selection-end-column="95" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/core/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="736">
-          <caret line="1407" column="29" lean-forward="false" selection-start-line="1407" selection-start-column="29" selection-end-line="1407" selection-end-column="29" />
+        <state relative-caret-position="286">
+          <caret line="1460" column="74" lean-forward="false" selection-start-line="1460" selection-start-column="74" selection-end-line="1460" selection-end-column="74" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="245">
+          <caret line="102" column="14" lean-forward="false" selection-start-line="102" selection-start-column="6" selection-end-line="102" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/core/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="394">
+          <caret line="51" column="18" lean-forward="true" selection-start-line="51" selection-start-column="18" selection-end-line="51" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="553">
+          <caret line="53" column="53" lean-forward="false" selection-start-line="53" selection-start-column="53" selection-end-line="53" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/core/features.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="109">
+          <caret line="130" column="18" lean-forward="false" selection-start-line="130" selection-start-column="18" selection-end-line="130" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/core/css/restbroker-core.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="637">
+          <caret line="898" column="17" lean-forward="false" selection-start-line="898" selection-start-column="17" selection-end-line="898" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/core/project-settings.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="35" column="34" lean-forward="true" selection-start-line="30" selection-start-column="28" selection-end-line="35" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/core/project-statistics.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="38" column="34" lean-forward="true" selection-start-line="33" selection-start-column="28" selection-end-line="38" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/core/request-statistics.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="32" column="46" lean-forward="true" selection-start-line="32" selection-start-column="46" selection-end-line="32" selection-end-column="46" />
+          <folding />
         </state>
       </provider>
     </entry>

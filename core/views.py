@@ -1408,6 +1408,25 @@ class ProjectStatistics(LoginRequiredMixin, View):
                     'requests': api_requests
                 })
 
+            # Find most popular resource
+            resources_list = []
+
+            resources = Resource.objects.all().filter(project=Project.objects.get(id=request.session['selected_project_id']))
+
+            for resource in resources:
+                resources_list.append({
+                    'resource': resource.name,
+                    'type': resource.request_type,
+                    'requests': APIRequest.objects.all().filter(resource=resource.name, type=resource.request_type).count()
+                })
+
+            # Assume the most popular is the first
+            most_popular = resources_list[0]
+
+            for resource in resources_list:
+                if resource['requests'] > most_popular['requests']:
+                    most_popular = resource
+
             context = {
                 'projects': Project.objects.all().filter(user=request.user),
                 'project': Project.objects.get(id=request.session['selected_project_id']),
@@ -1416,10 +1435,34 @@ class ProjectStatistics(LoginRequiredMixin, View):
                 'requests_today': APIRequest.objects.all().filter(date__day=today.day,
                                                                   date__month=today.month,
                                                                   date__year=today.year).count(),
-                'requests_this_month': APIRequest.objects.all().filter(date__month=today.month).count()
+                'requests_this_month': APIRequest.objects.all().filter(date__month=today.month).count(),
+                'most_popular': most_popular
             }
 
             return render(request, 'core/project-statistics.html', context)
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/')
+
+
+
+class RequestStatistics(LoginRequiredMixin, View):
+    login_url = '/'
+
+    def get(self, request):
+
+        if 'selected_project_id' in request.session:
+
+            project = Project.objects.get(id=request.session['selected_project_id'])
+
+            context = {
+                'projects': Project.objects.all().filter(user=request.user),
+                'project': project,
+                'resources': Resource.objects.all().filter(project=project)
+            }
+
+            return render(request, 'core/request-statistics.html', context)
+
         else:
             messages.error(request, 'Please select a project.')
             return redirect('/')

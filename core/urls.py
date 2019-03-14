@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^settings/security', views.ProjectSecuritySettings.as_view(), name='project-security-settings'),
     url(r'^blocked-ip/remove/(?P<ip_id>[0-9]+)$', views.RemoveBlockedIP.as_view(), name='remove-blocked-ip'),
     url(r'^settings', views.ProjectSettings.as_view(), name='project-settings'),
+    url(r'^statistics/requests', views.RequestStatistics.as_view(), name='request-statistics'),
     url(r'^statistics', views.ProjectStatistics.as_view(), name='project-statistics'),
     url(r'^api-keys/generate', views.GenerateAPIKey.as_view(), name='generate-api-key'),
     url(r'^api-keys/delete/(?P<id>[-\w]+)$', views.DeleteAPIKey.as_view(), name='delete-api-key'),
