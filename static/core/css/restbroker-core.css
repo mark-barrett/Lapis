@@ -902,3 +902,21 @@ body {
 body {
     overflow-x: hidden
 }
+
+.table-card {
+    border-radius: .375rem;
+    -webkit-box-shadow: 0 7px 14px 0 rgba(59,65,94,.1), 0 3px 6px 0 rgba(0,0,0,.07);
+    box-shadow: 0 0px 14px 0 rgba(59,65,94,.1), 0 3px 6px 0 rgba(0,0,0,.07);
+    border: none;
+    padding: 0px;
+
+}
+
+.table-card .card-body {
+    padding: 0;
+    margin-bottom: 0px;
+}
+
+.table-card table {
+    margin-bottom: 0px;
+}

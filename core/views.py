@@ -1455,10 +1455,30 @@ class RequestStatistics(LoginRequiredMixin, View):
 
             project = Project.objects.get(id=request.session['selected_project_id'])
 
+            today = datetime.today()
+
+            request_types = {}
+
+            # Get the number of 400 requests vs 200 requests
+            api_requests = APIRequest.objects.all()
+
+            # Loop through each api_request
+            for api_request in api_requests:
+                # If already in the dictionary then increment
+                if api_request.status in request_types:
+                    request_types[api_request.status] += 1
+                # Else just set it to 1
+                else:
+                    request_types[api_request.status] = 1
+
+            print(request_types)
+
             context = {
                 'projects': Project.objects.all().filter(user=request.user),
                 'project': project,
-                'resources': Resource.objects.all().filter(project=project)
+                'resources': Resource.objects.all().filter(project=project),
+                'today': str(today.day) + '/' + str(today.month) + '/' + str(today.year),
+                'request_types': request_types
             }
 
             return render(request, 'core/request-statistics.html', context)
@@ -1466,6 +1486,76 @@ class RequestStatistics(LoginRequiredMixin, View):
         else:
             messages.error(request, 'Please select a project.')
             return redirect('/')
+
+
+    def post(self, request):
+
+        if 'selected_project_id' in request.session:
+
+            project = Project.objects.get(id=request.session['selected_project_id'])
+
+            # Let's get the values from the form
+            resource = Resource.objects.get(id=request.POST['resource'])
+
+            context = {
+                'projects': Project.objects.all().filter(user=request.user),
+                'project': project,
+                'resources': Resource.objects.all().filter(project=project),
+                'start_date': request.POST['start_date'],
+                'end_date': request.POST['end_date'],
+                'resource': resource,
+            }
+
+
+            try:
+                start_date = request.POST['start_date']
+                end_date = request.POST['end_date']
+
+                days_in_range = []
+
+                # Get days between
+                start_date_as_date = datetime.strptime(start_date, '%Y-%m-%d').date()
+                end_date_as_date = datetime.strptime(end_date, '%Y-%m-%d').date()
+
+                # Get time delta (time between)
+                delta = end_date_as_date - start_date_as_date
+
+                api_requests = APIRequest.objects.all().filter(resource=resource.name,
+                                                               type=resource.request_type, date__range=(start_date, end_date))
+                if not api_requests:
+                    context['none_found'] = True
+                else:
+                    # List for holding requests for each day, loop through each day for labels and to get requests
+                    requests_over_days = []
+                    for i in range(delta.days + 1):
+                        this_date = start_date_as_date + timedelta(i)
+                        days_in_range.append(this_date)
+
+                        api_request_count = APIRequest.objects.all().filter(resource=resource.name, type=resource.request_type,
+                                                                            date__day=this_date.day,
+                                                                            date__month=this_date.month,
+                                                                            date__year=this_date.year).count()
+
+                        requests_over_days.append(api_request_count)
+
+                    context['requests_over_days_count'] = requests_over_days
+
+                context['days_in_range'] = days_in_range
+                context['api_requests'] = api_requests
+            except Exception as e:
+                print(e)
+                # If there is no start_date or end_date specified
+                api_requests = APIRequest.objects.all().filter(resource=resource.name,
+                                                               type=resource.request_type)
+
+                context['api_requests'] = api_requests
+
+            messages.success(request, 'Showing requests from '+request.POST['start_date']+' to '+request.POST['end_date'])
+            return render(request, 'core/request-statistics.html', context)
+
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/account')
 
 
 class APIKeys(LoginRequiredMixin, View):
