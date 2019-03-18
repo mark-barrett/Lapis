@@ -104,7 +104,7 @@
 <script>
     var ctx = document.getElementById('requestsThisWeek').getContext('2d');
 
-    var myLineChart = new Chart(ctx, {
+    var requestsThisWeekChart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: [{% for request_for_day in requests_over_days %}'{{ request_for_day.date }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
@@ -143,6 +143,7 @@
                 }]
             },
             responsive: true,
+            maintainAspectRatio: false,
             tooltips: {
                 mode: 'index',
                 intersect: false,
@@ -171,7 +172,7 @@
     <script>
         var ctx = document.getElementById('requestsToday').getContext('2d');
 
-        var myLineChart = new Chart(ctx, {
+        var requestsTodayChart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: [{% for request_for_day in requests_today_graph %}'{{ request_for_day.hour }}:00'{% if not forloop.last %}, {% endif %}{% endfor %}],
@@ -210,6 +211,7 @@
                     }]
                 },
                 responsive: true,
+                maintainAspectRatio: false,
                 tooltips: {
                     mode: 'index',
                     intersect: false,
