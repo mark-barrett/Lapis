@@ -51,6 +51,8 @@ class APIRequest(models.Model):
     source = models.CharField(max_length=256)
     api_key = models.ForeignKey(APIKey, null=True, blank=True)
     response_to_user = models.TextField()
+    # Field to basically store whehter or not this request has been accounted for by the cache
+    cache = models.BooleanField(default=False)
     cached_result = models.BooleanField(default=False)
 
     def __str__(self):

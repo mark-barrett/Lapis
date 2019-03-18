@@ -190,7 +190,7 @@ class ResourceDataSource(models.Model):
         return 'Resource: ' + self.resource.name + ' Data Source Type: ' + self.type
 
 
-# Each instance defines a column that needs to beurned
+# Each instance defines a column that needs to be returned
 class ResourceDataSourceColumn(models.Model):
     # In form, the available column names are received when building the table but filtered by the selected table.
     column_id = models.IntegerField()

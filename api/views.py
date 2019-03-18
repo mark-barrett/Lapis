@@ -2,6 +2,7 @@ import base64
 import json
 from datetime import datetime
 
+from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
@@ -245,27 +246,119 @@ class RequestHandlerPrivate(View):
                                 # Any future checks here to whether or not the data has been modified
                                 # would go here
                                 if not post_requests and not delete_requests:
-                                    data = json.loads(r.get(datetime.today().strftime('%Y-%m-%d:%H')))
 
-                                    # Add the API request
-                                    api_request = APIRequest(
-                                        authentication_type='KEY',
-                                        type=request.method,
-                                        resource=request.META['HTTP_RESTBROKER_RESOURCE'],
-                                        url=request.get_full_path(),
-                                        status='200 OK',
-                                        ip_address=get_client_ip(request),
-                                        source=request.META['HTTP_USER_AGENT'],
-                                        api_key=api_key,
-                                        cached_result=True
-                                    )
+                                    # Now that we know there hasn't been POSTs or DELETEs to any other resource with the same name, we still
+                                    # have to find out if any tables have been involved in POSTs that are included in this resource.
+                                    # First get the tables.
+                                    # We can do this here while we have access to that objects
+                                    data_source_columns = ResourceDataSourceColumn.objects.all().filter(
+                                        resource=resource)
 
-                                    api_request.save()
+                                    tables_included = []
 
-                                    need_to_be_cached = False
+                                    for data_source_column in data_source_columns:
+                                        # Get the the table from that column
+                                        table = DatabaseColumn.objects.get(id=int(data_source_column.column_id)).table
+                                        if table not in tables_included:
+                                            tables_included.append(table)
 
-                                    return HttpResponse(json.dumps(data), content_type='application/json',
-                                                        status=200)
+                                    unsafe_api_requests_list = []
+                                    # Now we have to check if there have been any POST or DELETE API requests where they have not been cached
+                                    # with the hour as now. If there aren't then just return the cache, if there are then do SQL and cache.
+                                    unsafe_api_requests = APIRequest.objects.all().filter(Q(type='POST') | Q(type='DELETE'),
+                                                                                            date__day=day,
+                                                                                            date__month=month,
+                                                                                            date__year=year,
+                                                                                            date__hour=hour,
+                                                                                            cache=False)
+
+                                    # We need to loop through each request, see if any of the tables it has are in tables_included
+                                    for unsafe_api_request in unsafe_api_requests:
+                                        # This will basically get the tables involved in this request by first filtering by resource name and request type.
+                                        # Then it will only take the column.table value and make sure it only takes distinct values
+                                        unsafe_api_request_data_binds = ResourceDataBind.objects.all().filter(
+                                            resource=Resource.objects.get(name=unsafe_api_request.resource,
+                                                                          request_type=unsafe_api_request.type))
+
+                                        # Value to see if there is table sharing going on
+                                        shares_table = False
+
+                                        # Loop through each one
+                                        for unsafe_api_request_data_bind in unsafe_api_request_data_binds:
+                                            if unsafe_api_request_data_bind.column.table in tables_included:
+                                                shares_table = True
+                                            else:
+                                                shares_table = False
+
+                                        # So if this particular API request does share a table then add it to the list, if it doesn't then don't
+                                        if shares_table:
+                                            unsafe_api_requests_list.append(unsafe_api_request)
+
+                                    # If there have been requests that have gone unaccounted then we can't return cache and we need to
+                                    # make a new cache
+                                    if not unsafe_api_requests_list:
+                                        # If its empty then just return the cached result
+                                        data = json.loads(r.get(datetime.today().strftime('%Y-%m-%d:%H')))
+
+                                        # Add the API request
+                                        api_request = APIRequest(
+                                            authentication_type='KEY',
+                                            type=request.method,
+                                            resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                            url=request.get_full_path(),
+                                            status='200 OK',
+                                            ip_address=get_client_ip(request),
+                                            source=request.META['HTTP_USER_AGENT'],
+                                            api_key=api_key,
+                                            cached_result=True
+                                        )
+
+                                        api_request.save()
+
+                                        return HttpResponse(json.dumps(data), content_type='application/json',
+                                                            status=200)
+                                    else:
+                                        need_to_be_cached = True
+                                    """unsafe_resources = Resource.objects.all().filter(Q(request_type='POST') | Q(request_type='DELETE'), project=resource.project)
+
+                                    # List for sharing resources that share tables
+                                    shared_table_resources = []
+
+                                    # Now loop through each one and get its tables, if it shares any tables add to the list
+                                    for unsafe_resource in unsafe_resources:
+                                        # So unsafe methods use databinds
+                                        unsafe_data_binds = ResourceDataBind.objects.all().filter(resource=unsafe_resource)
+
+                                        for unsafe_data_bind in unsafe_data_binds:
+                                            # Only add the table if it doesn't exist in the shared columns but also if it exists as a table the resource uses
+                                            if unsafe_data_bind.column.table not in shared_table_resources and unsafe_data_bind.column.table in tables_included:
+                                                shared_table_resources.append(unsafe_data_bind.column.table)
+
+
+                                    # Now that we have a list of all tables that are shared by both the resource and other unsafe methods
+
+                                    # We now need to see if any of these tables have been in a API request in the last hour.
+                                    unsafe_api_requests = APIRequest.objects.all().filter(Q(type='POST') | Q(type='DELETE'),
+                                                                                          date__day=day,
+                                                                                          date__month=month,
+                                                                                          date__year=year,
+                                                                                          date__hour=hour)
+
+                                    # We need to loop through each request, see if any of the tables it has are in tables_included
+                                    for unsafe_api_request in unsafe_api_requests:
+                                        # This will basically get the tables involved in this request by first filtering by resource name and request type.
+                                        # Then it will only take the column.table value and make sure it only takes distinct values
+                                        unsafe_api_request_tables = ResourceDataBind.objects.all().filter(resource=Resource.objects.get(name=unsafe_api_request.resource, request_type=unsafe_api_request.type)).values('column__table').distinct()
+
+                                        # Now we have to loop through each data
+                                        for unsafe_api_request_table in unsafe_api_request_tables:
+                                            # Check if that table is in the tables_included list
+                                            table_obj = DatabaseTable.objects.get(id=int(unsafe_api_request_table['column__table']))
+
+                                            if table_obj in tables_included:
+                                                need_to_be_cached = True
+
+                                    """
                                 else:
                                     # If not then we need to cache
                                     need_to_be_cached = True
@@ -404,8 +497,22 @@ class RequestHandlerPrivate(View):
                                 if need_to_be_cached:
                                     r = redis.Redis(host='localhost', port=6379, db=0)
 
+                                    today = datetime.now()
+
                                     # Set the dict
-                                    r.psetex(name=datetime.now().strftime('%Y-%m-%d:%H'), time_ms=((int(resource.project.caching_expiry)*60)*60)*1000, value=str(json.dumps(data_from_database)))
+                                    r.psetex(name=today.strftime('%Y-%m-%d:%H'), time_ms=((int(resource.project.caching_expiry)*60)*60)*1000, value=str(json.dumps(data_from_database)))
+
+                                    # Loop through the last unsafe HTTP requests in the last hour and mark them as cached.
+                                    unsafe_api_requests = APIRequest.objects.all().filter(Q(type='POST') | Q(type ='DELETE'),
+                                                                                          date__day=today.day,
+                                                                                          date__month=today.month,
+                                                                                          date__year=today.year,
+                                                                                          date__hour=today.hour)
+
+                                    # Marking them as cached.
+                                    for api_request in unsafe_api_requests:
+                                        api_request.cache = True
+                                        api_request.save()
 
                                 return HttpResponse(json.dumps(data_from_database), content_type='application/json', status=200)
 
