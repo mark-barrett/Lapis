@@ -898,3 +898,7 @@ body {
 .active-li {
     color: white;
 }
+
+body {
+    overflow-x: hidden
+}
