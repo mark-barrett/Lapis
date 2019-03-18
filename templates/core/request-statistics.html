@@ -21,12 +21,6 @@
             <h2><i class="fas fa-chart-bar" aria-hidden="true"></i> Statistics</h2>
         </div>
         <div class="inner-page-content">
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
-
             <div class="card card-no-top-radius">
                 <div class="card-body">
                     <div class="row">
@@ -41,56 +35,150 @@
                         <div class="col-md-9">
                             <h4>Requests</h4>
                             <hr/>
-                            <div class="stat-card card">
-                                <div class="card-body less-top-margin">
-                                    <div class="row">
-                                        <div class="col-md-5">
-                                            <div class="text-center">
-                                                <div class="statistic-selector-title">Start/End Date</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2"></div>
-                                        <div class="col-md-3">
-                                            <div class="text-center">
-                                                <div class="statistic-selector-title">Resource</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2"></div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <div class="form-group no-bottom-margin">
-                                                <input type="text" class="form-control form-control-sm" name="start_date" value="10/24/1984">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <div class="text-center">
-                                                <i class="fa fa-arrow-right"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group no-bottom-margin">
-                                                <input type="text" class="form-control form-control-sm" name="end_date" value="10/24/1984">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2"></div>
-                                        <div class="col-md-3">
-                                            <div class="float-right">
-                                                <div class="form-group no-bottom-margin">
-                                                    <select name="resource" id="resource" class="form-control">
-                                                        {% for resource in resources %}
-                                                            <option value="{{ resource.id }}">{{ resource.name }} ({{ resource.request_type }})</option>
-                                                        {% endfor %}
-                                                    </select>
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                                {% endfor %}
+                            {% endif %}
+                            <form name="generate-report" action="" method="post">
+                                <div class="stat-card card">
+                                    <div class="card-body less-top-margin">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="text-center">
+                                                    <div class="statistic-selector-title">Start/End Date</div>
                                                 </div>
                                             </div>
+                                            <div class="col-md-3">
+                                                <div class="text-center">
+                                                    <div class="statistic-selector-title">Resource</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2"></div>
                                         </div>
-                                        <div class="col-md-2"></div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group no-bottom-margin">
+                                                    <input type="date" class="form-control" name="start_date" value="{{ today }}" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="form-group no-bottom-margin">
+                                                    <input type="date" class="form-control" name="end_date" value="{{ today }}" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="float-right">
+                                                    <div class="form-group no-bottom-margin">
+                                                        <select name="resource" id="resource" class="form-control">
+                                                            {% for resource in resources %}
+                                                                <option value="{{ resource.id }}">{{ resource.name }} ({{ resource.request_type }})</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-success">Generate Report</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <br/>
+                            {% if api_requests %}
+                            <div class="stat-graph-card card resource-type-bg-{{ resource.request_type }}">
+                                <div class="card-body">
+                                    <div id="requestsThisWeekDiv">
+                                        <div class="inner-chart-title">Requests to {{ resource.name }}</div>
+                                        <div>
+                                            <canvas id="startEndRequests" height="200"></canvas>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        Graph<br/>
-                        List of Requests
+                            <br/>
+                            <div class="table-card card">
+                                <div class="card-header">
+                                    <div class="float-right">
+                                        {{ start_date }} <i class="fa fa-arrow-right"></i> {{ end_date }}
+                                    </div>
+                                    Requests to: {{ resource.name }} <span class="badge resource-type-bg-{{ resource.request_type }} text-white">{{ resource.request_type }}</span></div>
+                                <div class="card-body">
+                                    <table class="table table-light round-table-corners">
+                                        <tbody>
+                                        {% for api_request in api_requests %}
+                                            <tr>
+                                                <th><span class="badge resource-type-bg-{{ api_request.type }} text-white">{{ api_request.type }}</span></th>
+                                                <td>
+                                                    {% if '40' in api_request.status %}
+                                                        <span class="badge badge-warning request-status">{{ api_request.status }}</span>
+                                                    {% elif '200' in api_request.status %}
+                                                        <span class="badge badge-success request-status">{{ api_request.status }}</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>{{ api_request.date }}</td>
+                                                <td>
+                                                    <div class="float-right">
+                                                        <a class="btn btn-secondary btn-xs" href="/request/410"><i class="fa fa-eye"></i></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% if none_found %}
+                            No results found.
+                        {% endif %}
+                        <div class="stat-card card">
+                            <div class="card-header">Requests by Response Type</div>
+                            <div class="card-body">
+                                <div>
+                                    <canvas id="requestTypes" height="100"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="table-card card">
+                            <div class="card-header">
+                               Requests by Location</div>
+                            <div class="card-body">
+                                <table class="table table-light round-table-corners">
+                                    <tbody>
+                                    {% for code, obj in countries.items %}
+                                        <tr>
+                                            <td><span class="flag-icon flag-icon-{{ code|lower }}"></span>&nbsp;&nbsp;
+                                                <div class="float-right">{{ obj.count }}</div>
+                                                {{ obj.country_name }}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    {% for api_request in api_requests %}
+                                        <tr>
+                                            <th><span class="badge resource-type-bg-{{ api_request.type }} text-white">{{ api_request.type }}</span></th>
+                                            <td>
+                                                {% if '40' in api_request.status %}
+                                                    <span class="badge badge-warning request-status">{{ api_request.status }}</span>
+                                                {% elif '200' in api_request.status %}
+                                                    <span class="badge badge-success request-status">{{ api_request.status }}</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ api_request.date }}</td>
+                                            <td>
+                                                <div class="float-right">
+                                                    <a class="btn btn-secondary btn-xs" href="/request/410"><i class="fa fa-eye"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

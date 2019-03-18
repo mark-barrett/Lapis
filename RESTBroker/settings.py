@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'celery',
     'core.templatetags.util',
-    'redis'
+    'redis',
 ]
 
 MIDDLEWARE = [
@@ -148,6 +148,8 @@ STATICFILES_DIRS = (
 MESSAGE_TAGS = {
     messages.ERROR: 'danger',
 }
+
+GEOIP_PATH = os.path.join(BASE_DIR, 'RESTBroker/geoip')
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 

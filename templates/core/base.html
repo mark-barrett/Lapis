@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/bootstrap-select.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/font-awesome-animation-min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/chartist/chartist.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'core/css/flag-icon-css/flag-icon.min.css' %}">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
 
@@ -44,34 +45,6 @@
 <script src="{% static 'core/js/chartist/chartist.min.js' %}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'core/js/chartjs/chart.bundle.min.js' %}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'core/js/typer/typer.js' %}" type="text/javascript" charset="utf-8"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-
-<script>
-    $(function() {
-        $('input[name="start_date"]').daterangepicker({
-            singleDatePicker: true,
-            showDropdowns: true,
-            minYear: 1901,
-            maxYear: parseInt(moment().format('YYYY'),10)
-        }, function(start, end, label) {
-            //var years = moment().diff(start, 'years');
-            //alert("You are " + years + " years old!");
-        });
-    });
-    $(function() {
-        $('input[name="end_date"]').daterangepicker({
-            singleDatePicker: true,
-            showDropdowns: true,
-            minYear: 1901,
-            maxYear: parseInt(moment().format('YYYY'),10)
-        }, function(start, end, label) {
-            //var years = moment().diff(start, 'years');
-            //alert("You are " + years + " years old!");
-        });
-    });
-</script>
 
 
 <script>hljs.initHighlightingOnLoad();</script>
@@ -238,6 +211,74 @@
     </script>
 {% endif %}
 
+{% if days_in_range %}
+{# If we have a start date and date for the requests #}
+<script>
+    var ctx = document.getElementById('startEndRequests').getContext('2d');
+
+    var startEndRequests = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [{% for day in days_in_range %}'{{ day }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+            datasets: [{
+                label: 'Requests',
+                data: [{% for request_for_day in requests_over_days_count %}{{ request_for_day }}{% if not forloop.last %}, {% endif %}{% endfor %}],
+                fill: false,
+                backgroundColor: '#FFFFFF',
+                borderColor: '#FFFFFF'
+            }]
+        },
+        options: {
+            legend: {
+                labels: {
+                    fontColor: '#FFFFFF'
+                },
+                display: false
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        fontColor: '#FFFFFF'
+                    },
+                    gridLines: {
+                        color: 'rgba(0, 0, 0, 0)'
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+                        backgroundColor: '#FFFFFF',
+                        fontColor: '#FFFFFF'
+                    },
+                    gridLines: {
+                        color: 'rgba(255,255,255, 0.25)'
+                    }
+                }]
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+            tooltips: {
+                mode: 'index',
+                intersect: false,
+                custom: function(tooltip) {
+                    if (!tooltip) return;
+                    // disable displaying the color box;
+                    tooltip.displayColors = false;
+                },
+                callbacks: {
+                    // use label callback to return the desired label
+                    label: function(tooltipItem, data) {
+                        return tooltipItem.xLabel + " - " + tooltipItem.yLabel + ' Requests' + '';
+                    },
+                    // remove title
+                    title: function(tooltipItem, data) {
+                        return;
+                    }
+                }
+            }
+        }
+    });
+</script>
+{% endif %}
 
 {% if requests_over_days %}
 <script>
@@ -269,44 +310,39 @@
     new Chartist.Line('#requests_this_week_main', data, options);
 </script>
 {% endif %}
-{# Chart to show different types of requests #}
+
+{# Chart for the top request types #}
 {% if request_types %}
     <script>
-        var data = {
-            labels: [{% for request_type, number in request_types.items %}'{{ request_type }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
-            series: [
-                {% for request_type, number in request_types.items %}
-                {
-                    value: {{ number }},
-                {% if '200' in request_type %}
-                    className: "green"
-                {% endif %}
-                }{% if not forloop.last %}, {% endif %}{% endfor %}]
-        };
 
-        var options = {
-            labelInterpolationFnc: function(value) {
-                return value[0]
+        var config = {
+            type: 'pie',
+            data: {
+                datasets: [{
+                    data: [{% for type, number in request_types.items %}{{ number }}{% if not forloop.last %}, {% endif %}{% endfor %}],
+                    backgroundColor: [
+                        '#FF0000',
+                        '#FFA500',
+                        '#FFFF00',
+                        '#A11919',
+                        '#2DC662',
+                        '#E88372'
+                    ],
+                    label: 'Dataset 1'
+                }],
+                labels: [{% for type, number in request_types.items %}'{{ type }}'{% if not forloop.last %}, {% endif %}{% endfor %}]
+            },
+            options: {
+                responsive: true
             }
         };
 
-        var responsiveOptions = [
-            ['screen and (min-width: 640px)', {
-                chartPadding: 30,
-                labelOffset: 100,
-                labelDirection: 'explode',
-                labelInterpolationFnc: function(value) {
-                    return value;
-                }
-            }],
-            ['screen and (min-width: 1024px)', {
-                labelOffset: 80,
-                chartPadding: 20
-            }]
-        ];
-
-        new Chartist.Pie('#request_types', data, options, responsiveOptions);
+        window.onload = function() {
+            var ctx = document.getElementById('requestTypes').getContext('2d');
+            window.myPie = new Chart(ctx, config);
+        };
     </script>
 {% endif %}
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </html>

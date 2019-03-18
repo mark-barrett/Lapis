@@ -59,6 +59,9 @@
                         <dt class="col-sm-3">IP Address</dt>
                         <dd class="col-sm-9">{{ api_request.ip_address }}</dd>
 
+                        <dt class="col-sm-3">Country</dt>
+                        <dd class="col-sm-9">{% if country %}<span class="flag-icon flag-icon-{{ country.country_code|lower }}"></span> {{ country.country_name }}{% else %}n/a{% endif %}</dd>
+
                         <dt class="col-sm-3">Date</dt>
                         <dd class="col-sm-9">{{ api_request.date }}</dd>
 

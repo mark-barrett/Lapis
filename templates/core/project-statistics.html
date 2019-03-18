@@ -47,7 +47,7 @@
                                         <div class="card-body">
                                             <p class="main-stat-title">Requests Today</p>
                                             <p class="main-stat-value-orange">{{ requests_today }}</p>
-                                            <p class="view-stat-link"><a href="">View Request Statistics <i class="fa fa-arrow-right"></i></a></p>
+                                            <p class="view-stat-link"><a href="{% url 'request-statistics' %}">View Request Statistics <i class="fa fa-arrow-right"></i></a></p>
                                         </div>
                                     </div>
                                 </div>
@@ -56,7 +56,7 @@
                                         <div class="card-body">
                                             <p class="main-stat-title">Requests this Month</p>
                                             <p class="main-stat-value-blue">{{ requests_this_month }}</p>
-                                            <p class="view-stat-link"><a href="">View Request Statistics<i class="fa fa-arrow-right"></i></a></p>
+                                            <p class="view-stat-link"><a href="{% url 'request-statistics' %}">View Request Statistics<i class="fa fa-arrow-right"></i></a></p>
                                         </div>
                                     </div>
                                 </div>
