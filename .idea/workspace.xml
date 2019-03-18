@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="693ea1cf-17b0-42f8-8355-71d597cd4bad" name="Default" comment="">
+<<<<<<< HEAD
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/RESTBroker/geoip/GeoLite2-City.mmdb" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/RESTBroker/geoip/GeoLite2-Country.mmdb" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/core/css/flag-icon-css/flag-icon.css" />
@@ -11,6 +12,14 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/base.html" afterPath="$PROJECT_DIR$/templates/core/base.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/request-statistics.html" afterPath="$PROJECT_DIR$/templates/core/request-statistics.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/view-request.html" afterPath="$PROJECT_DIR$/templates/core/view-request.html" />
+=======
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dump.rdb" afterPath="$PROJECT_DIR$/dump.rdb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/views.py" afterPath="$PROJECT_DIR$/core/views.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/core/css/restbroker-core.css" afterPath="$PROJECT_DIR$/static/core/css/restbroker-core.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/base.html" afterPath="$PROJECT_DIR$/templates/core/base.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/project-statistics.html" afterPath="$PROJECT_DIR$/templates/core/project-statistics.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/request-statistics.html" afterPath="$PROJECT_DIR$/templates/core/request-statistics.html" />
+>>>>>>> bd63bb2f4da6af7dba87dd07bc0e80ecf49c8e4e
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -32,21 +41,30 @@
         <entry file="file://$PROJECT_DIR$/templates/core/project-settings.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-585">
+<<<<<<< HEAD
               <caret line="36" column="30" lean-forward="false" selection-start-line="36" selection-start-column="30" selection-end-line="36" selection-end-column="30" />
+=======
+              <caret line="36" column="30" lean-forward="true" selection-start-line="36" selection-start-column="30" selection-end-line="36" selection-end-column="30" />
+>>>>>>> bd63bb2f4da6af7dba87dd07bc0e80ecf49c8e4e
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="request-statistics.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="request-statistics.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/core/request-statistics.html">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="137">
               <caret line="154" column="61" lean-forward="true" selection-start-line="154" selection-start-column="61" selection-end-line="154" selection-end-column="61" />
               <folding>
                 <element signature="e#9752#9758#0#HTML" expanded="true" />
                 <element signature="e#9758#9764#0#HTML" expanded="true" />
               </folding>
+=======
+            <state relative-caret-position="467">
+              <caret line="138" column="84" lean-forward="false" selection-start-line="138" selection-start-column="84" selection-end-line="138" selection-end-column="84" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -55,32 +73,71 @@
         <entry file="file://$PROJECT_DIR$/templates/core/home.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="135">
+              <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+              <folding />
+>>>>>>> bd63bb2f4da6af7dba87dd07bc0e80ecf49c8e4e
+            </state>
+          </provider>
+        </entry>
+      </file>
+<<<<<<< HEAD
+      <file leaf-file-name="home.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/core/home.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="135">
               <caret line="9" column="0" lean-forward="false" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+=======
+      <file leaf-file-name="dashboard.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/core/dashboard.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="216">
+              <caret line="85" column="32" lean-forward="true" selection-start-line="85" selection-start-column="32" selection-end-line="89" selection-end-column="39" />
+>>>>>>> bd63bb2f4da6af7dba87dd07bc0e80ecf49c8e4e
               <folding />
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file leaf-file-name="dashboard.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/core/dashboard.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="216">
               <caret line="85" column="32" lean-forward="false" selection-start-line="85" selection-start-column="32" selection-end-line="89" selection-end-column="39" />
+=======
+      <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/RESTBroker/settings.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="232">
+              <caret line="106" column="19" lean-forward="false" selection-start-line="106" selection-start-column="19" selection-end-line="106" selection-end-column="19" />
+>>>>>>> bd63bb2f4da6af7dba87dd07bc0e80ecf49c8e4e
               <folding />
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/RESTBroker/settings.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-1072">
               <caret line="47" column="12" lean-forward="false" selection-start-line="47" selection-start-column="12" selection-end-line="47" selection-end-column="12" />
               <folding />
+=======
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/views.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="307">
+              <caret line="1473" column="0" lean-forward="false" selection-start-line="1473" selection-start-column="0" selection-end-line="1473" selection-end-column="32" />
+              <folding>
+                <element signature="e#0#11#0" expanded="true" />
+              </folding>
+>>>>>>> bd63bb2f4da6af7dba87dd07bc0e80ecf49c8e4e
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/views.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -89,25 +146,49 @@
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
+=======
+      <file leaf-file-name="project-statistics.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/core/project-statistics.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="285">
+              <caret line="46" column="45" lean-forward="false" selection-start-line="46" selection-start-column="45" selection-end-line="46" selection-end-column="45" />
+              <folding />
+>>>>>>> bd63bb2f4da6af7dba87dd07bc0e80ecf49c8e4e
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file leaf-file-name="view-request.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/core/view-request.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="305">
               <caret line="62" column="159" lean-forward="false" selection-start-line="62" selection-start-column="159" selection-end-line="62" selection-end-column="159" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
+=======
       <file leaf-file-name="restbroker-core.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/core/css/restbroker-core.css">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1215">
               <caret line="920" column="23" lean-forward="false" selection-start-line="920" selection-start-column="23" selection-end-line="920" selection-end-column="23" />
+>>>>>>> bd63bb2f4da6af7dba87dd07bc0e80ecf49c8e4e
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+<<<<<<< HEAD
+      <file leaf-file-name="restbroker-core.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/core/css/restbroker-core.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1215">
+              <caret line="920" column="23" lean-forward="false" selection-start-line="920" selection-start-column="23" selection-end-line="920" selection-end-column="23" />
+=======
+      <file leaf-file-name="base.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/core/base.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="477">
+              <caret line="327" column="32" lean-forward="false" selection-start-line="327" selection-start-column="32" selection-end-line="327" selection-end-column="32" />
+>>>>>>> bd63bb2f4da6af7dba87dd07bc0e80ecf49c8e4e
               <folding />
             </state>
           </provider>
@@ -137,6 +218,11 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
+<<<<<<< HEAD
+=======
+      <find>database</find>
+      <find>database =</find>
+>>>>>>> bd63bb2f4da6af7dba87dd07bc0e80ecf49c8e4e
       <find>CreateResou</find>
       <find>POST</find>
       <find>CreateResource</find>
@@ -162,11 +248,17 @@
       <find>project</find>
       <find>ViewResource</find>
       <find>ProjectStat</find>
+<<<<<<< HEAD
       <find>geo</find>
       <find>time</find>
       <find>stat-card</find>
       <find>RequestStat</find>
       <find>ViewReq</find>
+=======
+      <find>time</find>
+      <find>RequestStat</find>
+      <find>stat-card</find>
+>>>>>>> bd63bb2f4da6af7dba87dd07bc0e80ecf49c8e4e
     </findStrings>
     <replaceStrings>
       <replace>resource</replace>
@@ -225,11 +317,17 @@
         <option value="$PROJECT_DIR$/static/docs/css/restbroker-docs.css" />
         <option value="$PROJECT_DIR$/static/core/css/restbroker-core.css" />
         <option value="$PROJECT_DIR$/templates/core/project-statistics.html" />
+<<<<<<< HEAD
         <option value="$PROJECT_DIR$/RESTBroker/settings.py" />
         <option value="$PROJECT_DIR$/templates/core/base.html" />
         <option value="$PROJECT_DIR$/templates/core/request-statistics.html" />
         <option value="$PROJECT_DIR$/templates/core/view-request.html" />
         <option value="$PROJECT_DIR$/core/views.py" />
+=======
+        <option value="$PROJECT_DIR$/core/views.py" />
+        <option value="$PROJECT_DIR$/templates/core/base.html" />
+        <option value="$PROJECT_DIR$/templates/core/request-statistics.html" />
+>>>>>>> bd63bb2f4da6af7dba87dd07bc0e80ecf49c8e4e
       </list>
     </option>
   </component>
@@ -805,7 +903,11 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+<<<<<<< HEAD
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3263965" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+=======
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3270142" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+>>>>>>> bd63bb2f4da6af7dba87dd07bc0e80ecf49c8e4e
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17524645" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24959612" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3270142" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -1005,6 +1107,17 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
+=======
+    <entry file="file://$PROJECT_DIR$/templates/core/view-request.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1110">
+          <caret line="74" column="61" lean-forward="true" selection-start-line="74" selection-start-column="61" selection-end-line="74" selection-end-column="61" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+>>>>>>> bd63bb2f4da6af7dba87dd07bc0e80ecf49c8e4e
     <entry file="file://$PROJECT_DIR$/docs/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
@@ -1118,18 +1231,56 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/core/project-statistics.html">
+    <entry file="file://$PROJECT_DIR$/RESTBroker/settings.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="285">
           <caret line="46" column="45" lean-forward="false" selection-start-line="46" selection-start-column="45" selection-end-line="46" selection-end-column="45" />
+=======
+        <state relative-caret-position="232">
+          <caret line="106" column="19" lean-forward="false" selection-start-line="106" selection-start-column="19" selection-end-line="106" selection-end-column="19" />
+>>>>>>> bd63bb2f4da6af7dba87dd07bc0e80ecf49c8e4e
           <folding />
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/../DonationStoreV2/DonationStoreV2/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="383">
           <caret line="177" column="0" lean-forward="false" selection-start-line="177" selection-start-column="0" selection-end-line="177" selection-end-column="60" />
+=======
+    <entry file="file://$PROJECT_DIR$/templates/core/project-settings.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-585">
+          <caret line="36" column="30" lean-forward="true" selection-start-line="36" selection-start-column="30" selection-end-line="36" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="307">
+          <caret line="1473" column="0" lean-forward="false" selection-start-line="1473" selection-start-column="0" selection-end-line="1473" selection-end-column="32" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/core/css/restbroker-core.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1215">
+          <caret line="920" column="23" lean-forward="false" selection-start-line="920" selection-start-column="23" selection-end-line="920" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/core/project-statistics.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="46" column="45" lean-forward="false" selection-start-line="46" selection-start-column="45" selection-end-line="46" selection-end-column="45" />
+>>>>>>> bd63bb2f4da6af7dba87dd07bc0e80ecf49c8e4e
           <folding />
         </state>
       </provider>
@@ -1144,12 +1295,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/core/home.html">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="135">
           <caret line="9" column="0" lean-forward="false" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+=======
+        <state relative-caret-position="477">
+          <caret line="327" column="32" lean-forward="false" selection-start-line="327" selection-start-column="32" selection-end-line="327" selection-end-column="32" />
+>>>>>>> bd63bb2f4da6af7dba87dd07bc0e80ecf49c8e4e
           <folding />
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/RESTBroker/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1072">
@@ -1178,12 +1335,27 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
           <caret line="6" column="27" lean-forward="true" selection-start-line="6" selection-start-column="27" selection-end-line="6" selection-end-column="27" />
+=======
+    <entry file="file://$PROJECT_DIR$/templates/core/home.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+>>>>>>> bd63bb2f4da6af7dba87dd07bc0e80ecf49c8e4e
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/core/css/restbroker-core.css">
+    <entry file="file://$PROJECT_DIR$/templates/core/dashboard.html">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="85" column="32" lean-forward="true" selection-start-line="85" selection-start-column="32" selection-end-line="89" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/core/request-statistics.html">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="1215">
           <caret line="920" column="23" lean-forward="false" selection-start-line="920" selection-start-column="23" selection-end-line="920" selection-end-column="23" />
           <folding />
@@ -1221,6 +1393,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="216">
           <caret line="85" column="32" lean-forward="false" selection-start-line="85" selection-start-column="32" selection-end-line="89" selection-end-column="39" />
+=======
+        <state relative-caret-position="467">
+          <caret line="138" column="84" lean-forward="false" selection-start-line="138" selection-start-column="84" selection-end-line="138" selection-end-column="84" />
+>>>>>>> bd63bb2f4da6af7dba87dd07bc0e80ecf49c8e4e
           <folding />
         </state>
       </provider>

@@ -1507,7 +1507,7 @@ class RequestStatistics(LoginRequiredMixin, View):
                 'resources': Resource.objects.all().filter(project=project),
                 'today': str(today.day) + '/' + str(today.month) + '/' + str(today.year),
                 'request_types': request_types,
-                'countries': countries
+                'countries': countries,
             }
 
             return render(request, 'core/request-statistics.html', context)
