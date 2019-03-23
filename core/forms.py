@@ -67,7 +67,8 @@ class DatabaseBuilderForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-    
+
+
 class ResourceForm(forms.Form):
     REQUEST_CHOICES = (
         ('GET', 'GET'),
@@ -98,3 +99,6 @@ class ResourceForm(forms.Form):
         self.fields['request_type'].label = 'Request Type'
 
         self.fields['response_type'].widget.attrs['class'] = 'selectpicker'
+
+    class Meta:
+        fields = ['name', 'description', 'request_type', 'response_type']

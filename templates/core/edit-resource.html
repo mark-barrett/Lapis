@@ -1,0 +1,245 @@
+{% extends 'core/nav-bar.html' %}
+
+{# Load static templating tag to be able to use it to get paths to static files #}
+{% load static %}
+
+{# Set the title and background color for the base.html file. #}
+{% block title %}RESTBroker - Edit Endpoint{% endblock %}
+
+{% load util %}
+
+{% block page-content %}
+    <div class="page-content">
+        <h2 class="title-name">{{ project.name }} </h2>
+        <p class="title-description">
+            {{ project.description }}
+            {% if project.type == 'public' %}
+                <span class="badge badge-light"><i class="fa fa-users"></i> Public</span>
+            {% else %}
+                <span class="badge badge-light"><i class="fa fa-lock"></i> Private</span>
+            {% endif %}
+        </p>
+        <div class="float-left">
+            <h2><i class="fas fa-pen" aria-hidden="true"></i> Edit Resource</h2>
+        </div>
+        <div class="inner-page-content">
+            <div class="card">
+                <div class="card-body">
+                    <div class="inside-padding">
+                        {% if request.session.resource and request.session.resource.project == project_id %}
+                            <div class="alert alert-info" role="alert">
+                                Request for {{ request.session.resource.name }} resource is complete. Continue below. <a href="/resource/reset/{{ project.id }}">Click here to start from scratch?</a>
+                            </div>
+
+                            <form name="create-resource" method="post" action="">
+                                <div>
+                                    <p class="form-instruction">Basic Information</p>
+                                    {% comment %}{{ form.response_type|as_crispy_field }}{% endcomment %}
+
+                                    <br/>
+
+                                    <div id="data-sources">
+
+                                    </div>
+
+                                    <button type="button" id="add-data-source" class="btn btn-secondary btn-block"><i class="fa fa-plus"></i> Add Data Source</button>
+
+                                    <br/>
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-success btn-block">Continue <i class="fa fa-arrow-right"></i></button>
+                                    <br/>
+                                </div>
+                            </form>
+
+
+                        {% else %}
+                            <form name="create-resource" method="post" action="">
+                                <div>
+                                    <p class="form-instruction">Basic Information</p>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div id="div_id_name" class="form-group">
+                                                <label for="id_name" class="form-control-label  requiredField">
+                                                    Name<span class="asteriskField">*</span>
+                                                </label>
+                                                <div class="">
+                                                    <input type="text" name="name" maxlength="64" class="textinput textInput form-control" required id="id_name" value="{{ resource.name }}"/>
+                                                </div>
+                                            </div>
+                                            {% comment %}{{ form.name|as_crispy_field }}{% endcomment %}
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div id="div_id_description" class="form-group">
+                                                <label for="id_description" class="form-control-label  requiredField">
+                                                    Description<span class="asteriskField">*</span>
+                                                </label>
+                                                <div class="">
+                                                    <input type="text" name="description" maxlength="64" class="textinput textInput form-control" required id="id_description" value="{{ resource.description }}"/>
+                                                </div>
+                                            </div>
+                                            {% comment %}{{ form.description|as_crispy_field }}{% endcomment %}
+                                        </div>
+                                    </div>
+
+                                    <p class="form-instruction">Request Data</p>
+
+                                    <div id="div_id_request_type" class="form-group">
+                                        <label for="id_request_type" class="form-control-label  requiredField">
+                                            Request Type<span class="asteriskField">*</span> <small>(You cannot change the request type. Create a new resource with a new type.)</small>
+                                        </label>
+                                        <div class="">
+                                            <select name="request_type" class="select form-control" id="id_request_type" disabled>
+                                                <option {% if resource.request_type == 'GET' %}selected{% endif %} value="GET">GET</option>
+                                                <option {% if resource.request_type == 'POST' %}selected{% endif %} value="POST">POST</option>
+                                                <option {% if resource.request_type == 'DELETE' %}selected{% endif %} value="DELETE">DELETE</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    {% comment %}{{ form.request_type|as_crispy_field }}{% endcomment %}
+                                     <label for="headers">Headers</label>
+                                    <div id="headers">
+                                        {% if headers %}
+                                            {% for header in headers %}
+                                                <div id="header-{{ forloop.counter }}">
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <input type="text" placeholder="Key" name="header-key" class="form-control" value="{{ header.key }}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <input type="text" placeholder="Value" name="header-value" class="form-control" value="{{ header.value }}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <input type="text" placeholder="Description" name="header-description" class="form-control" value="{{ header.description }}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <button type="button" value="0" class="btn btn-danger btn-block" id="remove-header"><i class="fa fa-trash"></i></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+
+                                    <button type="button" id="add-header" class="btn btn-secondary btn-block btn-sm"><i class="fa fa-plus"></i> Add Header</button>
+                                    <br/>
+                                    <div id="parameters">
+                                        <label for="parameters">Parameters</label>
+                                        <div id="parameter-list">
+                                            {# If its a GET request and there are GET parameters #}
+                                            {% if parameters and resource.request_type == 'GET' %}
+                                                {% for parameter in parameters %}
+                                                    <div id="parameter-{{ forloop.counter }}">
+                                                        <div class="row">
+                                                            <div class="col-md-5">
+                                                                <div class="form-group">
+                                                                    <select class="form-control" name="parameter-type">
+                                                                        <option>GET</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-5">
+                                                                <div class="form-group">
+                                                                    <input type="text" placeholder="Key" name="parameter-key" class="form-control" value="{{ parameter.key }}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                    <button type="button" value="0" class="btn btn-danger btn-block" id="remove-parameter"><i class="fa fa-trash"></i></button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </div>
+                                        <button type="button" id="add-parameter" class="btn btn-secondary btn-block btn-sm"><i class="fa fa-plus"></i> Add Parameters</button>
+                                        <br/>
+                                    </div>
+                                    {% if post_data_binds and resource.request_type == 'POST' %}
+                                        <div id="post-data-binding">
+                                            <div class="float-right">
+                                                <i class="fa fa-question" data-container="body" data-toggle="popover" data-placement="left" data-content="These are the POST attributes you expect in the POST request and what they map to in your database for inserting."></i>
+                                            </div>
+                                            <label for="data-binding">Data Binding</label>
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                <tr>
+                                                    <th scope="col">Column</th>
+                                                    <th scope="col">Key</th>
+                                                    <th scope="col">Type</th>
+                                                    <th scope="col">Description</th>
+                                                    <th scope="col"></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="data-bind-column">
+
+                                                <tr>
+                                                    <td colspan="5"><button id="add-data-bind-column" type="button" class="btn btn-block btn-outline-success"><i class="fa fa-plus"></i></button></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {% endif %}
+                                    <div id="delete-data-binding" style="display: none;">
+                                        <div class="float-right">
+                                            <i class="fa fa-question" data-container="body" data-toggle="popover" data-placement="left" data-content="These are the attributes you expect in the DELETE request that specify what row(s) to delete in the database."></i>
+                                        </div>
+                                        <label for="data-binding">Data Binding Columns to Delete Row(s)</label>
+                                        <table class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">Column</th>
+                                                <th scope="col">Key</th>
+                                                <th scope="col">Type</th>
+                                                <th scope="col">Description</th>
+                                                <th scope="col"></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="delete-data-bind-column">
+
+                                            <tr>
+                                                <td colspan="5"><button id="delete-add-data-bind-column" type="button" class="btn btn-block btn-outline-success"><i class="fa fa-plus"></i></button></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-success btn-block">Continue <i class="fa fa-arrow-right"></i></button>
+                                    <br/>
+                                </div>
+                            </form>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slant-end">
+        <svg x="0" y="0" viewBox="0 0 2560 200" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+            <polygon class="fill-back" points="2560 0 2560 300 0 200"></polygon>
+        </svg>
+    </div>
+    <div class="other-half">
+        <div class="container">
+            {% include 'core/footer.html' %}
+        </div>
+    </div>
+    <script id="database-data" type="application/json">
+            {{ database_data|safe }}
+    </script>
+    {% if request.session.resource %}
+        <script id="resource-session-data" type="application/json">
+            {{ request.session.resource|to_json|safe }}
+        </script>
+    {% endif %}
+{% endblock %}

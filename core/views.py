@@ -52,7 +52,7 @@ class Home(View):
 
                 return render(request, 'core/home.html', context)
         else:
-            return render(request, 'core/login.html')
+            return redirect('/login')
 
 
     def post(self, request):
@@ -65,10 +65,33 @@ class Home(View):
         if user is not None:
             login(request, user)
             messages.success(request, 'Hey ' + user.first_name + ', welcome back!')
-            return redirect('/account')
+            return redirect('/dashboard')
         else:
             messages.error(request, 'Invalid username or password.')
-            return redirect('/account')
+            return redirect('/login')
+
+
+class Login(View):
+
+    def get(self, request):
+
+        return render(request, 'core/login.html')
+
+
+    def post(self, request):
+        username = request.POST['username']
+        password = request.POST['password']
+
+        # Try log the user in
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            messages.success(request, 'Hey ' + user.first_name + ', welcome back!')
+            return redirect('/projects')
+        else:
+            messages.error(request, 'Invalid username or password.')
+            return redirect('/login')
 
 
 class SignUp(View):
@@ -132,7 +155,7 @@ class Logout(View):
 
             logout(request)
             messages.success(request, "Logged out. Thanks for stopping by!")
-            return redirect('/account')
+            return redirect('/login')
 
 
 class Dashboard(LoginRequiredMixin, View):
@@ -555,7 +578,6 @@ class CreateResource(LoginRequiredMixin, View):
         if 'selected_project_id' in request.session:
 
             project = Project.objects.get(id=request.session['selected_project_id'])
-
 
             # If this is the first step i.e the request
             if 'resource' not in request.session:
@@ -997,6 +1019,157 @@ class ViewResource(LoginRequiredMixin, View):
         else:
             messages.error(request, 'Please select a project.')
             return redirect('/')
+
+
+class EditResource(LoginRequiredMixin, View):
+    login_url = '/'
+
+    def get(self, request, resource_id):
+
+        if 'selected_project_id' in request.session:
+
+            resource = Resource.objects.get(id=resource_id)
+
+            # Check the user who is trying to access this resource has the right to/owns it
+            if resource.project.user == request.user:
+
+                try:
+
+                    context = {
+                        'resource': resource,
+                        'headers': ResourceHeader.objects.all().filter(resource=resource),
+                        'projects': Project.objects.all().filter(user=request.user),
+                        'project': Project.objects.get(id=request.session['selected_project_id'])
+                    }
+
+                    # GET request is the only one that has parameters
+                    if resource.request_type == 'GET':
+                        context['parameters'] = ResourceParameter.objects.all().filter(resource=resource)
+
+                    # POST request is the only one that has POST databinds
+                    if resource.request_type == 'POST':
+                        context['post_data_binds'] = ResourceDataBind.objects.all().filter(resource=resource)
+
+                    # DELETE request is the only one that has DELETE databinds
+                    if resource.request_type == 'DELETE':
+                        context['delete_data_binds'] = ResourceDataBind.objects.all().filter(resource=resource)
+
+                    return render(request, 'core/edit-resource.html', context)
+                except Exception as e:
+                    print(e)
+                    messages.error(request, 'Error getting that resource.')
+                    return redirect('/resources')
+            else:
+                messages.error(request, 'What your looking for cannot be found.')
+                return redirect('/dashboard')
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/projects')
+
+    def post(self, request, resource_id):
+
+        if 'selected_project_id' in request.session:
+            resource = Resource.objects.get(id=resource_id)
+
+            # Make sure the person logged in owns the resource
+            if resource.project.user == request.user:
+                # Check to see if we are on step 2
+                if 'resource' not in request.session:
+
+                    try:
+                        resource = {
+                            'project': resource.project.id,
+                            'name': request.POST['name'],
+                            'description': request.POST['description'],
+                            'request': {
+                                'type': request.POST['request_type'],
+                                'headers': [],
+                                'parameters': [],
+                                'data_bind_columns': [],
+                                'delete_data_bind_columns': []
+                            },
+                            'response': {}
+                        }
+
+                        # Get the headers as lists
+                        header_keys = request.POST.getlist('header-key')
+                        header_value = request.POST.getlist('header-value')
+                        header_description = request.POST.getlist('header-description')
+
+                        # Loop through the keys and add the headers to the resource object.
+                        for index, key in enumerate(header_keys):
+                            header = {
+                                'key': key,
+                                'value': header_value[index],
+                                'description': header_description[index]
+                            }
+
+                            resource['request']['headers'].append(header)
+
+                            # Get the parameters as lists if its a GET request
+                            if resource['request']['type'] == 'GET':
+                                parameter_types = request.POST.getlist('parameter-type')
+                                parameter_keys = request.POST.getlist('parameter-key')
+
+                                # Loop through them and add them to the resource
+                                for index, key in enumerate(parameter_keys):
+                                    parameter = {
+                                        'type': parameter_types[index],
+                                        'key': key
+                                    }
+
+                                    resource['request']['parameters'].append(parameter)
+
+                            # Get the data binds if a POST request
+                            elif resource['request']['type'] == 'POST':
+                                data_bind_columns = request.POST.getlist('data-bind-column')
+                                data_bind_keys = request.POST.getlist('data-bind-key')
+                                data_bind_types = request.POST.getlist('data-bind-type')
+                                data_bind_descriptions = request.POST.getlist('data-bind-description')
+
+                                for index, key in enumerate(data_bind_keys):
+                                    data_bind_column = {
+                                        'column': data_bind_columns[index],
+                                        'key': key,
+                                        'type': data_bind_types[index],
+                                        'description': data_bind_descriptions[index]
+                                    }
+
+                                    resource['request']['data_bind_columns'].append(data_bind_column)
+
+                            # Get the data binds if a DELETE request
+                            elif resource['request']['type'] == 'DELETE':
+                                data_bind_columns = request.POST.getlist('delete-data-bind-column')
+                                data_bind_keys = request.POST.getlist('delete-data-bind-key')
+                                data_bind_types = request.POST.getlist('delete-data-bind-type')
+                                data_bind_descriptions = request.POST.getlist('delete-data-bind-description')
+
+                                for index, key in enumerate(data_bind_keys):
+                                    data_bind_column = {
+                                        'column': data_bind_columns[index],
+                                        'key': key,
+                                        'type': data_bind_types[index],
+                                        'description': data_bind_descriptions[index]
+                                    }
+
+                                    resource['request']['delete_data_bind_columns'].append(data_bind_column)
+
+                            # Set this as a session variable.
+                            request.session['resource'] = resource
+
+                            # Now that the session is set, redirect back to create an resource to create the response
+                            return redirect('/resource/create')
+
+                    except Exception as e:
+                        messages.error(request, str(e))
+                        return redirect('/resource/edit/'+str(resource.id))
+            else:
+                messages.error(request, 'What your looking for cannot be found.')
+                return redirect('/dashboard')
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/projects')
+
 
 
 class ViewResourceRequests(LoginRequiredMixin, View):

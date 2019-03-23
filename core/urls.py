@@ -9,8 +9,9 @@ from core import views
 
 urlpatterns = [
     url(r'^$', views.Features.as_view(), name='features'),
-    url(r'my-account', views.Account.as_view(), name='account'),
-    url(r'account', views.Home.as_view(), name='home'),
+    url(r'account', views.Account.as_view(), name='account'),
+    url(r'login', views.Login.as_view(), name='login'),
+    url(r'projects', views.Home.as_view(), name='projects'),
     url(r'sign-up', views.SignUp.as_view(), name='sign-up'),
     url(r'logout', views.Logout.as_view(), name='logout'),
     url(r'^dashboard/(?P<project_id>[0-9]+)$', views.DashboardSetSelectedProject.as_view(), name='set-selected-project'),
@@ -35,6 +36,7 @@ urlpatterns = [
     url(r'^request/(?P<request_id>[0-9]+)$', views.ViewRequest.as_view(), name='view-request'),
     url(r'^resource/(?P<resource_id>[0-9]+)/requests$', views.ViewResourceRequests.as_view(), name='view-resource-requests'),
     url(r'^resource/view/(?P<resource_id>[0-9]+)$', views.ViewResource.as_view(), name='view-resource'),
+    url(r'^resource/edit/(?P<resource_id>[0-9]+)$', views.EditResource.as_view(), name='edit-resource'),
     url(r'^resource/delete/(?P<resource_id>[0-9]+)$', views.DeleteResource.as_view(), name='delete-resource'),
     url(r'^resource/status/(?P<resource_id>[0-9]+)$', views.ChangeResourceStatus.as_view(), name='change-resource-status'),
 ]
