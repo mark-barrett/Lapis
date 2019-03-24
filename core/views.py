@@ -36,6 +36,13 @@ class Features(View):
         return render(request, 'core/features.html')
 
 
+class Learn(View):
+
+    def get(self, request):
+
+        return render(request, 'core/learn.html')
+
+
 class Home(View):
 
     def get(self, request):
@@ -100,7 +107,10 @@ class SignUp(View):
 
         # If the user is already logged in, send them to the dashboard.
         if request.user.is_authenticated:
-            return redirect('/dashboard')
+            if 'selected_project_id' in request.session:
+                return redirect('/dashboard')
+            else:
+                return redirect('/projects')
         else:
             return render(request, 'core/sign-up.html')
 
@@ -139,7 +149,7 @@ class SignUp(View):
                 if user is not None:
                     messages.success(request, 'User sign up successful')
                     login(request, user)
-                    return redirect('/dashboard')
+                    return redirect('/projects')
                 else:
                     messages.error(request, 'Error signing you up')
                     return redirect('/sign-up')
@@ -1034,13 +1044,60 @@ class EditResource(LoginRequiredMixin, View):
             if resource.project.user == request.user:
 
                 try:
+                    database_tables_obj = {}
+
+                    # Get the database tables
+                    database_tables = DatabaseTable.objects.all().filter(database__project=resource.project)
+
+                    for database_table in database_tables:
+                        database_tables_obj[database_table.name] = DatabaseColumn.objects.all().filter(table=database_table)
+
+                    print(database_tables_obj)
 
                     context = {
                         'resource': resource,
                         'headers': ResourceHeader.objects.all().filter(resource=resource),
                         'projects': Project.objects.all().filter(user=request.user),
-                        'project': Project.objects.get(id=request.session['selected_project_id'])
+                        'project': Project.objects.get(id=request.session['selected_project_id']),
+                        'database_tables_obj': database_tables_obj
                     }
+
+                    # Get database data
+                    database_data = {
+                        'tables': []
+                    }
+
+                    # Get the database using the project_id
+                    database = Database.objects.get(project=resource.project)
+
+                    # Add the database tables and columns to the context
+                    tables = DatabaseTable.objects.all().filter(database=database)
+
+                    # Loop through all tables
+                    for table in tables:
+                        table_obj = {
+                            'id': table.id,
+                            'name': table.name,
+                            'columns': []
+                        }
+
+                        columns = DatabaseColumn.objects.all().filter(table=table)
+
+                        # Loop through all columns
+                        for column in columns:
+                            column_obj = {
+                                'id': column.id,
+                                'name': column.name,
+                                'type': column.type
+                            }
+
+                            # Append it
+                            table_obj['columns'].append(column_obj)
+
+                        # Append the table to the database_data
+                        database_data['tables'].append(table_obj)
+
+                    context['database_data'] = json.dumps(database_data)
 
                     # GET request is the only one that has parameters
                     if resource.request_type == 'GET':

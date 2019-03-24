@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RESTBroker - Docs</title>
+
+    {% load staticfiles %}
+
+    {# Include neccessary Boostrap CSS files from static #}
+    <link rel="stylesheet" type="text/css" href="{% static 'core/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'core/css/font-awesome-animation-min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'core/css/restbroker-learn.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'docs/css/code/atom-one-dark.css' %}">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+
+
+    {# Include Google Font #}
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+
+    {# Font Awesome Icons #}
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
+    {# Set the favicon #}
+    <link rel="shortcut icon" type="image/png" href="{% static 'core/images/icon-round.png' %}"/>
+
+
+</head>
+<body data-spy="scroll" data-target="#navbar-example">
+    <div class="row">
+        <div class="col-md-3">
+            <nav id="navbar-example3" class="navbar navbar-light bg-light api-doc-nav">
+                <div class="row">
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-9">
+                        <div class="logo">
+                            <img src="{% static 'core/images/docs-logo.png' %}" width="100%">
+                        </div>
+                        <br/>
+                        <a class="nav-link" href="#introduction"><i class="fa fa-home"></i> &nbsp;Introduction</a>
+                        <a class="nav-link" data-toggle="collapse" href="#projectCollapse" role="button" aria-expanded="false" aria-controls="projectCollapse"><i class="fas fa-boxes"></i> &nbsp;Projects</a>
+                        <div class="collapse" id="projectCollapse">
+                            <div class="sub-menu">
+                                <a class="nav-link" href="#createProject"><small>Creating a Project</small></a>
+                                <a class="nav-link" href="#buildingDatabase"><small>Building Database</small></a>
+                            </div>
+                        </div>
+                        <a class="nav-link" data-toggle="collapse" href="#resourceCollapse" role="button" aria-expanded="false" aria-controls="resourceCollapse"><i class="fas fa-table" aria-hidden="true"></i> &nbsp;Resources</a>
+                        <div class="collapse" id="resourceCollapse">
+                            <div class="sub-menu">
+                                <a class="nav-link" href="#createResource"><small>Creating a Resource</small></a>
+                                <a class="nav-link" href="#sendRequest"><small>Sending a Request</small></a>
+                            </div>
+                        </div>
+                        <a class="nav-link" data-toggle="collapse" href="#apiKeyCollapse" role="button" aria-expanded="false" aria-controls="apiKeyCollapse"><i class="fas fa-key" aria-hidden="true"></i> &nbsp;API Keys</a>
+                        <div class="collapse" id="apiKeyCollapse">
+                            <div class="sub-menu">
+                                <a class="nav-link" href="#generateAPIKey"><small>Generate an API Key</small></a>
+                            </div>
+                        </div>
+                        <a class="nav-link" data-toggle="collapse" href="#settingsCollapse" role="button" aria-expanded="false" aria-controls="settingsCollapse"><i class="fas fa-cogs" aria-hidden="true"></i> &nbsp;Settings</a>
+                        <div class="collapse" id="settingsCollapse">
+                            <div class="sub-menu">
+                                <a class="nav-link" href="#caching"><small>Caching</small></a>
+                                <a class="nav-link" href="#documentation"><small>Documentation</small></a>
+                                <a class="nav-link" href="#blockedIPs"><small>Blocked IPs</small></a>
+                            </div>
+                        </div>
+                        <a class="nav-link" data-toggle="collapse" href="#apiCollapse" role="button" aria-expanded="false" aria-controls="apiCollapse"><i class="fas fa-book-open"></i> &nbsp;API Reference</a>
+                        <div class="collapse" id="apiCollapse">
+                            <div class="sub-menu">
+                                <a class="nav-link" href="#APIReferenceIntroduction"><small>Introduction</small></a>
+                                <a class="nav-link" href="#generateAPIKeyAPI"><small>Generate API Key</small></a>
+                                <a class="nav-link" href="#regenerateAPIKeyAPI"><small>Regenerate API Key</small></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="col-md-9">
+            <div class="login-bar">
+                <div class="float-right">
+                    {% if request.user.is_authenticated %}
+                        <a class="nav-obj" href="{% url 'projects' %}"><i class="fa fa-user"></i> {{ request.user.first_name }}</a>
+                    {% else %}
+                        <a class="nav-obj" href="{% url 'login' %}"><i class="fa fa-user"></i> Login</a>
+                        <a class="nav-obj" href="{% url 'sign-up' %}"><i class="fa fa-user"></i> Signup</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div id="introduction"></div>
+        <br/>
+            <div data-spy="scroll" data-target="#navbar-example3" data-offset="0" style="overflow-y: scroll; height: 100vh;">
+                <div class="section">
+                    <h2>Introduction</h2>
+                    <small>Find out about RESTBroker and the documentation.</small>
+                    <hr/>
+                    <p>
+                        RESTBroker is an application and user interface that allows developers to create, build automate and self document their REST APIs.
+                        This documentation is broken down into a few different sections to cover the different aspects of RESTBroker.<br/><br/>
+
+                        The goal of this documentation is to give a breif introduction as to how the main user interface and backend of RESTBroker works.<br/><br/>
+
+                        Using RESTBroker requires an account which can be obtained at restbroker.com/account. Once logged in you will be able to create your first project.
+                    </p>
+                </div>
+                <div id="createProject"></div>
+                <br/>
+                <div class="section">
+                    <h2>Creating a Project</h2>
+                    <small>How to setup a project and the different types.</small>
+                    <hr/>
+                    <p>
+                        A project in RESTBroker is a container for all of your endpoints for a given application. The best practice would be to use a project for each one of your separate applications in order to abstract the details away easily.
+                        <br/><br/>
+                        By creating a project you can give it a name and a description in order to easily identify it. It also has a visibility option which can be private or public. Private projects will require an API key for them to be accessed whereas a public project will not require a key. We recommend that you create your project as private.
+                        <br/><br/>
+                        Later, there will be a description as to how you can use the RESTBroker API which will be used to allow you to generate API keys in your applications on the fly.
+                    </p>
+                </div>
+                <div id="buildingDatabase"></div>
+                <br/>
+                <div class="section">
+                    <h2>Building Database</h2>
+                    <small>Connect your database to build the schema.</small>
+                    <hr/>
+                    <p>
+                        Building a database allows RESTBroker to contact your database remotely and build a schema of all of the available tables. By doing this, you will be able to pick which columns to return from what tables when building your resource.
+                        This prevents RESTBroker from having to contact your database each time a resource is being created or edited.<br/><br/>
+                        RESTBroker will only take the table names, column names and their types (i.e. VARCHAR etc). It will not take any data stored in your database.<br/><br/>
+                        RESTBroker supports MySQL. To connect to and build your MySQL database, navigate to the Resources tab and you will see that your database has not been built. Click build database and pick the database type. After that enter your
+                        database server, name, user and password.<br/><br/>
+                        RESTBroker relies on remote SQL connections. <strong>Ensure that you block connections apart from the following RESTBroker IPs:</strong> Enter IP here.<br/><br/>
+                        Once that is done, click "Build Database". RESTBroker will get your database schema and save it locally.
+                    </p>
+                </div>
+                <div id="createResource"></div>
+                <br/>
+                <div class="section">
+                    <h2>Creating a Resource</h2>
+                    <small>Create your first resource to start accepting requests.</small>
+                    <hr/>
+                    <p>
+                        Resources are what RESTBroker calls collections of data that will be returned when requested. A resource can be comprised of:<br/><br/>
+                        &nbsp;&nbsp;A combination of data sources.<br/>
+                        &nbsp;&nbsp;Text<br/>
+                        <br/>
+
+                        <strong>The Request</strong><br/>
+                        By creating a resource you must give it a name which will uniquely identify it amongst other resources. The description is optional, but it will be what is displayed in the documentation if enabled for this resource.<br/><br/>
+
+                        You must then pick a request type. Currently there are three which RESTBroker supports:<br/><br/>
+
+                        &nbsp;&nbsp;<strong>GET</strong> - Safe, used to return data.<br/>
+                        &nbsp;&nbsp;<strong>POST</strong> - Unsafe, used to modify or add data.<br/>
+                        &nbsp;&nbsp;<strong>DELETE</strong> - Unsafe, used to delete data.<br/>
+
+                        <br/>
+                        <small>By safe and unsafe, it means the requests propensity to change data.</small><br/><br/>
+
+                        After choosing one of the above, the user interface will change slightly. If you choose GET you can pick headers or parameters that will need to be sent in order for the request to complete properly.<br/><br/>
+
+                        <strong>Headers</strong> - These are HTTP headers that can be requested by you that will have to be sent by the user. They can then be used in later stages when building the resource.<br/><br/>
+
+                        <strong>Each header has a:</strong><br/>
+                        &nbsp;&nbsp;<strong>Key</strong> - Uniquely identifies it.<br/>
+                        &nbsp;&nbsp;<strong>Value</strong> - What type it should be.<br/>
+                        &nbsp;&nbsp;<strong>Description</strong> - A description for it for the documentation.<br/>
+
+                        <br/>
+
+                        <strong>Parameters</strong> - In the case of a HTTP GET request, these parameters are URL parameters. Like headers, they are the required parameters needed for the request to happen. They too can be used in later stages.<br/><br/>
+
+                        <strong>Each parameter has a:</strong><br/>
+                        &nbsp;&nbsp;<strong>Key</strong> - Uniquely identifies it.<br/>
+                        <br/>
+                        If any of the specified headers or parameters are not provided, RESTBroker will return and error to the requester.<br/><br/>
+
+                        <strong>The Response</strong><br/>
+                        Once the request part of building a resource is complete, you can choose between returning JSON or XML. Either way, RESTBroker will parse the data accordingly.<br/><br/>
+
+                        You can then add a data source. It can be from the database or text.<br/><br/>
+
+                        <strong>Database Data Source</strong><br/>
+                        This allows you to choose what columns are returned from what tables and in what order. To return a column simply click the check box beside it’s name.<br/><br/>
+
+                        To add a filter simply click add filter and choose what you would like to filter this column by (values from the previous step)<br/><br/>
+
+                        <strong>Nesting</strong><br/>
+                        If nesting is required within the data source, you must add a parent column to a given column. For example in the situation where the tables are profiles, posts and comments, the posts table will have a parent added to its profile_id field with the link to the id of the profile table, while the comments will have the posts linked to it as a parent through the post_id field.<br/><br/>
+
+                        This must be done correctly or else RESTBroker will not be able to build a nested structure of your data. Please ensure that when nesting, the item your are nesting by is the correct one so that RESTBroker can access children elements.<br/><br/>
+
+                        <strong>Text Data Source</strong><br/>
+                        This is static text that can be returned in JSON or XML. This can be used however you’d like, but some good use cases are for linking to documentation on each request perhaps.<br/><br/>
+                    </p>
+                </div>
+                <div id="sendRequest"></div>
+                <br/>
+                <div class="section">
+                    <h2>Sending a Request</h2>
+                    <small>How to send a request to a RESTBroker resource.</small>
+                    <hr/>
+                    <p>{{ document.introduction_text }}</p>
+                </div>
+                <div id="generateAPIKey"></div>
+                <br/>
+                <div class="section">
+                    <h2>Generating an API Key</h2>
+                    <small>How to generate an API key to access a resource.</small>
+                    <hr/>
+                    <p>
+                        It is adivsed that you make your project private as it allows you to get in depth statistics regarding certain requests and where the came from. It is also a good design choice to only allow validated requests to
+                        made.<br/><br/>
+                        When a project is created a <strong>master key</strong> is generated. This key is linked to the project and cannot be deleted. This is the key that has control over all other API keys. It is advised that this key stays private,
+                        but if for whatever reason it gets released to the public, it can be regenerated in the API Keys section of your project. Master keys can be identified by the <code>rb_mstr_key_</code> prefix.<br/><br/>
+                        Normal keys are keys that are generated for distribution. These can be generated one of two ways:<br/><br/>
+                        &nbsp;&nbsp;Manually through the RESTBroker dashboard<br/>
+                        &nbsp;&nbsp;Automatically by your application through the RESTBroker API.<br/><br/>
+                        The later is described in detail in the API Reference section of this doc. To create an API Key manually, simply navigate to the API Keys section of your project and click "Generate API Key", this will create a normal key
+                        that can be given to a developer. You can identify a normal key by the <code>rb_nrm_key_</code> prefix.
+                    </p>
+                </div>
+                <div id="caching"></div>
+                <br/>
+                <div class="section">
+                    <h2>Caching</h2>
+                    <small>Find out how RESTBroker caches requests and how to enable it.</small>
+                    <hr/>
+                    <p>
+                        RESTBroker offers the ability to cache results in order to speed up performance. By default, RESTBroker will contact your database everytime a request is being made. This can be avoided at your discretion.
+                    </p>
+                    <p>
+                       To enable caching you can go to the Settings -> Overview section of the RESTBroker dashboard. You can click "Enable Caching" and the other options will show up. When enabled/disbaled the projects cache is cleared of any
+                        data that may be present in it.<br/><br/>
+                        You can choose an expiry time for your cached data which defines how long it will be present on the RESTBroker servers, before it is automatically deleted. This can range anywhere from 1 hour to 24 hours. We recommend using
+                        1 hour. This means that your information can only be stored on our servers for at most 24 hours.<br/><br/>
+                        You can also clear the cache completely meaning that any cached results will be removed.<br/><br/>
+                        RESTBroker detects similar requests over given time periods. If a particular request is trying to access tables that have not been modified in the last hour, RESTBroker will return the cached result.
+                    </p>
+                </div>
+                <div id="documentation"></div>
+                <br/>
+                <div class="section">
+                    <h2>Documentation</h2>
+                    <small>How to setup up documentation and enable different language examples.</small>
+                    <hr/>
+                    <p>
+                        By default, RESTBroker will auto generate documentation as you create resources. To manage documentation go to Settings -> Documentation in the RESTBroker dashboard. You can enable or disable the documentation as you wish. If
+                        disabled, when accessed, an error message stating the documentation is not available is presented.
+                    </p>
+                    <p>
+                        You can provide introduction text which will be put at the top of the documentation. The support email will also be listed so users can send queries about the API. Your logo and colour can also be chosen which will customise
+                        the look of the documentation.
+                    </p>
+                    <p>
+                        RESTBroker can automatically generate code examples in cURL, Python (3.6.1), Java (1.8.0) <small>(OKHttp)</small>, JavaScript <small>(AJAX)</small> and PHP. You can enable or disable a given language by simply checking it.
+                        When not checked, RESTBroker will not generate code examples for that langauge.
+                    </p>
+                    <p>
+                        You can setup a subdomain using a CNAME record that will point to the RESTBroker generate URL of the documentation.
+                    </p>
+                </div>
+                <div id="blockedIPs"></div>
+                <br/>
+                <div class="section">
+                    <h2>Blocked IPs</h2>
+                    <small>How to block a particular IP from making a request to your project.</small>
+                    <hr/>
+                    <p>
+                        If there are security concerns from a particular IP address, it can be blocked by going to Settings -> Security in the RESTBroker dashboard. Any request sent by a blocked IP will be rejected.
+                    </p>
+                </div>
+                <div id="APIReferenceIntroduction"></div>
+                <br/>
+                <div class="section">
+                    <h2>Introduction</h2>
+                    <small>A brief introduction on how the RESTBroker API works.</small>
+                    <hr/>
+                    <p>The RESTBroker APIs main entry point is<br/><br/>
+                    <code>https://restbroker.com/meta-api</code></p>
+
+                    <p>All requests must be made with HTTPS. Any requests using HTTP will be denied.</p>
+                </div>
+
+                <div id="generateAPIKeyAPI"></div>
+                <br/>
+                <div class="section">
+                    <h2>Generate API Key</h2>
+                    <small>Use the RESTBroker API to generate API keys for your project in your application.</small>
+                    <hr/>
+                    <p>
+                        As mentioned in the previous section on API Keys, they can be generated automatically by your application by contacting our API.<br/><br/>
+                        To generate an API key simple send a POST request to the following URL:<br/><br/>
+                        <code>https://restbroker.com/meta-api/api-key/generate</code><br/><br/>
+                        For authentication purposes, your request must contain your projects master key in the field "master_key". <br/>
+                    </p>
+                        <p><strong>Example Request:</strong></p>
+                        <pre><code class="powershell">$ curl https://restbroker.com/meta-api/api-key/generate \<br/> -F master_key=your_value </code></pre>
+
+                    <p>RESTBroker will then return a response (in JSON) containing the new API key and the status.</p>
+                    <p><strong>Success Response:</strong></p>
+                    <pre><code class="javascript">{<br/>&nbsp;&nbsp;"api_key": "rb_nrm_key_example",<br/>&nbsp;&nbsp;"message": "Successfully generated API Key"<br/> }</code></pre>
+
+                    <p>If the master key is incorrect it will return a relevant message.</p>
+                    <p><strong>Error Response:</strong></p>
+                    <pre><code class="javascript">{<br/>&nbsp;&nbsp;"message": "Cannot generate key, invalid master key."<br/> }</code></pre>
+                </div>
+                <div id="regenerateAPIKeyAPI"></div>
+                <br/>
+                <div class="section">
+                    <h2>Regenerate API Key</h2>
+                    <small>Use the RESTBroker API to generate API keys for your project in your application.</small>
+                    <hr/>
+                    <p>
+                        If an API key needs to be regenerated a POST request to the following URL must be made:<br/><br/>
+                        <code>https://restbroker.com/meta-api/api-key/regenerate/&lt;api_key&gt;</code><br/>
+                    </p>
+                    <p>The &lt;api_key&gt; part of the URL must be replaced with the API Key that is being regenerated.</p>
+                    <p>For authentication purposes, your request must contain your projects master key in the field "master_key".</p>
+
+                    <p><strong>Example Request:</strong></p>
+                    <pre><code class="powershell">$ curl https://restbroker.com/meta-api/api-key/regenerate/your_value \<br/> -F master_key=your_value </code></pre>
+
+                    <p>RESTBroker will then return a response (in JSON) containing the new API key and the status.</p>
+                    <p><strong>Success Response:</strong></p>
+                    <pre><code class="javascript">{<br/>&nbsp;&nbsp;"api_key": "rb_nrm_key_example",<br/>&nbsp;&nbsp;"message": "Successfully rgenerated API Key"<br/> }</code></pre>
+
+                    <p>If the master key is incorrect it will return a relevant message.</p>
+                    <p><strong>Error Response:</strong></p>
+                    <pre><code class="javascript">{<br/>&nbsp;&nbsp;"message": "Cannot rgenerate key, invalid master key."<br/> }</code></pre>
+
+                    <p>
+                        For security purposes, the master key cannot be regenerated from the RESTBroker API. Any requests to regenerate a master key will be rejected. If the master key needs to be regenerated
+                        it must be done so manually through the dashboard.
+                    </p>
+                </div>
+
+                <br/><br/><br/>
+                <p> © <script>document.write(new Date().getFullYear())</script> - RESTBroker</p>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="{% static 'core/js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'core/js/popper.min.js' %}"></script>
+<script src="{% static 'core/js/bootstrap.bundle.js' %}"></script>
+<script src="{% static 'docs/js/code/highlight.pack.js' %}"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</html>

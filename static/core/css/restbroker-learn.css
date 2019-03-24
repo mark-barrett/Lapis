@@ -1,0 +1,110 @@
+.api-doc-nav {
+    display: block;
+    height: 100vh;
+    background-color: #F5F7F9 !important;
+    overflow-x: auto !important;
+}
+
+.code {
+    background-color: #373b3e;
+    padding-left: 0px;
+}
+
+.code-selector-container {
+    background-color: #242728;
+    margin-left: 0px;
+    padding-left: 20px;
+    padding-top: 14px;
+    padding-bottom: 1px;
+}
+
+.code-option {
+    color: #FFFFFF;
+}
+
+.code-option:hover {
+    color: #2DC662;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    color: #fff;
+    background-color: #2DC662 !important;
+}
+
+a {
+    color: #000000;
+    text-decoration: none;
+    background-color: transparent;
+    -webkit-text-decoration-skip: objects;
+}
+
+.sub-heading {
+    color: #8898aa;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 0px;
+}
+
+.section {
+    min-height: 80vh;
+    height: auto;
+}
+
+.code-normal-font-descriptor {
+    color: #FFFFFF;
+    margin-bottom: 5px;
+}
+
+.hljs {
+    border-radius: 5px;
+}
+
+.error-codes {
+    border-radius: 10px;
+}
+
+.text-green {
+    color: #2DC662;
+}
+
+.resource-heading {
+    color: #8898aa;
+    text-transform: uppercase;
+    font-weight: lighter;
+    font-size: 15px;
+}
+
+.resource-type-bg-GET {
+    background-color: #17a2b8!important;
+}
+
+.resource-type-bg-POST {
+    background-color: #49CC90!important;
+}
+
+.resource-parameter-label {
+    font-size: 15px;
+}
+
+html {
+    overflow: scroll;
+    overflow-y: hidden;
+}
+
+.sub-menu {
+    padding-left: 28px;
+}
+
+.sub-menu .nav-link {
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.logo {
+    padding-top: 5px;
+}
+
+.login-bar {
+    padding-right: 30px;
+    padding-top: 10px;
+}

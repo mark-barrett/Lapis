@@ -10,7 +10,7 @@
 {% block content %}
     <div class="row login-row h-100">
         <div class="col-md-7 login-left">
-            <img class="logo" src="{% static 'core/images/logo-white.png' %}">
+            <a href="{% url 'features' %}"><img class="logo" src="{% static 'core/images/logo-white.png' %}"></a>
 
             <br/>
             <h1 class="main-caption">Build, automate,<br/> document
@@ -64,7 +64,7 @@
                 <a href="" class="btn btn-secondary btn-block">Forgot Password</a>
                 <hr/>
                 <div class="text-center">
-                    Already have an account? <a href="{% url 'home' %}">Login.</a>
+                    Already have an account? <a href="{% url 'login' %}">Login.</a>
                 </div>
             </div>
         </div>

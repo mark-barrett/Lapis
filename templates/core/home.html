@@ -21,6 +21,7 @@
         {% endif %}
 
         <div class="inner-page-content">
+        {% if projects %}
             <div class="row">
                 {% for project in projects %}
                     <div class="col-md-4">
@@ -52,8 +53,20 @@
                     </div>
                 </div>
             </div>
+        {% else %}
+            <div class="card stat-card">
+                <div class="card-body">
+                    <div class="text-center">
+                        <img src="{% static 'core/images/icon-round-frown.png' %}" width="100px">
+                        <br/><br/>
+                        <h3>No projects in your workspace</h3>
+                        <p>Start a project now to start building your REST API.</p>
+                        <a href="{% url 'create-project' %}" class="btn btn-success">Create New Project <i class="fa fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
         </div>
-
     </div>
     <div class="slant-end">
         <svg x="0" y="0" viewBox="0 0 2560 200" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">

@@ -85,7 +85,7 @@
 
                                     <div id="div_id_request_type" class="form-group">
                                         <label for="id_request_type" class="form-control-label  requiredField">
-                                            Request Type<span class="asteriskField">*</span> <small>(You cannot change the request type. Create a new resource with a new type.)</small>
+                                            Request Type<span class="asteriskField">*</span> <small>(You cannot change the request type. Create a new resource with a new type)</small>
                                         </label>
                                         <div class="">
                                             <select name="request_type" class="select form-control" id="id_request_type" disabled>
@@ -131,39 +131,41 @@
                                     <button type="button" id="add-header" class="btn btn-secondary btn-block btn-sm"><i class="fa fa-plus"></i> Add Header</button>
                                     <br/>
                                     <div id="parameters">
-                                        <label for="parameters">Parameters</label>
-                                        <div id="parameter-list">
-                                            {# If its a GET request and there are GET parameters #}
-                                            {% if parameters and resource.request_type == 'GET' %}
-                                                {% for parameter in parameters %}
-                                                    <div id="parameter-{{ forloop.counter }}">
-                                                        <div class="row">
-                                                            <div class="col-md-5">
-                                                                <div class="form-group">
-                                                                    <select class="form-control" name="parameter-type">
-                                                                        <option>GET</option>
-                                                                    </select>
+                                        {# If its a GET request and there are GET parameters #}
+                                        {% if resource.request_type == 'GET' %}
+                                            <label for="parameters">Parameters</label>
+                                            <div id="parameter-list">
+                                                {% if parameters %}
+                                                    {% for parameter in parameters %}
+                                                        <div id="parameter-{{ forloop.counter }}">
+                                                            <div class="row">
+                                                                <div class="col-md-5">
+                                                                    <div class="form-group">
+                                                                        <select class="form-control" name="parameter-type">
+                                                                            <option>GET</option>
+                                                                        </select>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-md-5">
-                                                                <div class="form-group">
-                                                                    <input type="text" placeholder="Key" name="parameter-key" class="form-control" value="{{ parameter.key }}">
+                                                                <div class="col-md-5">
+                                                                    <div class="form-group">
+                                                                        <input type="text" placeholder="Key" name="parameter-key" class="form-control" value="{{ parameter.key }}">
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <div class="form-group">
-                                                                    <button type="button" value="0" class="btn btn-danger btn-block" id="remove-parameter"><i class="fa fa-trash"></i></button>
+                                                                <div class="col-md-2">
+                                                                    <div class="form-group">
+                                                                        <button type="button" value="0" class="btn btn-danger btn-block" id="remove-parameter"><i class="fa fa-trash"></i></button>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                {% endfor %}
-                                            {% endif %}
-                                        </div>
-                                        <button type="button" id="add-parameter" class="btn btn-secondary btn-block btn-sm"><i class="fa fa-plus"></i> Add Parameters</button>
-                                        <br/>
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </div>
+                                            <button type="button" id="add-parameter" class="btn btn-secondary btn-block btn-sm"><i class="fa fa-plus"></i> Add Parameters</button>
+                                            <br/>
+                                        {% endif %}
                                     </div>
-                                    {% if post_data_binds and resource.request_type == 'POST' %}
+                                    {% if resource.request_type == 'POST' %}
                                         <div id="post-data-binding">
                                             <div class="float-right">
                                                 <i class="fa fa-question" data-container="body" data-toggle="popover" data-placement="left" data-content="These are the POST attributes you expect in the POST request and what they map to in your database for inserting."></i>
@@ -180,7 +182,51 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody id="data-bind-column">
-
+                                                    {% if post_data_binds %}
+                                                        {% for data_bind in post_data_binds %}
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="form-group">
+                                                                        <select name="data-bind-column" class="form-control" id="data-bind-column">
+                                                                            {% for table, columns in database_tables_obj.items %}
+                                                                                <optgroup label="{{ table }}">
+                                                                                    {% for column in columns %}
+                                                                                        <option value="{{ column.id }}" {% if data_bind.column == column %}selected{% endif %}>{{ column.name }}</option>
+                                                                                    {% endfor %}
+                                                                                </optgroup>
+                                                                            {% endfor %}
+                                                                            <optgroup label="comments">
+                                                                                <option></option>
+                                                                            </optgroup>
+                                                                        </select>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-group">
+                                                                        <input type="text" class="form-control" name="data-bind-key" placeholder="Key of the data that will be sent in request." value="{{ data_bind.key }}">
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-group">
+                                                                        <select name="data-bind-type" class="form-control" id="data-bind=type">
+                                                                            <option value="Integer" {% if data_bind.type == 'Integer' %}selected{% endif %}>Integer</option>
+                                                                            <option value="Decimal" {% if data_bind.type == 'Decimal' %}selected{% endif %}>Decimal</option>
+                                                                            <option value="String" {% if data_bind.type == 'String' %}selected{% endif %}>String</option>
+                                                                            <option value="Boolean" {% if data_bind.type == 'Boolean' %}selected{% endif %}>Boolean</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-group">
+                                                                        <input type="text" class="form-control" name="data-bind-description" placeholder="Description displayed in the docs." value="{{ data_bind.description }}">
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <button class="btn btn-block btn-danger"><i class="fa fa-trash"></i></button>
+                                                                </td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                    {% endif %}
                                                 <tr>
                                                     <td colspan="5"><button id="add-data-bind-column" type="button" class="btn btn-block btn-outline-success"><i class="fa fa-plus"></i></button></td>
                                                 </tr>
@@ -188,29 +234,75 @@
                                             </table>
                                         </div>
                                     {% endif %}
-                                    <div id="delete-data-binding" style="display: none;">
-                                        <div class="float-right">
-                                            <i class="fa fa-question" data-container="body" data-toggle="popover" data-placement="left" data-content="These are the attributes you expect in the DELETE request that specify what row(s) to delete in the database."></i>
+                                    {% if resource.request_type == 'DELETE' %}
+                                        <div id="delete-data-binding">
+                                            <div class="float-right">
+                                                <i class="fa fa-question" data-container="body" data-toggle="popover" data-placement="left" data-content="These are the attributes you expect in the DELETE request that specify what row(s) to delete in the database."></i>
+                                            </div>
+                                            <label for="data-binding">Data Binding Columns to Delete Row(s)</label>
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                <tr>
+                                                    <th scope="col">Column</th>
+                                                    <th scope="col">Key</th>
+                                                    <th scope="col">Type</th>
+                                                    <th scope="col">Description</th>
+                                                    <th scope="col"></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="delete-data-bind-column">
+                                                    {% if delete_data_binds %}
+                                                        {% for data_bind in delete_data_binds %}
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="form-group">
+                                                                        <select name="data-bind-column" class="form-control" id="data-bind-column">
+                                                                            {% for table, columns in database_tables_obj.items %}
+                                                                                <optgroup label="{{ table }}">
+                                                                                    {% for column in columns %}
+                                                                                        <option value="{{ column.id }}" {% if data_bind.column == column %}selected{% endif %}>{{ column.name }}</option>
+                                                                                    {% endfor %}
+                                                                                </optgroup>
+                                                                            {% endfor %}
+                                                                            <optgroup label="comments">
+                                                                                <option></option>
+                                                                            </optgroup>
+                                                                        </select>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-group">
+                                                                        <input type="text" class="form-control" name="data-bind-key" placeholder="Key of the data that will be sent in request." value="{{ data_bind.key }}">
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-group">
+                                                                        <select name="data-bind-type" class="form-control" id="data-bind=type">
+                                                                            <option value="Integer" {% if data_bind.type == 'Integer' %}selected{% endif %}>Integer</option>
+                                                                            <option value="Decimal" {% if data_bind.type == 'Decimal' %}selected{% endif %}>Decimal</option>
+                                                                            <option value="String" {% if data_bind.type == 'String' %}selected{% endif %}>String</option>
+                                                                            <option value="Boolean" {% if data_bind.type == 'Boolean' %}selected{% endif %}>Boolean</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-group">
+                                                                        <input type="text" class="form-control" name="data-bind-description" placeholder="Description displayed in the docs." value="{{ data_bind.description }}">
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <button class="btn btn-block btn-danger"><i class="fa fa-trash"></i></button>
+                                                                </td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                <tr>
+                                                    <td colspan="5"><button id="delete-add-data-bind-column" type="button" class="btn btn-block btn-outline-success"><i class="fa fa-plus"></i></button></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
-                                        <label for="data-binding">Data Binding Columns to Delete Row(s)</label>
-                                        <table class="table table-bordered">
-                                            <thead>
-                                            <tr>
-                                                <th scope="col">Column</th>
-                                                <th scope="col">Key</th>
-                                                <th scope="col">Type</th>
-                                                <th scope="col">Description</th>
-                                                <th scope="col"></th>
-                                            </tr>
-                                            </thead>
-                                            <tbody id="delete-data-bind-column">
-
-                                            <tr>
-                                                <td colspan="5"><button id="delete-add-data-bind-column" type="button" class="btn btn-block btn-outline-success"><i class="fa fa-plus"></i></button></td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                    {% endif %}
 
                                     {% csrf_token %}
                                     <button type="submit" class="btn btn-success btn-block">Continue <i class="fa fa-arrow-right"></i></button>
