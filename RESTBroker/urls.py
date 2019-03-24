@@ -22,6 +22,7 @@ from RESTBroker import settings
 urlpatterns = [
     url(r'^', include('core.urls')),
     url(r'^api', include('api.urls')),
+    url(r'^meta-api/', include('metaapi.urls')),
     url(r'^docs/', include('docs.urls')),
     url(r'^admin/', admin.site.urls),
 ]

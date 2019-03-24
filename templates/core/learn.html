@@ -71,6 +71,7 @@
                         <div class="collapse" id="apiCollapse">
                             <div class="sub-menu">
                                 <a class="nav-link" href="#APIReferenceIntroduction"><small>Introduction</small></a>
+                                <a class="nav-link" href="#getAPIKeys"><small>Get All API Keys</small></a>
                                 <a class="nav-link" href="#generateAPIKeyAPI"><small>Generate API Key</small></a>
                                 <a class="nav-link" href="#regenerateAPIKeyAPI"><small>Regenerate API Key</small></a>
                             </div>
@@ -285,6 +286,33 @@
                     <p>All requests must be made with HTTPS. Any requests using HTTP will be denied.</p>
                 </div>
 
+                <div id="getAPIKeys"></div>
+                <br/>
+                <div class="section">
+                    <h2>Get All API Keys</h2>
+                    <small>Get the API Keys for a given project.</small>
+                    <hr/>
+                    <p>
+                        It is useful to be able to keep track of the API Keys of a project from your own application. To get the API Keys for a given application simply make a get request to the following URL:
+                        <br/><br/>
+                        <code>https://restbroker.com/meta-api/api-keys/&lt;master_key&gt;</code>
+                    </p>
+                    <p>
+                        For authentication purposes, your request must contain the projects master key in the URL above.
+                    </p>
+                    <p><strong>Example Request:</strong></p>
+                    <pre><code class="powershell">$ curl https://restbroker.com/meta-api/api-keys/your_value</code></pre>
+
+                    <p>RESTBroker will then return a response (in JSON) containing all of the API Keys for the project linked to the master key.</p>
+                    <p><strong>Success Response:</strong></p>
+                    <pre><code class="javascript">[<br/>&nbsp;&nbsp;{<br/>&nbsp;&nbsp;&nbsp;&nbsp;"key": "rb_nrm_key_example1",<br/>&nbsp;&nbsp;&nbsp;&nbsp;"created_at": "2019-03-24"<br/>&nbsp;&nbsp;},<br/>&nbsp;&nbsp;{<br/>&nbsp;&nbsp;&nbsp;&nbsp;"key": "rb_nrm_key_example2",<br/>&nbsp;&nbsp;&nbsp;&nbsp;"created_at": "2019-01-30"<br/>&nbsp;&nbsp;}<br/>]</code></pre>
+
+                    <p>If the master key is incorrect it will return a relevant message.</p>
+                    <p><strong>Error Response:</strong></p>
+                    <pre><code class="javascript">{<br/>&nbsp;&nbsp;"message": "Cannot get API keys, invalid master key."<br/> }</code></pre>
+                </div>
+
+
                 <div id="generateAPIKeyAPI"></div>
                 <br/>
                 <div class="section">
@@ -326,11 +354,11 @@
 
                     <p>RESTBroker will then return a response (in JSON) containing the new API key and the status.</p>
                     <p><strong>Success Response:</strong></p>
-                    <pre><code class="javascript">{<br/>&nbsp;&nbsp;"api_key": "rb_nrm_key_example",<br/>&nbsp;&nbsp;"message": "Successfully rgenerated API Key"<br/> }</code></pre>
+                    <pre><code class="javascript">{<br/>&nbsp;&nbsp;"api_key": "rb_nrm_key_example",<br/>&nbsp;&nbsp;"message": "Successfully regenerated API Key"<br/> }</code></pre>
 
                     <p>If the master key is incorrect it will return a relevant message.</p>
                     <p><strong>Error Response:</strong></p>
-                    <pre><code class="javascript">{<br/>&nbsp;&nbsp;"message": "Cannot rgenerate key, invalid master key."<br/> }</code></pre>
+                    <pre><code class="javascript">{<br/>&nbsp;&nbsp;"message": "Cannot regenerate key, invalid master key."<br/> }</code></pre>
 
                     <p>
                         For security purposes, the master key cannot be regenerated from the RESTBroker API. Any requests to regenerate a master key will be rejected. If the master key needs to be regenerated

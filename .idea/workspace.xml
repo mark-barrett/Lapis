@@ -2,15 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c9046a90-8bf6-42ed-931f-81b57efdc464" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/urls.py" afterPath="$PROJECT_DIR$/core/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/views.py" afterPath="$PROJECT_DIR$/core/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/edit-resource.html" afterPath="$PROJECT_DIR$/templates/core/edit-resource.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/features.html" afterPath="$PROJECT_DIR$/templates/core/features.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/home.html" afterPath="$PROJECT_DIR$/templates/core/home.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/login.html" afterPath="$PROJECT_DIR$/templates/core/login.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/nav-bar.html" afterPath="$PROJECT_DIR$/templates/core/nav-bar.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/sign-up.html" afterPath="$PROJECT_DIR$/templates/core/sign-up.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RESTBroker/urls.py" afterPath="$PROJECT_DIR$/RESTBroker/urls.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/learn.html" afterPath="$PROJECT_DIR$/templates/core/learn.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -22,26 +15,43 @@
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
+  </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf>
       <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/urls.py">
+        <entry file="file://$PROJECT_DIR$/metaapi/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="12" column="52" lean-forward="false" selection-start-line="12" selection-start-column="52" selection-end-line="12" selection-end-column="52" />
-              <folding />
+            <state relative-caret-position="180">
+              <caret line="12" column="33" lean-forward="false" selection-start-line="12" selection-start-column="33" selection-end-line="12" selection-end-column="33" />
+              <folding>
+                <element signature="e#94#135#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/views.py">
+        <entry file="file://$PROJECT_DIR$/metaapi/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="361">
-              <caret line="42" column="42" lean-forward="false" selection-start-line="42" selection-start-column="42" selection-end-line="42" selection-end-column="42" />
+            <state relative-caret-position="480">
+              <caret line="174" column="20" lean-forward="false" selection-start-line="174" selection-start-column="20" selection-end-line="174" selection-end-column="20" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/api/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="135">
+              <caret line="10" column="7" lean-forward="false" selection-start-line="10" selection-start-column="7" selection-end-line="10" selection-end-column="7" />
+              <folding>
+                <element signature="e#0#43#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -50,84 +60,57 @@
       <file leaf-file-name="learn.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/core/learn.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="456">
-              <caret line="272" column="215" lean-forward="false" selection-start-line="272" selection-start-column="215" selection-end-line="272" selection-end-column="215" />
+            <state relative-caret-position="203">
+              <caret line="307" column="331" lean-forward="false" selection-start-line="307" selection-start-column="331" selection-end-line="307" selection-end-column="331" />
               <folding>
-                <element signature="e#1958#1964#0#HTML" expanded="true" />
-                <element signature="e#2169#2175#0#HTML" expanded="true" />
-                <element signature="e#2808#2814#0#HTML" expanded="true" />
-                <element signature="e#3440#3446#0#HTML" expanded="true" />
-                <element signature="e#3965#3971#0#HTML" expanded="true" />
-                <element signature="e#4658#4664#0#HTML" expanded="true" />
-                <element signature="n#style#0;n#div#2;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="e#10224#10230#0#HTML" expanded="true" />
-                <element signature="e#10230#10236#0#HTML" expanded="true" />
-                <element signature="e#10296#10302#0#HTML" expanded="true" />
-                <element signature="e#10302#10308#0#HTML" expanded="true" />
-                <element signature="e#10806#10812#0#HTML" expanded="true" />
-                <element signature="e#10812#10818#0#HTML" expanded="true" />
-                <element signature="e#10897#10903#0#HTML" expanded="true" />
-                <element signature="e#10903#10909#0#HTML" expanded="true" />
-                <element signature="e#10998#11004#0#HTML" expanded="true" />
-                <element signature="e#11004#11010#0#HTML" expanded="true" />
-                <element signature="e#11763#11769#0#HTML" expanded="true" />
-                <element signature="e#11769#11775#0#HTML" expanded="true" />
-                <element signature="e#11851#11857#0#HTML" expanded="true" />
-                <element signature="e#11857#11863#0#HTML" expanded="true" />
-                <element signature="e#11941#11947#0#HTML" expanded="true" />
-                <element signature="e#11947#11953#0#HTML" expanded="true" />
-                <element signature="e#12413#12419#0#HTML" expanded="true" />
-                <element signature="e#12419#12425#0#HTML" expanded="true" />
-                <element signature="e#16039#16045#0#HTML" expanded="true" />
-                <element signature="e#16045#16051#0#HTML" expanded="true" />
-                <element signature="e#16122#16128#0#HTML" expanded="true" />
-                <element signature="e#16128#16134#0#HTML" expanded="true" />
-                <element signature="e#22362#22368#0#HTML" expanded="true" />
-                <element signature="e#22368#22374#0#HTML" expanded="true" />
-                <element signature="e#22411#22417#0#HTML" expanded="true" />
-                <element signature="e#22417#22423#0#HTML" expanded="true" />
-                <element signature="e#22697#22703#0#HTML" expanded="true" />
-                <element signature="e#22703#22709#0#HTML" expanded="true" />
-                <element signature="e#23337#23341#0#HTML" expanded="true" />
-                <element signature="e#23348#23352#0#HTML" expanded="true" />
-                <element signature="e#23417#23421#0#HTML" expanded="true" />
-                <element signature="e#23428#23432#0#HTML" expanded="true" />
-                <element signature="e#24113#24119#0#HTML" expanded="true" />
-                <element signature="e#24119#24125#0#HTML" expanded="true" />
-                <element signature="e#24162#24168#0#HTML" expanded="true" />
-                <element signature="e#24168#24174#0#HTML" expanded="true" />
-                <element signature="e#24449#24455#0#HTML" expanded="true" />
-                <element signature="e#24455#24461#0#HTML" expanded="true" />
+                <element signature="e#21748#21752#0#HTML" expanded="true" />
+                <element signature="e#21762#21766#0#HTML" expanded="true" />
+                <element signature="e#22420#22426#0#HTML" expanded="true" />
+                <element signature="e#22426#22432#0#HTML" expanded="true" />
+                <element signature="e#22438#22444#0#HTML" expanded="true" />
+                <element signature="e#22444#22450#0#HTML" expanded="true" />
+                <element signature="e#22450#22456#0#HTML" expanded="true" />
+                <element signature="e#22456#22462#0#HTML" expanded="true" />
+                <element signature="e#22496#22502#0#HTML" expanded="true" />
+                <element signature="e#22502#22508#0#HTML" expanded="true" />
+                <element signature="e#22508#22514#0#HTML" expanded="true" />
+                <element signature="e#22514#22520#0#HTML" expanded="true" />
+                <element signature="e#22551#22557#0#HTML" expanded="true" />
+                <element signature="e#22557#22563#0#HTML" expanded="true" />
+                <element signature="e#22570#22576#0#HTML" expanded="true" />
+                <element signature="e#22576#22582#0#HTML" expanded="true" />
+                <element signature="e#22588#22594#0#HTML" expanded="true" />
+                <element signature="e#22594#22600#0#HTML" expanded="true" />
+                <element signature="e#22600#22606#0#HTML" expanded="true" />
+                <element signature="e#22606#22612#0#HTML" expanded="true" />
+                <element signature="e#22646#22652#0#HTML" expanded="true" />
+                <element signature="e#22652#22658#0#HTML" expanded="true" />
+                <element signature="e#22658#22664#0#HTML" expanded="true" />
+                <element signature="e#22664#22670#0#HTML" expanded="true" />
+                <element signature="e#22701#22707#0#HTML" expanded="true" />
+                <element signature="e#22707#22713#0#HTML" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="restbroker-learn.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/static/core/css/restbroker-learn.css">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="504">
-              <caret line="108" column="0" lean-forward="false" selection-start-line="108" selection-start-column="0" selection-end-line="108" selection-end-column="22" />
-              <folding />
+            <state relative-caret-position="393">
+              <caret line="1954" column="0" lean-forward="true" selection-start-line="1920" selection-start-column="12" selection-end-line="1954" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#11#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="base.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/docs/base.html">
+      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/RESTBroker/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="11" column="50" lean-forward="false" selection-start-line="11" selection-start-column="50" selection-end-line="11" selection-end-column="50" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="home.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/docs/home.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="27" column="24" lean-forward="false" selection-start-line="27" selection-start-column="24" selection-end-line="27" selection-end-column="81" />
+            <state relative-caret-position="300">
+              <caret line="24" column="39" lean-forward="false" selection-start-line="24" selection-start-column="39" selection-end-line="24" selection-end-column="39" />
               <folding />
             </state>
           </provider>
@@ -140,6 +123,7 @@
       <list>
         <option value="HTML File" />
         <option value="CSS File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -147,9 +131,11 @@
     <findStrings>
       <find>Select Projec</find>
       <find>SignUp</find>
-      <find>Feature</find>
       <find>api-doc</find>
+      <find>Feature</find>
       <find>logo</find>
+      <find>GenerateAP</find>
+      <find>rge</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -167,6 +153,9 @@
         <option value="$PROJECT_DIR$/core/urls.py" />
         <option value="$PROJECT_DIR$/core/views.py" />
         <option value="$PROJECT_DIR$/static/core/css/restbroker-learn.css" />
+        <option value="$PROJECT_DIR$/RESTBroker/urls.py" />
+        <option value="$PROJECT_DIR$/metaapi/urls.py" />
+        <option value="$PROJECT_DIR$/metaapi/views.py" />
         <option value="$PROJECT_DIR$/templates/core/learn.html" />
       </list>
     </option>
@@ -224,10 +213,6 @@
               <option name="myItemId" value="templates" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="docs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -257,25 +242,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="static" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="RESTBroker" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="RESTBroker" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="static" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="core" />
+              <option name="myItemId" value="metaapi" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -290,6 +257,34 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="RESTBroker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="RESTBroker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="api" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="RESTBroker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="RESTBroker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="RESTBroker" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -600,6 +595,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="manage.py@RESTBroker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32916668" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -668,44 +664,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="12" column="52" lean-forward="false" selection-start-line="12" selection-start-column="52" selection-end-line="12" selection-end-column="52" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
-          <caret line="42" column="42" lean-forward="false" selection-start-line="42" selection-start-column="42" selection-end-line="42" selection-end-column="42" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/docs/css/restbroker-docs.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-30">
           <caret line="16" column="1" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="88" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/docs/home.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="27" column="24" lean-forward="false" selection-start-line="27" selection-start-column="24" selection-end-line="27" selection-end-column="81" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/docs/base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="50" lean-forward="false" selection-start-line="11" selection-start-column="50" selection-end-line="11" selection-end-column="50" />
           <folding />
         </state>
       </provider>
@@ -718,56 +680,119 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/docs/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="50" lean-forward="false" selection-start-line="11" selection-start-column="50" selection-end-line="11" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/docs/home.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="27" column="24" lean-forward="false" selection-start-line="27" selection-start-column="24" selection-end-line="27" selection-end-column="81" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="72" column="20" lean-forward="false" selection-start-line="72" selection-start-column="20" selection-end-line="72" selection-end-column="94" />
+          <folding>
+            <element signature="e#0#13#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="393">
+          <caret line="1954" column="0" lean-forward="true" selection-start-line="1920" selection-start-column="12" selection-end-line="1954" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="11" selection-end-column="61" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/metaapi/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="33" lean-forward="false" selection-start-line="12" selection-start-column="33" selection-end-line="12" selection-end-column="33" />
+          <folding>
+            <element signature="e#94#135#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RESTBroker/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="24" column="39" lean-forward="false" selection-start-line="24" selection-start-column="39" selection-end-line="24" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="10" column="7" lean-forward="false" selection-start-line="10" selection-start-column="7" selection-end-line="10" selection-end-column="7" />
+          <folding>
+            <element signature="e#0#43#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/metaapi/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="174" column="20" lean-forward="false" selection-start-line="174" selection-start-column="20" selection-end-line="174" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/templates/core/learn.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="456">
-          <caret line="272" column="215" lean-forward="false" selection-start-line="272" selection-start-column="215" selection-end-line="272" selection-end-column="215" />
+        <state relative-caret-position="203">
+          <caret line="307" column="331" lean-forward="false" selection-start-line="307" selection-start-column="331" selection-end-line="307" selection-end-column="331" />
           <folding>
-            <element signature="e#1958#1964#0#HTML" expanded="true" />
-            <element signature="e#2169#2175#0#HTML" expanded="true" />
-            <element signature="e#2808#2814#0#HTML" expanded="true" />
-            <element signature="e#3440#3446#0#HTML" expanded="true" />
-            <element signature="e#3965#3971#0#HTML" expanded="true" />
-            <element signature="e#4658#4664#0#HTML" expanded="true" />
-            <element signature="n#style#0;n#div#2;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="e#10224#10230#0#HTML" expanded="true" />
-            <element signature="e#10230#10236#0#HTML" expanded="true" />
-            <element signature="e#10296#10302#0#HTML" expanded="true" />
-            <element signature="e#10302#10308#0#HTML" expanded="true" />
-            <element signature="e#10806#10812#0#HTML" expanded="true" />
-            <element signature="e#10812#10818#0#HTML" expanded="true" />
-            <element signature="e#10897#10903#0#HTML" expanded="true" />
-            <element signature="e#10903#10909#0#HTML" expanded="true" />
-            <element signature="e#10998#11004#0#HTML" expanded="true" />
-            <element signature="e#11004#11010#0#HTML" expanded="true" />
-            <element signature="e#11763#11769#0#HTML" expanded="true" />
-            <element signature="e#11769#11775#0#HTML" expanded="true" />
-            <element signature="e#11851#11857#0#HTML" expanded="true" />
-            <element signature="e#11857#11863#0#HTML" expanded="true" />
-            <element signature="e#11941#11947#0#HTML" expanded="true" />
-            <element signature="e#11947#11953#0#HTML" expanded="true" />
-            <element signature="e#12413#12419#0#HTML" expanded="true" />
-            <element signature="e#12419#12425#0#HTML" expanded="true" />
-            <element signature="e#16039#16045#0#HTML" expanded="true" />
-            <element signature="e#16045#16051#0#HTML" expanded="true" />
-            <element signature="e#16122#16128#0#HTML" expanded="true" />
-            <element signature="e#16128#16134#0#HTML" expanded="true" />
-            <element signature="e#22362#22368#0#HTML" expanded="true" />
-            <element signature="e#22368#22374#0#HTML" expanded="true" />
-            <element signature="e#22411#22417#0#HTML" expanded="true" />
-            <element signature="e#22417#22423#0#HTML" expanded="true" />
-            <element signature="e#22697#22703#0#HTML" expanded="true" />
-            <element signature="e#22703#22709#0#HTML" expanded="true" />
-            <element signature="e#23337#23341#0#HTML" expanded="true" />
-            <element signature="e#23348#23352#0#HTML" expanded="true" />
-            <element signature="e#23417#23421#0#HTML" expanded="true" />
-            <element signature="e#23428#23432#0#HTML" expanded="true" />
-            <element signature="e#24113#24119#0#HTML" expanded="true" />
-            <element signature="e#24119#24125#0#HTML" expanded="true" />
-            <element signature="e#24162#24168#0#HTML" expanded="true" />
-            <element signature="e#24168#24174#0#HTML" expanded="true" />
-            <element signature="e#24449#24455#0#HTML" expanded="true" />
-            <element signature="e#24455#24461#0#HTML" expanded="true" />
+            <element signature="e#21748#21752#0#HTML" expanded="true" />
+            <element signature="e#21762#21766#0#HTML" expanded="true" />
+            <element signature="e#22420#22426#0#HTML" expanded="true" />
+            <element signature="e#22426#22432#0#HTML" expanded="true" />
+            <element signature="e#22438#22444#0#HTML" expanded="true" />
+            <element signature="e#22444#22450#0#HTML" expanded="true" />
+            <element signature="e#22450#22456#0#HTML" expanded="true" />
+            <element signature="e#22456#22462#0#HTML" expanded="true" />
+            <element signature="e#22496#22502#0#HTML" expanded="true" />
+            <element signature="e#22502#22508#0#HTML" expanded="true" />
+            <element signature="e#22508#22514#0#HTML" expanded="true" />
+            <element signature="e#22514#22520#0#HTML" expanded="true" />
+            <element signature="e#22551#22557#0#HTML" expanded="true" />
+            <element signature="e#22557#22563#0#HTML" expanded="true" />
+            <element signature="e#22570#22576#0#HTML" expanded="true" />
+            <element signature="e#22576#22582#0#HTML" expanded="true" />
+            <element signature="e#22588#22594#0#HTML" expanded="true" />
+            <element signature="e#22594#22600#0#HTML" expanded="true" />
+            <element signature="e#22600#22606#0#HTML" expanded="true" />
+            <element signature="e#22606#22612#0#HTML" expanded="true" />
+            <element signature="e#22646#22652#0#HTML" expanded="true" />
+            <element signature="e#22652#22658#0#HTML" expanded="true" />
+            <element signature="e#22658#22664#0#HTML" expanded="true" />
+            <element signature="e#22664#22670#0#HTML" expanded="true" />
+            <element signature="e#22701#22707#0#HTML" expanded="true" />
+            <element signature="e#22707#22713#0#HTML" expanded="true" />
           </folding>
         </state>
       </provider>
