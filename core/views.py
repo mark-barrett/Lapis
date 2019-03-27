@@ -2,6 +2,8 @@ import json
 import operator
 import random
 import string
+from collections import OrderedDict
+
 import redis
 from datetime import timedelta, date
 
@@ -1744,13 +1746,13 @@ class RequestStatistics(LoginRequiredMixin, View):
 
                     # If it already exists then just increment
                     if country['country_code'] in countries:
-                        countries[country['country_code']]['count'] += 1
+                        countries[country['country_code']] += 1
                     else:
                         # If not then set to 1 and add country name
-                        countries[country['country_code']] = {
-                            'count': 1,
-                            'country_name': country['country_name']
-                        }
+                        countries[country['country_code']] = 1
+
+            countries = dict(OrderedDict(sorted(countries.items(), reverse=True)))
+            print(countries)
 
             context = {
                 'projects': Project.objects.all().filter(user=request.user),

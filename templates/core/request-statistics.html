@@ -3,6 +3,9 @@
 {# Load static templating tag to be able to use it to get paths to static files #}
 {% load static %}
 
+{# Load util functions #}
+{% load util %}
+
 {# Set the title and background color for the base.html file. #}
 {% block title %}RESTBroker - Request Statistics{% endblock %}
 
@@ -132,11 +135,58 @@
                                     </table>
                                 </div>
                             </div>
+                            {% else %}
+                                <div class="stat-card card">
+                                    <div class="card-header">Requests by Response Type</div>
+                                    <div class="card-body">
+                                        <div>
+                                            <canvas id="requestTypes" height="100"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="table-card card">
+                                    <div class="card-header">
+                                        Requests by Location</div>
+                                    <div class="card-body">
+                                        <table class="table table-light round-table-corners">
+                                            <tbody>
+                                            {% for code, obj in countries.items %}
+                                                <tr>
+                                                    <td><span class="flag-icon flag-icon-{{ code|lower }}"></span>&nbsp;&nbsp;
+                                                        <div class="float-right">{{ obj }}</div>
+                                                        {% country_code_to_name code %}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                            {% for api_request in api_requests %}
+                                                <tr>
+                                                    <th><span class="badge resource-type-bg-{{ api_request.type }} text-white">{{ api_request.type }}</span></th>
+                                                    <td>
+                                                        {% if '40' in api_request.status %}
+                                                            <span class="badge badge-warning request-status">{{ api_request.status }}</span>
+                                                        {% elif '200' in api_request.status %}
+                                                            <span class="badge badge-success request-status">{{ api_request.status }}</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>{{ api_request.date }}</td>
+                                                    <td>
+                                                        <div class="float-right">
+                                                            <a class="btn btn-secondary btn-xs" href="/request/410"><i class="fa fa-eye"></i></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             {% endif %}
 
                         {% if none_found %}
                             No results found.
                         {% endif %}
+
                     </div>
                 </div>
             </div>

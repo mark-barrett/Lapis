@@ -755,6 +755,45 @@ class RequestHandlerPrivate(View):
 
                             return HttpResponse(response, content_type='application/json')
 
+                        # Now we have the API Key. Let's make sure that the groups match.
+                        user_groups = ResourceUserGroup.objects.all().filter(resource=resource)
+
+                        # We only check for user groups if they are present or if the api_key doesn't contain master
+                        if user_groups and 'rb_mstr_key_' not in api_key.key:
+                            # If the api_key has a user group attached to it
+                            # If it doesn't ignore it
+                            if api_key.user_group:
+                                # Check to see if that user_group is in the set user_groups. If not then say permission denied
+                                in_group = False
+                                for user_group in user_groups:
+                                    if api_key.user_group == user_group.user_group:
+                                        in_group = True
+
+                                if in_group is False:
+                                    response = json.dumps({
+                                        'error': {
+                                            'message': 'Permission Denied. Your API Key/User Group doesn\'t allow you to access that resource.',
+                                            'type': 'permission_denied'
+                                        }
+                                    })
+
+                                    # This means a required header is not provided so record it and respond
+                                    api_request = APIRequest(
+                                        authentication_type='KEY',
+                                        type=request.method,
+                                        resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                        url=request.get_full_path(),
+                                        status='403 ERR',
+                                        ip_address=get_client_ip(request),
+                                        source=request.META['HTTP_USER_AGENT'],
+                                        api_key=api_key,
+                                        response_to_user=response
+                                    )
+
+                                    api_request.save()
+
+                                    return HttpResponse(response, content_type='application/json', status=403)
+
                         # The resource does exist! Now we need to go through the request and check to see
                         # if what is required has been sent.
 
@@ -1134,6 +1173,45 @@ class RequestHandlerPrivate(View):
                             })
 
                             return HttpResponse(response, content_type='application/json')
+
+                        # Now we have the API Key. Let's make sure that the groups match.
+                        user_groups = ResourceUserGroup.objects.all().filter(resource=resource)
+
+                        # We only check for user groups if they are present or if the api_key doesn't contain master
+                        if user_groups and 'rb_mstr_key_' not in api_key.key:
+                            # If the api_key has a user group attached to it
+                            # If it doesn't ignore it
+                            if api_key.user_group:
+                                # Check to see if that user_group is in the set user_groups. If not then say permission denied
+                                in_group = False
+                                for user_group in user_groups:
+                                    if api_key.user_group == user_group.user_group:
+                                        in_group = True
+
+                                if in_group is False:
+                                    response = json.dumps({
+                                        'error': {
+                                            'message': 'Permission Denied. Your API Key/User Group doesn\'t allow you to access that resource.',
+                                            'type': 'permission_denied'
+                                        }
+                                    })
+
+                                    # This means a required header is not provided so record it and respond
+                                    api_request = APIRequest(
+                                        authentication_type='KEY',
+                                        type=request.method,
+                                        resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                        url=request.get_full_path(),
+                                        status='403 ERR',
+                                        ip_address=get_client_ip(request),
+                                        source=request.META['HTTP_USER_AGENT'],
+                                        api_key=api_key,
+                                        response_to_user=response
+                                    )
+
+                                    api_request.save()
+
+                                    return HttpResponse(response, content_type='application/json', status=403)
 
                         # The resource does exist! Now we need to go through the request and check to see
                         # if what is required has been sent.

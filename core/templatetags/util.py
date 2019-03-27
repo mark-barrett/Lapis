@@ -3,6 +3,7 @@
 # https://github.com/mark-barrett
 import json
 
+import pycountry
 from django import template
 
 register = template.Library()
@@ -36,3 +37,7 @@ def last_used_api_key(api_key):
     else:
         return api_request[0].date
 
+
+@register.simple_tag(name='country_code_to_name')
+def country_code_to_name(code):
+    return pycountry.countries.get(alpha_2=code).name
