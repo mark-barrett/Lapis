@@ -3,6 +3,9 @@
 {# Load static templating tag to be able to use it to get paths to static files #}
 {% load static %}
 
+{# Load util functions #}
+{% load util %}
+
 {# Set the title and background color for the base.html file. #}
 {% block title %}RESTBroker - API Keys{% endblock %}
 
@@ -21,6 +24,41 @@
             <h2><i class="fa fa-key"></i> API Keys</h2>
         </div>
         <div class="float-right">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#generateAPIKey">
+                <i class="fa fa-sync"></i> Generate API Key
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="generateAPIKey" tabindex="-1" role="dialog" aria-labelledby="generateAPIKey" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Please choose a user group</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form name="generate_api_key" action="/api-keys/generate" method="post">
+                            <div class="modal-body">
+                                <div class="from-group">
+                                    <select name="user_group" class="form-control">
+                                        <option value="all">All User Groups</option>
+                                        {% for user_group in user_groups %}
+                                            <option value="{{ user_group.id }}">{{ user_group.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            {% csrf_token %}
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Generate API Key</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
             <a href="/api-keys/generate" class="btn btn-warning"><i class="fa fa-sync"></i> Generate API Key</a>
         </div>
         <div class="inner-page-content">
@@ -36,8 +74,8 @@
                         <thead>
                         <tr>
                             <th>API Key</th>
-                            <th>User</th>
                             <th>Type</th>
+                            <th>User Group</th>
                             <th>Last Used</th>
                             <th>Created At</th>
                             <th></th>
@@ -49,7 +87,6 @@
                                 <td>
                                    {{ api_key.key }}
                                 </td>
-                                <td>{{ api_key.user.username }}</td>
                                 <td>
                                     {% if api_key.master %}
                                         <span class="badge badge-success">Master</span>
@@ -57,7 +94,14 @@
                                         <span class="badge badge-secondary">Normal</span>
                                     {% endif %}
                                 </td>
-                                <td>null</td>
+                                <td>
+                                    {% if api_key.user_group %}
+                                        {{ api_key.user_group.name }}
+                                    {% else %}
+                                        Not bound to group.
+                                    {% endif %}
+                                </td>
+                                <td>{% last_used_api_key api_key %}</td>
                                 <td>{{ api_key.created_at }}</td>
                                 <td>
                                     <button type="button" class="btn btn-light" data-toggle="popover"

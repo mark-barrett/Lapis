@@ -102,3 +102,33 @@ class ResourceForm(forms.Form):
 
     class Meta:
         fields = ['name', 'description', 'request_type', 'response_type']
+
+
+class UserGroupForm(ModelForm):
+
+    name = forms.CharField(max_length=64)
+
+    class Meta:
+        model = UserGroup
+        fields = ['name']
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+
+        self.helper.add_input(Submit('submit', 'Create User Group', css_class='btn btn-success btn-block'))
+
+    def clean(self):
+        # Then call the clean() method of the super  class
+        cleaned_data = super(UserGroupForm, self).clean()
+        # ... do some cross-fields validation for the subclass
+
+        if cleaned_data['name'] == 'all':
+            raise forms.ValidationError("Cannot name group all. This is a reserved word.")
+        elif cleaned_data['name'] == 'All':
+            raise forms.ValidationError("Cannot name group All. This is a reserved word.")
+
+        # Finally, return the cleaned_data
+        return cleaned_data

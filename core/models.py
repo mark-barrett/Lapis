@@ -272,6 +272,30 @@ class ResourceDataBind(models.Model):
         return 'Bind between: '+self.column.name+' and key: '+self.key+' in resource: '+self.resource.name
 
 
+class UserGroup(models.Model):
+    name = models.CharField(max_length=128)
+    project = models.ForeignKey(Project)
+
+    class Meta:
+        unique_together = (('name'), ('project'))
+        verbose_name_plural = 'User Groups'
+
+    def __str__(self):
+        return self.name + ' ' + self.project.name
+
+
+# Will hold relationships between the resource and user groups. If there are none then it means anybody can access it
+class ResourceUserGroup(models.Model):
+    user_group = models.ForeignKey(UserGroup)
+    resource = models.ForeignKey(Resource)
+
+    class Meta:
+        verbose_name_plural = 'Resource User Groups'
+
+    def __str__(self):
+        return self.user_group.name + ' ' + self.resource.name
+
+
 class BlockedIP(models.Model):
 
     ip_address = models.GenericIPAddressField()

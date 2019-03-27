@@ -23,3 +23,16 @@ def pretty_json(input_json):
     parsed = json.loads(input_json)
 
     return str(json.dumps(parsed, indent=4))
+
+
+@register.simple_tag(name='last_used_api_key')
+def last_used_api_key(api_key):
+    from api.models import APIRequest
+
+    api_request = APIRequest.objects.filter(api_key=api_key).order_by('-id')
+
+    if not api_request:
+        return 'Not used'
+    else:
+        return api_request[0].date
+

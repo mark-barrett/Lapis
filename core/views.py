@@ -535,6 +535,7 @@ class CreateResource(LoginRequiredMixin, View):
                 'form': ResourceForm(request=request),
                 'project_id': project.id,
                 'project': project,
+                'user_groups': UserGroup.objects.all().filter(project=project),
                 'projects': Project.objects.all().filter(user=request.user)
             }
 
@@ -597,6 +598,7 @@ class CreateResource(LoginRequiredMixin, View):
                         'project': project.id,
                         'name': form.cleaned_data['name'],
                         'description': form.cleaned_data['description'],
+                        'user_groups': [],
                         'request': {
                             'type': form.cleaned_data['request_type'],
                             'headers': [],
@@ -606,6 +608,12 @@ class CreateResource(LoginRequiredMixin, View):
                         },
                         'response': {}
                     }
+
+                    # Check for user groups
+                    if 'user_groups' in request.POST:
+                        # They are present so add them
+                        for id in request.POST.getlist('user_groups'):
+                            resource['user_groups'].append(id)
 
                     # Get the headers as lists
                     header_keys = request.POST.getlist('header-key')
@@ -762,6 +770,19 @@ class CreateResource(LoginRequiredMixin, View):
                     )
 
                     resource.save()
+
+                    # Check for user groups
+                    if request.session['resource']['user_groups']:
+
+                        for user_group_id in request.session['resource']['user_groups']:
+                            print(user_group_id)
+                            # There are values so make them
+                            resource_user_group = ResourceUserGroup(
+                                resource=resource,
+                                user_group=UserGroup.objects.get(id=user_group_id)
+                            )
+
+                            resource_user_group.save()
 
                     # We need to save all of the headers first
                     for header in request.session['resource']['request']['headers']:
@@ -1829,7 +1850,8 @@ class APIKeys(LoginRequiredMixin, View):
             context = {
                 'projects': Project.objects.all().filter(user=request.user),
                 'project': project,
-                'api_keys': APIKey.objects.all().filter(project=project)
+                'api_keys': APIKey.objects.all().filter(project=project),
+                'user_groups': UserGroup.objects.all().filter(project=project)
             }
 
             return render(request, 'core/api-keys.html', context)
@@ -1842,41 +1864,51 @@ class APIKeys(LoginRequiredMixin, View):
 class GenerateAPIKey(LoginRequiredMixin, View):
     login_url = '/'
 
-    def get(self, request):
+    def post(self, request):
 
         if 'selected_project_id' in request.session:
             project = Project.objects.get(id=request.session['selected_project_id'])
 
-            # Generate an API key
-            if project.type == 'private':
-                # Now that a project has been created lets generate an API key for it.
-                api_key_not_found = True
+            # Try get the user group
+            if 'user_group' in request.POST:
 
-                key = ''
+                # Generate an API key
+                if project.type == 'private':
+                    # Now that a project has been created lets generate an API key for it.
+                    api_key_not_found = True
 
-                while api_key_not_found:
-                    key = ''.join(random.choices(string.ascii_uppercase + string.digits, k=32))
+                    key = ''
 
-                    key = 'rb_nrm_key_' + key
+                    while api_key_not_found:
+                        key = ''.join(random.choices(string.ascii_uppercase + string.digits, k=32))
 
-                    try:
-                        api_key = APIKey.objects.get(key=key)
-                    except:
-                        api_key_not_found = False
+                        key = 'rb_nrm_key_' + key
 
-                api_key = APIKey(
-                    key=key,
-                    user=request.user,
-                    project=project,
-                    master=False
-                )
+                        try:
+                            api_key = APIKey.objects.get(key=key)
+                        except:
+                            api_key_not_found = False
 
-                api_key.save()
+                    api_key = APIKey(
+                        key=key,
+                        user=request.user,
+                        project=project,
+                        master=False,
+                    )
 
-                messages.success(request, 'API Key successfully generated.')
-                return redirect('/api-keys')
+                    # Check to see if the user group is set to all. If it is ignore
+                    if request.POST['user_group'] != 'All' and request.POST['user_group'] != 'all':
+                        api_key.user_group = UserGroup.objects.get(id=request.POST['user_group'])
+
+                    api_key.save()
+
+                    messages.success(request, 'API Key successfully generated.')
+                    return redirect('/api-keys')
+                else:
+                    return redirect('/project/'+str(project.id))
             else:
-                return redirect('/project/'+str(project.id))
+                messages.error(request, 'A user group must be chosen.')
+                return redirect('/api-keys')
         else:
             messages.error(request, 'Please select a project.')
             return redirect('/')
@@ -1971,6 +2003,142 @@ class ResetResource(LoginRequiredMixin, View):
                 del request.session['resource']
 
             return redirect('/resource/create/'+str(project.id))
+
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/')
+
+
+class UserGroups(LoginRequiredMixin, View):
+    login_url = '/'
+
+    def get(self, request):
+
+        if 'selected_project_id' in request.session:
+
+            project = Project.objects.get(id=request.session['selected_project_id'])
+
+            context = {
+                'projects': Project.objects.all().filter(user=request.user),
+                'project': project,
+                'user_group_form': UserGroupForm(),
+                'user_groups': UserGroup.objects.all().filter(project=project)
+            }
+
+            return render(request, 'core/user-groups.html', context)
+
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/')
+
+    def post(self, request):
+
+        # Let's make sure the user is logged in
+        if 'selected_project_id' in request.session:
+
+            form = UserGroupForm(request.POST)
+
+            if form.is_valid():
+                # Commit says don't send to database. We still want to do things to it
+                user_group = form.save(commit=False)
+
+                user_group.project = Project.objects.get(id=request.session['selected_project_id'])
+
+                user_group.save()
+
+                messages.success(request, 'User group added successfully.')
+                return redirect('/user-groups')
+            else:
+                messages.error(request, str(form.errors))
+                return redirect('/user-groups')
+
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/')
+
+
+class DeleteUserGroup(LoginRequiredMixin, View):
+    login_url = '/'
+
+    def get(self, request, id):
+
+        if 'selected_project_id' in request.session:
+
+            project = Project.objects.get(id=request.session['selected_project_id'])
+
+            # Try get the user group
+            try:
+                user_group = UserGroup.objects.get(id=id)
+
+                # Delete it
+                user_group.delete()
+
+                messages.success(request, 'User group deleted successfully.')
+            except:
+                messages.error(request, 'User group does not exist.')
+
+            # Now return
+            return redirect('/user-groups')
+
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/')
+
+
+class EditUserGroup(LoginRequiredMixin, View):
+    login_url = '/'
+
+    def get(self, request, id):
+
+        if 'selected_project_id' in request.session:
+
+            project = Project.objects.get(id=request.session['selected_project_id'])
+
+            # Try get the user group
+            try:
+                user_group = UserGroup.objects.get(id=id)
+
+                context = {
+                    'projects': Project.objects.all().filter(user=request.user),
+                    'project': project,
+                    'user_group_form': UserGroupForm(instance=user_group),
+                    'user_groups': UserGroup.objects.all().filter(project=project)
+                }
+
+                return render(request, 'core/edit-user-group.html', context)
+            except:
+                messages.error(request, 'User group does not exist.')
+
+            # Now return
+            return redirect('/user-groups')
+
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/')
+
+
+    def post(self, request, id):
+
+        # Let's make sure the user is logged in
+        if 'selected_project_id' in request.session:
+
+            user_group = UserGroup.objects.get(id=id)
+
+            form = UserGroupForm(request.POST, instance=user_group)
+
+            if form.is_valid():
+                # Commit says don't send to database. We still want to do things to it
+                user_group = form.save(commit=False)
+
+                user_group.project = Project.objects.get(id=request.session['selected_project_id'])
+
+                user_group.save()
+
+                messages.success(request, 'User group edited successfully.')
+                return redirect('/user-groups')
+            else:
+                messages.error(request, str(form.errors))
+                return redirect('/user-groups')
 
         else:
             messages.error(request, 'Please select a project.')

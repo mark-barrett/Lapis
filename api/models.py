@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 
-from core.models import Resource, Project
+from core.models import Resource, Project, UserGroup
 
 
 # Projects can have API Keys
@@ -13,6 +13,7 @@ class APIKey(models.Model):
     project = models.ForeignKey(Project)
     created_at = models.DateField(default=timezone.now)
     master = models.BooleanField(default=True)
+    user_group = models.ForeignKey(UserGroup, blank=True, null=True)
 
     class Meta:
         verbose_name_plural = 'API Keys'
