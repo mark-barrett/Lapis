@@ -13,13 +13,12 @@
             <div class="float-left" style="padding-top: 10px;">
                 <a href="{% url 'features' %}"><img class="logo" src="{% static 'core/images/logo-white.png' %}" style="width:100px;"></a>
             </div><br/>
-
             <br/>
-            <h1 class="main-caption">Build, automate,<br/> document
-                and manage<br/> REST APIs.</h1>
+            <h1 class="main-caption">Build, host,<br/> document
+                and manage<br/> web APIs.</h1>
             <br/>
-            <p class="sub-caption">Build and Deploy your REST API in minutes through a graphical interface. RESTBroker will remotely contact
-                your database and serve content. It will self document and also manage things like API Keys and IP Blacklisting.</p>
+            <p class="sub-caption">Build and Deploy your web API in minutes through a graphical interface. Lapis will remotely contact
+                your database and serve content. It will self document and also manage things like API Keys, User Groups and IP Blacklisting.</p>
             <div class="login-footer">
                 {% include 'core/footer.html' %}
             </div>
@@ -60,7 +59,7 @@
                     </div>
 
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-success btn-block">Sign Up</button>
+                    <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
                 </form>
                 <br/>
                 <a href="" class="btn btn-secondary btn-block">Forgot Password</a>

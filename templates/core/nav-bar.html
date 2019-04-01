@@ -15,7 +15,7 @@
         <div class="col-md-2 sidebar-wrapper">
             <div class="sidebar">
                 <div class="sidebar-brand">
-                    <img src="{% static 'core/images/logo-green.png' %}" width="100%">
+                    <img src="{% static 'core/images/logo-lapis.png' %}" width="60%">
                 </div>
                 <ul class="nav flex-column">
                     {# If the project has not been selected then don't display this stuff #}
@@ -45,7 +45,7 @@
                             <a class="nav-link {% if 'settings' in request.get_full_path %}active{% endif %}" href="{% url 'project-settings' %}"><i class="fas fa-cogs" aria-hidden="true"></i> Settings</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {% if 'user-groups' in request.get_full_path %}active{% endif %}" href="{% url 'api-keys' %}"><i class="fas fa-users" aria-hidden="true"></i> User Groups</a>
+                            <a class="nav-link {% if 'user-groups' in request.get_full_path %}active{% endif %}" href="{% url 'user-groups' %}"><i class="fas fa-users" aria-hidden="true"></i> User Groups</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {% if 'api' in request.get_full_path %}active{% endif %}" href="{% url 'api-keys' %}"><i class="fas fa-key" aria-hidden="true"></i> API Keys</a>

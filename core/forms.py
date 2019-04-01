@@ -114,11 +114,15 @@ class UserGroupForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
+        self.edit = kwargs.pop('edit', None)
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = 'post'
 
-        self.helper.add_input(Submit('submit', 'Create User Group', css_class='btn btn-success btn-block'))
+        if self.edit:
+            self.helper.add_input(Submit('submit', 'Edit User Group', css_class='btn btn-primary btn-block'))
+        else:
+            self.helper.add_input(Submit('submit', 'Create User Group', css_class='btn btn-primary btn-block'))
 
     def clean(self):
         # Then call the clean() method of the super  class

@@ -989,44 +989,6 @@ class ViewResource(LoginRequiredMixin, View):
                 # Check to make sure the user viewing this project is the owner of it
                 if resource.project.user == request.user:
 
-                    requests_over_days = []
-
-                    # Lets get the number of requests over the last 7 days
-                    today = datetime.today()
-
-                    # Generate all of the information for the chart
-                    start_date = date(today.year, today.month, today.day-6)
-                    end_date = date(today.year, today.month, today.day+1)
-
-                    for single_date in daterange(start_date, end_date):
-                        # Now we have the date
-                        api_requests = APIRequest.objects.all().filter(date__day=single_date.day,
-                                                                       date__month=single_date.month,
-                                                                       date__year=single_date.year,
-                                                                       resource=resource.name,
-                                                                       type=resource.request_type).count()
-
-                        requests_over_days.append({
-                            'date': single_date,
-                            'requests': api_requests
-                        })
-
-
-                    request_types = {}
-
-                    # Get the number of 400 requests vs 200 requests
-                    api_requests = APIRequest.objects.all().filter(resource=resource.name, type=resource.request_type)
-
-                    # Loop through each api_request
-                    for api_request in api_requests:
-                        # If already in the dictionary then increment
-                        if api_request.status in request_types:
-                            request_types[api_request.status] += 1
-                        # Else just set it to 1
-                        else:
-                            request_types[api_request.status] = 1
-
-                    print(request_types)
 
                     context = {
                         'projects': Project.objects.all().filter(user=request.user),
@@ -1038,15 +1000,14 @@ class ViewResource(LoginRequiredMixin, View):
                         'resources': Resource.objects.all().filter(project=project),
                         'response_structure': json.dumps(response_structure, sort_keys=True, indent=2),
                         'data_binds': ResourceDataBind.objects.all().filter(resource=resource),
-                        'requests_over_days': requests_over_days,
-                        'request_types': request_types
                     }
 
                     return render(request, 'core/view-resource.html', context)
                 else:
                     messages.error(request, 'Sorry, we can\'t seem to find what you were looking for.')
                     return redirect('/dashboard')
-            except:
+            except Exception as e:
+                print(e)
                 messages.error(request, 'Resource does not exist.')
                 return redirect('/dashboard')
         else:
@@ -1647,7 +1608,12 @@ class ProjectStatistics(LoginRequiredMixin, View):
             today = datetime.today()
 
             # Generate all of the information for the chart
-            start_date = date(today.year, today.month, today.day - 6)
+            # Check to see if today is the first of the month if it is then the start date is 7 days before today
+            if today.day == 1:
+                start_date = date(today.year, today.month-1, 30-7)
+            else:
+                start_date = date(today.year, today.month, today.day - 7)
+
             end_date = date(today.year, today.month, today.day)
 
             for single_date in daterange(start_date, end_date):
@@ -2103,12 +2069,13 @@ class EditUserGroup(LoginRequiredMixin, View):
                 context = {
                     'projects': Project.objects.all().filter(user=request.user),
                     'project': project,
-                    'user_group_form': UserGroupForm(instance=user_group),
+                    'user_group_form': UserGroupForm(instance=user_group, edit=True),
                     'user_groups': UserGroup.objects.all().filter(project=project)
                 }
 
                 return render(request, 'core/edit-user-group.html', context)
-            except:
+            except Exception as e:
+                print(e)
                 messages.error(request, 'User group does not exist.')
 
             # Now return

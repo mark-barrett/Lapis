@@ -64,8 +64,9 @@ body {
 }
 
 .sidebar-brand {
-    padding: 10px;
-    text-align: center;
+    padding-top: 10px;
+    padding-left: 10px;
+    text-align: left;
 }
 
 .sidebar {
@@ -87,11 +88,11 @@ body {
 .nav-item i {
     font-size: 20px;
     padding-right: 10px;
-    color: #29C761;
+    color: #3853AF;
 }
 
 .active {
-    border-left: 4px solid #29C761;
+    border-left: 4px solid #3853AF;
 }
 
 .sidebar .nav-item .nav-link:hover {
@@ -104,11 +105,11 @@ body {
 }
 
 .custom-control-input:checked ~ .custom-control-label::before {
-    background-color: #29C761 !important;
+    background-color: #3853AF !important;
 }
 
 .custom-control-input:active~.custom-control-label::before{
-    background-color: #34C464;
+    background-color: #3853AF;
 }
 
 .separator {
@@ -197,17 +198,17 @@ body {
 
 .dropdown-item.active, .dropdown-item:active {
     background-color: #ffffff;
-    color: #29C761;
+    color: #3753AF;
 }
 
 .dropdown-item:active:hover {
     background-color: white;
-    color: #29C761;
+    color: #3753AF;
 }
 
 .page-content {
     padding: 20px;
-    background: linear-gradient(87deg, #34C464 0, #29C761 100%) !important;
+    background: linear-gradient(87deg, #3853AF 0, #43c4d8 100%) !important;
     height: 400px;
 }
 
@@ -537,7 +538,7 @@ body {
     z-index: 2;
     color: #fff;
     font-weight: bold;
-    background-color: #2FC663;
+    background-color: #3853AF;
     border: 1px solid rgba(0,0,0,.125);
 }
 
@@ -575,8 +576,12 @@ body {
 }
 
 .active-project {
-    background-color: #2DC662;
+    background-color: #3853AF;
     color: #fff;
+}
+
+.btn-primary {
+    background-color: #3853AF;
 }
 
 .page-title {
