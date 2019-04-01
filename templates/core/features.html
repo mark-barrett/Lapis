@@ -11,13 +11,13 @@
     <div class="row">
         <div class="col-md-12 login-left">
             <div class="float-left" style="padding-top: 10px;">
-                <img class="logo" src="{% static 'core/images/lapis-alt.png' %}" style="width:100px;">
+                <a href="{% url 'features' %}"><img class="logo" src="{% static 'core/images/logo-white.png' %}" style="width:100px;"></a>
             </div>
             <div class="float-right login-sign-up-nav">
                 <br/>
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="">Learn</a>
+                        <a class="nav-link" href="{% url 'learn' %}">Learn</a>
                     </li>
                     {% if request.user.is_authenticated %}
                         <li class="nav-item">
@@ -71,8 +71,8 @@
             <div class="col-md-4">
                 <br/>
                 <div class="main-buttons text-center">
-                    <a href="/login" class="btn btn-light">Get Started</a>
-                    <a class="btn btn-light">Learn</a>
+                    <a href="{% url 'login' %}" class="btn btn-light">Get Started</a>
+                    <a href="{% url 'learn' %}" class="btn btn-light">Learn</a>
                 </div>
             </div>
             <div class="col-md-4">

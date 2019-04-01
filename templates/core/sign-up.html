@@ -10,7 +10,9 @@
 {% block content %}
     <div class="row login-row h-100">
         <div class="col-md-7 login-left">
-            <a href="{% url 'features' %}"><img class="logo" src="{% static 'core/images/logo-white.png' %}"></a>
+            <div class="float-left" style="padding-top: 10px;">
+                <a href="{% url 'features' %}"><img class="logo" src="{% static 'core/images/logo-white.png' %}" style="width:100px;"></a>
+            </div><br/>
 
             <br/>
             <h1 class="main-caption">Build, automate,<br/> document
