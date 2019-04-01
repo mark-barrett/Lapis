@@ -17,7 +17,7 @@ body {
 }
 
 .secondary-background {
-    background-color: #29C761;
+    background-color: #3853AF;
     /* <!-- #3853AF --> */
 }
 
@@ -391,6 +391,19 @@ body {
 .other-half {
     background-color: #F8F9FE;
     height: 100%;
+}
+
+.iconDetails {
+    margin-left:2%;
+    float:left;
+    height:50px;
+    width:50px;
+}
+
+.container2 {
+    width:100%;
+    height:auto;
+    padding:1%;
 }
 
 .inside-padding {
@@ -848,6 +861,20 @@ body {
 }
 
 .stat-card {
+    border-radius: .375rem;
+    -webkit-box-shadow: 0 7px 14px 0 rgba(59,65,94,.1), 0 3px 6px 0 rgba(0,0,0,.07);
+    box-shadow: 0 0px 14px 0 rgba(59,65,94,.1), 0 3px 6px 0 rgba(0,0,0,.07);
+    border: none;
+}
+
+.card {
+    border-radius: .375rem;
+    -webkit-box-shadow: 0 7px 14px 0 rgba(59,65,94,.1), 0 3px 6px 0 rgba(0,0,0,.07);
+    box-shadow: 0 0px 14px 0 rgba(59,65,94,.1), 0 3px 6px 0 rgba(0,0,0,.07);
+    border: none;
+}
+
+.alert {
     border-radius: .375rem;
     -webkit-box-shadow: 0 7px 14px 0 rgba(59,65,94,.1), 0 3px 6px 0 rgba(0,0,0,.07);
     box-shadow: 0 0px 14px 0 rgba(59,65,94,.1), 0 3px 6px 0 rgba(0,0,0,.07);

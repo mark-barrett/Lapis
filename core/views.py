@@ -1648,7 +1648,7 @@ class ProjectStatistics(LoginRequiredMixin, View):
 
             # Generate all of the information for the chart
             start_date = date(today.year, today.month, today.day - 6)
-            end_date = date(today.year, today.month, today.day + 1)
+            end_date = date(today.year, today.month, today.day)
 
             for single_date in daterange(start_date, end_date):
                 # Now we have the date

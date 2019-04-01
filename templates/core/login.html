@@ -11,14 +11,16 @@
 
     <div class="row login-row h-100">
         <div class="col-md-7 login-left">
-            <a href="{% url 'features' %}"><img class="logo" src="{% static 'core/images/logo-white.png' %}"></a>
-
+            <div class="float-left" style="padding-top: 10px;">
+                <a href="{% url 'features' %}"><img class="logo" src="{% static 'core/images/lapis-alt.png' %}" style="width:100px;"></a>
+            </div>
             <br/>
-            <h1 class="main-caption">Build, automate,<br/> document
-                and manage<br/> REST APIs.</h1>
             <br/>
-            <p class="sub-caption">Build and Deploy your REST API in minutes through a graphical interface. RESTBroker will remotely contact
-            your database and serve content. It will self document and also manage things like API Keys and IP Blacklisting.</p>
+            <h1 class="main-caption">Build, host,<br/> document
+                and manage<br/> web APIs.</h1>
+            <br/>
+            <p class="sub-caption">Build and Deploy your web API in minutes through a graphical interface. Lapis will remotely contact
+            your database and serve content. It will self document and also manage things like API Keys, User Groups and IP Blacklisting.</p>
             <div class="login-footer">
                 {% include 'core/footer.html' %}
             </div>

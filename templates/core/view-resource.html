@@ -30,157 +30,152 @@
             {# If the database has been built. If not then say it needs to be built #}
             {% if project.database_built %}
 
-                <div class="card card-no-top-radius">
-                    <div class="card-body">
-                        <div class="card">
-                            <div class="card-header resource-{{ resource.request_type }}" style="border-bottom: none;">
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        <div class="card resource-type-bg-{{ resource.request_type }} text-center">
-                                            <div class="card-body resource-margin-padding">
-                                                <h2 class="resource-name">{{ resource.request_type }}</h2>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-5 text-left">
-                                        {{ resource.name }}<br/>
-                                        <small>{{ resource.description }}</small>
-                                    </div>
-                                    <div class="col-md-1">
-                                        {% if resource.status %}
-                                            <div class="dot on my-auto" data-toggle="tooltip" data-placement="top" title="On"></div>
-                                        {% else %}
-                                            <div class="dot off" data-toggle="tooltip" data-placement="top" title="Off"></div>
-                                        {% endif %}
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="float-right">
-                                            <a href="/resource/status/{{ resource.id }}" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Power"><i class="fa fa-power-off"></i></a>
-                                            <a href="" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pen"></i></a>
-                                            <span data-toggle="modal" data-target="#delete_resource_{{ resource.id }}">
-                                                        <button type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete" data-target='#delete_resource_{{ resource.id }}'><i class="fa fa-trash"></i></button>
-                                                    </span>
-                                            <a href="/resource/{{ resource.id }}/requests" data-toggle="tooltip" data-placement="top" title="View Requests" class="btn btn-secondary"><i class="fas fa-exchange-alt"></i></a>
-                                        </div>
+                <div class="card">
+                    <div class="card-header resource-{{ resource.request_type }}" style="border-bottom: none;">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="card resource-type-bg-{{ resource.request_type }} text-center">
+                                    <div class="card-body resource-margin-padding">
+                                        <h2 class="resource-name">{{ resource.request_type }}</h2>
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <h5 class="card-title"><i class="fas fa-upload"></i> Request</h5>
-                                                <p class="form-instruction">Headers</p>
-                                                {% if resource_headers %}
-                                                    <table class="table table-striped table-sm">
-                                                        <thead>
+                            <div class="col-md-5 text-left">
+                                {{ resource.name }}<br/>
+                                <small>{{ resource.description }}</small>
+                            </div>
+                            <div class="col-md-1">
+                                {% if resource.status %}
+                                    <div class="dot on my-auto" data-toggle="tooltip" data-placement="top" title="On"></div>
+                                {% else %}
+                                    <div class="dot off" data-toggle="tooltip" data-placement="top" title="Off"></div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-4">
+                                <div class="float-right">
+                                    <a href="/resource/status/{{ resource.id }}" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Power"><i class="fa fa-power-off"></i></a>
+                                    <a href="" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pen"></i></a>
+                                    <span data-toggle="modal" data-target="#delete_resource_{{ resource.id }}">
+                                                        <button type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete" data-target='#delete_resource_{{ resource.id }}'><i class="fa fa-trash"></i></button>
+                                                    </span>
+                                    <a href="/resource/{{ resource.id }}/requests" data-toggle="tooltip" data-placement="top" title="View Requests" class="btn btn-secondary"><i class="fas fa-exchange-alt"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><i class="fas fa-upload"></i> Request</h5>
+                                        <p class="form-instruction">Headers</p>
+                                        {% if resource_headers %}
+                                            <table class="table table-striped table-sm">
+                                                <thead>
+                                                <tr>
+                                                    <th scope="col">Key</th>
+                                                    <th scope="col">Value</th>
+                                                    <th scope="col">Description</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for header in resource_headers %}
+                                                    <tr>
+                                                        <td>{{ header.key }}</td>
+                                                        <td>{{ header.value }}</td>
+                                                        <td>{{ header.description }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        {% else %}
+                                            None<br/><br/>
+                                        {% endif %}
+
+                                        {# If its a GET method, show the parameters #}
+                                        {% if resource.request_type == 'GET' %}
+                                            <p class="form-instruction">Parameters</p>
+                                            {% if resource_parameters %}
+                                                <table class="table table-striped table-sm">
+                                                    <thead>
+                                                    <tr>
+                                                        <th scope="col">Type</th>
+                                                        <th scope="col">Key</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for parameter in resource_parameters %}
                                                         <tr>
-                                                            <th scope="col">Key</th>
-                                                            <th scope="col">Value</th>
-                                                            <th scope="col">Description</th>
+                                                            <td>{{ parameter.type }}</td>
+                                                            <td>{{ parameter.key }}</td>
                                                         </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        {% for header in resource_headers %}
-                                                            <tr>
-                                                                <td>{{ header.key }}</td>
-                                                                <td>{{ header.value }}</td>
-                                                                <td>{{ header.description }}</td>
-                                                            </tr>
-                                                        {% endfor %}
-                                                        </tbody>
-                                                    </table>
-                                                {% else %}
-                                                    None<br/><br/>
-                                                {% endif %}
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            {% else %}
+                                                None<br/><br/>
+                                            {% endif %}
+                                        {% endif %}
 
-                                                {# If its a GET method, show the parameters #}
-                                                {% if resource.request_type == 'GET' %}
-                                                    <p class="form-instruction">Parameters</p>
-                                                    {% if resource_parameters %}
-                                                        <table class="table table-striped table-sm">
-                                                            <thead>
-                                                            <tr>
-                                                                <th scope="col">Type</th>
-                                                                <th scope="col">Key</th>
-                                                            </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            {% for parameter in resource_parameters %}
-                                                                <tr>
-                                                                    <td>{{ parameter.type }}</td>
-                                                                    <td>{{ parameter.key }}</td>
-                                                                </tr>
-                                                            {% endfor %}
-                                                            </tbody>
-                                                        </table>
-                                                    {% else %}
-                                                        None<br/><br/>
-                                                    {% endif %}
-                                                {% endif %}
-
-                                                {# If its a POST method, show the data binding #}
-                                                {% if resource.request_type == 'POST' %}
-                                                    <p class="form-instruction">Data Binding</p>
-                                                    {% if data_binds %}
-                                                        <table class="table table-striped table-sm">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th scope="col">Column</th>
-                                                                    <th scope="col">Key</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            {% for data_bind in data_binds %}
-                                                                <tr>
-                                                                    <td>{{ data_bind.column.name }}</td>
-                                                                    <td>{{ data_bind.key }}</td>
-                                                                </tr>
-                                                            {% endfor %}
-                                                            </tbody>
-                                                        </table>
-                                                    {% else %}
-                                                        None <br/><br/>
-                                                    {% endif %}
-                                                {% endif %}
-                                            </div>
-                                        </div>
+                                        {# If its a POST method, show the data binding #}
+                                        {% if resource.request_type == 'POST' %}
+                                            <p class="form-instruction">Data Binding</p>
+                                            {% if data_binds %}
+                                                <table class="table table-striped table-sm">
+                                                    <thead>
+                                                    <tr>
+                                                        <th scope="col">Column</th>
+                                                        <th scope="col">Key</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for data_bind in data_binds %}
+                                                        <tr>
+                                                            <td>{{ data_bind.column.name }}</td>
+                                                            <td>{{ data_bind.key }}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            {% else %}
+                                                None <br/><br/>
+                                            {% endif %}
+                                        {% endif %}
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <h5 class="card-title"><i class="fas fa-download"></i> Response</h5>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><i class="fas fa-download"></i> Response</h5>
 
-                                                <pre><code class="json" id="response">{{ response_structure }}
+                                        <pre><code class="json" id="response">{{ response_structure }}
 
                                                 </code></pre>
 
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
-                                <br/>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="bottom-padding"><strong>Requests to this Resource</strong></div>
-                                        <div>
-                                            <canvas id="requestsThisWeekColoured" width="400" height="150"></canvas>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="bottom-padding"><strong>Requests Types</strong></div>
-                                        <div>
-                                            <div id="request_types" class="ct-chart ct-perfect-fourth"></div>
-                                        </div>
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
                         <br/>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="bottom-padding"><strong>Requests to this Resource</strong></div>
+                                <div>
+                                    <canvas id="requestsThisWeekColoured" width="400" height="150"></canvas>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="bottom-padding"><strong>Requests Types</strong></div>
+                                <div>
+                                    <div id="request_types" class="ct-chart ct-perfect-fourth"></div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
-                </div>
+
             {% else %}
                 <div class="card">
                     <div class="card">
@@ -271,15 +266,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="slant-end">
-        <svg x="0" y="0" viewBox="0 0 2560 200" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
-            <polygon class="fill-back" points="2560 0 2560 300 0 200"></polygon>
-        </svg>
-    </div>
-    <div class="other-half">
-        <div class="container">
-            {% include 'core/footer.html' %}
-        </div>
+        {% include 'core/footer.html' %}
     </div>
 {% endblock %}

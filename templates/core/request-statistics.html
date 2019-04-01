@@ -126,7 +126,7 @@
                                                 <td>{{ api_request.date }}</td>
                                                 <td>
                                                     <div class="float-right">
-                                                        <a class="btn btn-secondary btn-xs" href="/request/410"><i class="fa fa-eye"></i></a>
+                                                        <a class="btn btn-secondary btn-xs" href="/request/{{ api_request.id }}"><i class="fa fa-eye"></i></a>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -172,7 +172,7 @@
                                                     <td>{{ api_request.date }}</td>
                                                     <td>
                                                         <div class="float-right">
-                                                            <a class="btn btn-secondary btn-xs" href="/request/410"><i class="fa fa-eye"></i></a>
+                                                            <a class="btn btn-secondary btn-xs" href="/request/{{ api_request.id }}"><i class="fa fa-eye"></i></a>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -186,12 +186,11 @@
                         {% if none_found %}
                             No results found.
                         {% endif %}
-
                     </div>
                 </div>
             </div>
-
         </div>
+
 
         <div class="modal fade" id="deleteProject" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -215,14 +214,6 @@
             </div>
         </div>
     </div>
-    <div class="slant-end">
-        <svg x="0" y="0" viewBox="0 0 2560 200" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
-            <polygon class="fill-back" points="2560 0 2560 300 0 200"></polygon>
-        </svg>
-    </div>
-    <div class="other-half">
-        <div class="container">
-            {% include 'core/footer.html' %}
-        </div>
+    {% include 'core/footer.html' %}
     </div>
 {% endblock %}
