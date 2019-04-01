@@ -9,7 +9,7 @@
 
 {% block content %}
 
-    <div class="row login-row h-100">
+    <div class="login-large row login-row h-100">
         <div class="col-md-7 login-left">
             <div class="float-left" style="padding-top: 10px;">
                 <a href="{% url 'features' %}"><img class="logo" src="{% static 'core/images/logo-white.png' %}" style="width:100px;"></a>
@@ -20,7 +20,7 @@
                 and manage<br/> web APIs.</h1>
             <br/>
             <p class="sub-caption">Build and Deploy your web API in minutes through a graphical interface. Lapis will remotely contact
-            your database and serve content. It will self document and also manage things like API Keys, User Groups and IP Blacklisting.</p>
+                your database and serve content. It will self document and also manage things like API Keys, User Groups and IP Blacklisting.</p>
             <div class="login-footer">
                 {% include 'core/footer.html' %}
             </div>
@@ -60,4 +60,48 @@
             </div>
         </div>
     </div>
+
+    <div class="login-mobile">
+        <div class="row">
+            <div class="col-sm">
+
+            </div>
+            <div class="col-sm-6">
+                <div class="text-center">
+                    <a href="{% url 'features' %}"><img class="logo" src="{% static 'core/images/logo-white.png' %}" style="width:150px;"></a>
+                </div>
+                <br/>
+                <div class="card stat-card">
+                    <div class="card-body">
+                        <form name="login" action="" method="post" class="">
+                            <div class="input-group mb-3" style="padding-top: 5px;">
+                                <div class="input-group-prepend">
+                                    <span style="background-color: white;" class="input-group-text" id="basic-addon1"><i class="fa fa-user"></i></span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Username" aria-label="Username" name="username" aria-describedby="basic-addon1" required="required">
+                            </div>
+                            <div class="input-group mb-3" style="padding-top: 5px;">
+                                <div class="input-group-prepend">
+                                    <span style="background-color: white;" class="input-group-text" id="basic-addon1"><i class="fa fa-lock"></i></span>
+                                </div>
+                                <input type="password" class="form-control" placeholder="Password" aria-label="Username" name="password" aria-describedby="basic-addon1" required="required">
+                            </div>
+
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary btn-block">Login</button>
+                        </form>
+                        <br/>
+                        <a href="" class="btn btn-secondary btn-block">Forgot Password</a>
+                        <hr/>
+                        <div class="text-center">
+                            Don't have an account? <a href="{% url 'sign-up' %}">Sign Up.</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="col-sm">
+
+        </div>
+    </div>
+
 {% endblock %}
