@@ -1003,10 +1003,14 @@ body {
     .small-nav-popover-logo {
         display: none;
     }
+
+    .small-arrow {
+        display: none;
+    }
 }
 
 .dropdown-menu.multi-column {
-    width: 600px;
+    width: 500px;
 }
 
 .dropdown-menu.multi-column .dropdown-menu {
@@ -1057,5 +1061,9 @@ body {
         -ms-flex: 0 0 100%;
         flex: 0 0 100%;
         max-width: 100%;
+    }
+
+    .large-arrow {
+        display: none;
     }
 }

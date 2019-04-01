@@ -88,20 +88,17 @@
                                             <li><a class="nav-link mobile-nav-link {% if 'dashboard' in request.get_full_path %}active{% endif %}" href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i>
                                                 Dashboard</a></li>
                                             <li><a class="nav-link mobile-nav-link {% if 'resource' in request.get_full_path and 'requests' not in request.get_full_path %}active{% endif %}" href="{% url 'resources' %}"><i class="fas fa-table" aria-hidden="true"></i> Resources</a></li>
+                                            <li><a class="nav-link mobile-nav-link {% if 'api' in request.get_full_path %}active{% endif %}" href="{% url 'api-keys' %}"><i class="fas fa-key" aria-hidden="true"></i> API Keys</a></li>
                                             <li><a class="nav-link mobile-nav-link {% if 'docs' in request.get_full_path %}active{% endif %}" href="/docs/{{ project.id }}"><i class="fas fa-file-alt" aria-hidden="true"></i> View Docs</a></li>
+                                            <li><a class="nav-link mobile-nav-link" href="{% url 'logout' %}"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
                                         </ul>
                                     </div>
                                     <div class="span6">
                                         <ul class="dropdown-menu">
                                             <li><a href="#"><a class="nav-link mobile-nav-link {% if 'settings' in request.get_full_path %}active{% endif %}" href="{% url 'project-settings' %}"><i class="fas fa-cogs" aria-hidden="true"></i> Settings</a></a></li>
                                             <li><a href="#"><a class="nav-link mobile-nav-link {% if 'user-groups' in request.get_full_path %}active{% endif %}" href="{% url 'user-groups' %}"><i class="fas fa-users" aria-hidden="true"></i> User Groups</a></li>
-                                            <li><a class="nav-link mobile-nav-link " href="{% url 'create-project' %}"><i class="fa fa-plus" aria-hidden="true"></i> Create New Project</a>
-                                        </ul>
-                                    </div>
-                                    <div class="span6">
-                                        <ul class="dropdown-menu">
-                                            <li><a class="nav-link mobile-nav-link {% if 'api' in request.get_full_path %}active{% endif %}" href="{% url 'api-keys' %}"><i class="fas fa-key" aria-hidden="true"></i> API Keys</a></li>
                                             <li><a class="nav-link mobile-nav-link {% if 'statistics' in request.get_full_path or 'requests' in request.get_full_path %}active{% endif %}" href="{% url 'project-statistics' %}"><i class="fas fa-chart-bar" aria-hidden="true"></i> Statistics</a></li>
+                                            <li><a class="nav-link mobile-nav-link " href="{% url 'create-project' %}"><i class="fa fa-plus" aria-hidden="true"></i> Create New Project</a>
                                         </ul>
                                     </div>
                                 </div>
