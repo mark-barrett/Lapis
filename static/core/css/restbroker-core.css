@@ -72,7 +72,6 @@ body {
 .sidebar {
     background-color: #ffffff;
     height: 100%;
-    width: 100%;
     padding-left: 20px;
 }
 
@@ -963,6 +962,19 @@ body {
     padding-top: 30px;
 }
 
+.small-nav-popover {
+    padding-right: 30px;
+}
+
+.small-nav-popover-logo {
+    padding-left: 30px;
+}
+
+.small-nav {
+    padding-top: 10px;
+    background: linear-gradient(87deg, #3853AF 0, #43c4d8 100%) !important;
+}
+
 @media only screen and (min-width : 1000px) {
     .login-mobile {
         display: none;
@@ -971,6 +983,52 @@ body {
     .sign-up-mobile {
         display: none;
     }
+
+    .nav-sidebar {
+        -ms-flex: 0 0 16.666667%;
+        flex: 0 0 16.666667%;
+        max-width: 16.666667%;
+    }
+
+    .main-content {
+        -ms-flex: 0 0 83.333333%;
+        flex: 0 0 83.333333%;
+        max-width: 83.333333%;
+    }
+
+    .small-nav {
+        display: none;
+    }
+
+    .small-nav-popover-logo {
+        display: none;
+    }
+}
+
+.dropdown-menu.multi-column {
+    width: 600px;
+}
+
+.dropdown-menu.multi-column .dropdown-menu {
+    display: block !important;
+    position: static !important;
+    margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.mobile-nav-link {
+    font-size: 18px;
+    color: #808080;
+}
+
+.mobile-nav-link:hover {
+    color: #3853AF;
+    text-decoration: none;
+}
+
+.mobile-nav-link i {
+    color: #3853AF;
 }
 
 
@@ -981,5 +1039,23 @@ body {
 
     .sign-up-large {
         display: none;
+    }
+
+    .large-nav {
+        display: none;
+    }
+
+    .large-nav {
+        display: none;
+    }
+
+    .nav-sidebar {
+        display: none;
+    }
+
+    .main-content {
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+        max-width: 100%;
     }
 }
