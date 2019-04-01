@@ -17,7 +17,7 @@ body {
 }
 
 .secondary-background {
-    background-color: #3853AF;
+    background: linear-gradient(87deg, #3853AF 0, #43c4d8 100%) !important;
     /* <!-- #3853AF --> */
 }
 
@@ -1036,7 +1036,7 @@ body {
 }
 
 
-@media only screen and (max-width : 768px) {
+@media only screen and (max-width : 670px) {
     .login-large {
         display: none;
     }

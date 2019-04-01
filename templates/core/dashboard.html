@@ -42,6 +42,9 @@
                         <p class="stat-subtitle">{% if percentage > 0 %}<i class="fa fa-arrow-up green" aria-hidden="true"></i>{% elif percentage < 0 %}<i class="fa fa-arrow-down red" aria-hidden="true"></i>{% else %}<i class="fa fa-minus blue" aria-hidden="true"></i>{% endif %} {{ percentage }}% since last month</p>
                     </div>
                 </div>
+                <div class="small-nav">
+
+                </div>
             </div>
             <div class="col-md-4">
                 <div class="card stat-card">
@@ -55,6 +58,9 @@
                         <p class="stat-value">{{ projects|length }}</p>
                     </div>
                 </div>
+                <div class="small-nav">
+
+                </div>
             </div>
             <div class="col-md-4">
                 <div class="card stat-card">
@@ -67,6 +73,9 @@
                         <p class="stat-title">API Keys</p>
                         <p class="stat-value">{{ api_keys|length }}</p>
                     </div>
+                </div>
+                <div class="small-nav">
+
                 </div>
             </div>
         </div>
