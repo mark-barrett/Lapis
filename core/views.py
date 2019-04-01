@@ -364,10 +364,10 @@ class Resources(LoginRequiredMixin, View):
                     return redirect('/dashboard')
             except:
                 messages.error(request, 'Project does not exist.')
-                return redirect('/dashboard')
+                return redirect('/projects')
         else:
             messages.error(request, 'Please select a project.')
-            return redirect('/')
+            return redirect('/projects')
 
 
 class EditProject(LoginRequiredMixin, View):
