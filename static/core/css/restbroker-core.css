@@ -1007,6 +1007,10 @@ body {
     .small-arrow {
         display: none;
     }
+
+    .small-nav-break {
+        display: none;
+    }
 }
 
 .dropdown-menu.multi-column {
