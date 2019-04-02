@@ -1652,11 +1652,14 @@ class ProjectStatistics(LoginRequiredMixin, View):
                 })
 
             # Assume the most popular is the first
-            most_popular = resources_list[0]
+            if resources_list:
+                most_popular = resources_list[0]
 
-            for resource in resources_list:
-                if resource['requests'] > most_popular['requests']:
-                    most_popular = resource
+                for resource in resources_list:
+                    if resource['requests'] > most_popular['requests']:
+                        most_popular = resource
+            else:
+                most_popular = None
 
             context = {
                 'projects': Project.objects.all().filter(user=request.user),
@@ -1675,6 +1678,24 @@ class ProjectStatistics(LoginRequiredMixin, View):
             messages.error(request, 'Please select a project.')
             return redirect('/')
 
+
+
+class Alerts(LoginRequiredMixin, View):
+    login_url = '/'
+
+    def get(self, request):
+
+        if 'selected_project_id' in request.session:
+
+            context = {
+                'projects': Project.objects.all().filter(user=request.user),
+                'project': Project.objects.get(id=request.session['selected_project_id']),
+            }
+
+            return render(request, 'core/alerts.html', context)
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/')
 
 
 class RequestStatistics(LoginRequiredMixin, View):

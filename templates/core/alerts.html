@@ -1,0 +1,59 @@
+{% extends 'core/nav-bar.html' %}
+
+{# Load static templating tag to be able to use it to get paths to static files #}
+{% load static %}
+
+{# Set the title and background color for the base.html file. #}
+{% block title %}Alerts{% endblock %}
+
+{% block page-content %}
+    <div class="page-content">
+        <h2 class="title-name">{{ project.name }} </h2>
+        <p class="title-description">
+            {{ project.description }}
+            {% if project.type == 'public' %}
+                <span class="badge badge-light"><i class="fa fa-users"></i> Public</span>
+            {% else %}
+                <span class="badge badge-light"><i class="fa fa-lock"></i> Private</span>
+            {% endif %}
+        </p>
+        <div class="inner-page-content">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+
+            <div class="card card-no-top-radius">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="list-group">
+                                <a href="{% url 'project-settings' %}" class="list-group-item list-group-item-action">Overview</a>
+                                <a href="{% url 'documentation-settings' %}" class="list-group-item list-group-item-action">Documentation</a>
+                                <a href="{% url 'project-security-settings' %}" class="list-group-item list-group-item-action">Security</a>
+                                <a href="{% url 'alerts' %}" class="list-group-item list-group-item-action active">Alerts</a>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <h4>Alerts</h4>
+                            <hr/>
+                            Alerts allow you to be notified when a particular endpoint reaches a certain number of requests.<br/><br/>
+                            <div class="card stat-card">
+                                <div class="card-body">
+                                    <strong>Email for Notfications:</strong><br/>
+                                    <small>The email that Lapis will contact for notifications</small>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="example@example.com">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {% include 'core/footer.html' %}
+    </div>
+{% endblock %}
