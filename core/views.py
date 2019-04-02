@@ -1609,12 +1609,12 @@ class ProjectStatistics(LoginRequiredMixin, View):
 
             # Generate all of the information for the chart
             # Check to see if today is the first of the month if it is then the start date is 7 days before today
-            if today.day == 1:
-                start_date = date(today.year, today.month-1, 30-7)
+            if today.day < 7:
+                start_date = date(today.year, today.month-1, 30-today.day)
             else:
-                start_date = date(today.year, today.month, today.day - 7)
+                start_date = date(today.year, today.month, 30-today.day)
 
-            end_date = date(today.year, today.month, today.day)
+            end_date = date(today.year, today.month, today.day+1)
 
             for single_date in daterange(start_date, end_date):
                 # Now we have the date
@@ -1873,7 +1873,8 @@ class GenerateAPIKey(LoginRequiredMixin, View):
                     messages.success(request, 'API Key successfully generated.')
                     return redirect('/api-keys')
                 else:
-                    return redirect('/project/'+str(project.id))
+                    messages.error(request, 'Cannot generate API Key for this project as it is public.')
+                    return redirect('/api-keys')
             else:
                 messages.error(request, 'A user group must be chosen.')
                 return redirect('/api-keys')
