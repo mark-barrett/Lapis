@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'celery',
     'core.templatetags.util',
     'redis',
-    'pycountry'
+    'pycountry',
 ]
 
 MIDDLEWARE = [
