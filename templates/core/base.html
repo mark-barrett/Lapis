@@ -68,6 +68,13 @@
             "order": [[3, "desc"]]
         });
     } );
+    $('#delete-project-name-field').on('input', function() {
+        if($('#delete-project-name-field').val() == '{{ project.name }}') {
+            $('#delete-project-button').removeClass('disabled');
+        } else {
+            $('#delete-project-button').addClass('disabled');
+        }
+    });
 </script>
 {# Graph for requests to a Resource over 7 days #}
 

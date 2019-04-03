@@ -1017,6 +1017,11 @@ body {
     width: 500px;
 }
 
+a.disabled {
+    pointer-events: none;
+    cursor: default;
+}
+
 .dropdown-menu.multi-column .dropdown-menu {
     display: block !important;
     position: static !important;
