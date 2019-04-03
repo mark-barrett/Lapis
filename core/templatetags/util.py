@@ -2,6 +2,7 @@
 # http://markbarrettdesign.com
 # https://github.com/mark-barrett
 import json
+import xml
 
 import pycountry
 from django import template
@@ -25,6 +26,12 @@ def pretty_json(input_json):
 
     return str(json.dumps(parsed, indent=4))
 
+@register.filter(name='pretty_xml')
+def pretty_xml(input_xml):
+
+    dom = xml.dom.minidom.parseString(input_xml)
+
+    return dom.toprettyxml()
 
 @register.simple_tag(name='last_used_api_key')
 def last_used_api_key(api_key):

@@ -2,6 +2,7 @@ import base64
 import json
 from datetime import datetime
 
+import dicttoxml
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -96,7 +97,10 @@ class RequestHandlerPrivate(View):
                                 }
                             }
 
-                            return HttpResponse(json.dumps(response), content_type='application/json')
+                            if resource.response_format == 'JSON':
+                                return HttpResponse(json.dumps(response), content_type='application/json')
+                            elif resource.response_format == 'XML':
+                                return HttpResponse(dicttoxml.dicttoxml(response), content_type='application/xml')
 
                         # Now we have the API Key. Let's make sure that the groups match.
                         user_groups = ResourceUserGroup.objects.all().filter(resource=resource)
@@ -113,12 +117,18 @@ class RequestHandlerPrivate(View):
                                         in_group = True
 
                                 if in_group is False:
-                                    response = json.dumps({
+
+                                    response = {
                                         'error': {
                                             'message': 'Permission Denied. Your API Key/User Group doesn\'t allow you to access that resource.',
                                             'type': 'permission_denied'
                                         }
-                                    })
+                                    }
+
+                                    if resource.response_format == 'JSON':
+                                        response = json.dumps(response)
+                                    elif resource.response_format == 'XML':
+                                        response = dicttoxml.dicttoxml(response)
 
                                     # This means a required header is not provided so record it and respond
                                     api_request = APIRequest(
@@ -135,7 +145,11 @@ class RequestHandlerPrivate(View):
 
                                     api_request.save()
 
-                                    return HttpResponse(response, content_type='application/json', status=403)
+                                    if resource.response_format == 'JSON':
+                                        return HttpResponse(response, content_type='application/json', status=403)
+                                    elif resource.response_format == 'XML':
+                                        return HttpResponse(response,
+                                                            content_type='application/xml', status=403)
 
                         # The resource does exist! Now we need to go through the request and check to see
                         # if what is required has been sent.
@@ -165,12 +179,17 @@ class RequestHandlerPrivate(View):
                                     # Append it to the users provided headers
                                     provided_headers.append(single_header_object)
                                 else:
-                                    response = json.dumps({
+                                    response = {
                                         'error': {
                                             'message': 'Your request is missing a required header. Missing header is: ' + header.key,
                                             'type': 'missing_header'
                                         }
-                                    })
+                                    }
+
+                                    if resource.response_format == 'JSON':
+                                        response = json.dumps(response)
+                                    elif resource.response_format == 'XML':
+                                        response = dicttoxml.dicttoxml(response)
 
                                     # This means a required header is not provided so record it and respond
                                     api_request = APIRequest(
@@ -187,7 +206,11 @@ class RequestHandlerPrivate(View):
 
                                     api_request.save()
 
-                                    return HttpResponse(response, content_type='application/json', status=400)
+                                    if resource.response_format == 'JSON':
+                                        return HttpResponse(response, content_type='application/json', status=400)
+                                    elif resource.response_format == 'XML':
+                                        return HttpResponse(response,
+                                                            content_type='application/xml', status=400)
 
                         # If we got here we either have a list with no headers or a list with headers that have values.
                         # Either way, if the incorrect values were given we would not be here.
@@ -215,12 +238,17 @@ class RequestHandlerPrivate(View):
                                     # Append it to the list of provided parameters
                                     provided_parameters.append(single_parameter_obj)
                                 else:
-                                    response = json.dumps({
+                                    response = {
                                         'error': {
                                             'message': 'Your request is missing a required GET parameter. Missing parameter is: ' + parameter.key,
                                             'type': 'missing_parameter'
                                         }
-                                    })
+                                    }
+
+                                    if resource.response_format == 'JSON':
+                                        response = json.dumps(response)
+                                    elif resource.response_format == 'XML':
+                                        response = dicttoxml.dicttoxml(response)
 
                                     # This means a required header is not provided so record it and respond
                                     api_request = APIRequest(
@@ -237,7 +265,11 @@ class RequestHandlerPrivate(View):
 
                                     api_request.save()
 
-                                    return HttpResponse(response, content_type='application/json', status=400)
+                                    if resource.response_format == 'JSON':
+                                        return HttpResponse(response, content_type='application/json', status=400)
+                                    elif resource.response_format == 'XML':
+                                        return HttpResponse(response,
+                                                            content_type='application/xml', status=400)
 
                         # Like with headers, if we have gotten here we have analysed the correct GET parameters
                         resource_request['parameters'] = provided_parameters
@@ -355,50 +387,13 @@ class RequestHandlerPrivate(View):
 
                                         api_request.save()
 
-                                        return HttpResponse(json.dumps(data), content_type='application/json',
-                                                            status=200)
+                                        if resource.response_format == 'JSON':
+                                            return HttpResponse(json.dumps(data), content_type='application/json', status=200)
+                                        elif resource.response_format == 'XML':
+                                            return HttpResponse(dicttoxml.dicttoxml(data),
+                                                                content_type='application/xml', status=200)
                                     else:
                                         need_to_be_cached = True
-                                    """unsafe_resources = Resource.objects.all().filter(Q(request_type='POST') | Q(request_type='DELETE'), project=resource.project)
-
-                                    # List for sharing resources that share tables
-                                    shared_table_resources = []
-
-                                    # Now loop through each one and get its tables, if it shares any tables add to the list
-                                    for unsafe_resource in unsafe_resources:
-                                        # So unsafe methods use databinds
-                                        unsafe_data_binds = ResourceDataBind.objects.all().filter(resource=unsafe_resource)
-
-                                        for unsafe_data_bind in unsafe_data_binds:
-                                            # Only add the table if it doesn't exist in the shared columns but also if it exists as a table the resource uses
-                                            if unsafe_data_bind.column.table not in shared_table_resources and unsafe_data_bind.column.table in tables_included:
-                                                shared_table_resources.append(unsafe_data_bind.column.table)
-
-
-                                    # Now that we have a list of all tables that are shared by both the resource and other unsafe methods
-
-                                    # We now need to see if any of these tables have been in a API request in the last hour.
-                                    unsafe_api_requests = APIRequest.objects.all().filter(Q(type='POST') | Q(type='DELETE'),
-                                                                                          date__day=day,
-                                                                                          date__month=month,
-                                                                                          date__year=year,
-                                                                                          date__hour=hour)
-
-                                    # We need to loop through each request, see if any of the tables it has are in tables_included
-                                    for unsafe_api_request in unsafe_api_requests:
-                                        # This will basically get the tables involved in this request by first filtering by resource name and request type.
-                                        # Then it will only take the column.table value and make sure it only takes distinct values
-                                        unsafe_api_request_tables = ResourceDataBind.objects.all().filter(resource=Resource.objects.get(name=unsafe_api_request.resource, request_type=unsafe_api_request.type)).values('column__table').distinct()
-
-                                        # Now we have to loop through each data
-                                        for unsafe_api_request_table in unsafe_api_request_tables:
-                                            # Check if that table is in the tables_included list
-                                            table_obj = DatabaseTable.objects.get(id=int(unsafe_api_request_table['column__table']))
-
-                                            if table_obj in tables_included:
-                                                need_to_be_cached = True
-
-                                    """
                                 else:
                                     # If not then we need to cache
                                     need_to_be_cached = True
@@ -505,7 +500,6 @@ class RequestHandlerPrivate(View):
 
                                             for instance in data:
                                                 # Delete the column with the name of
-                                                print(instance)
                                                 instance[this_relationship.child_table.name] = list(filter(lambda single_instance: single_instance[this_relationship.child_table_column.name] == instance[this_relationship.parent_table_column.name], data_from_database[this_relationship.child_table.name]))
 
                                         except Exception as e:
@@ -513,7 +507,6 @@ class RequestHandlerPrivate(View):
 
                                     # Delete the child value from the data
                                     try:
-                                        print(relationship.child_table.name)
                                         del data_from_database[relationship.child_table.name]
 
                                     except Exception as e:
@@ -554,18 +547,27 @@ class RequestHandlerPrivate(View):
                                         api_request.cache = True
                                         api_request.save()
 
-                                return HttpResponse(json.dumps(data_from_database), content_type='application/json', status=200)
+                                if resource.response_format == 'JSON':
+                                    return HttpResponse(json.dumps(data_from_database), content_type='application/json', status=200)
+                                elif resource.response_format == 'XML':
+                                    return HttpResponse(dicttoxml.dicttoxml(data_from_database),
+                                                        content_type='application/xml', status=200)
 
                             except Exception as e:
                                 print(e)
                                 # Create a response
-                                response = json.dumps({
+                                response = {
                                     'error': {
                                         'message': 'There was an error with the interaction between us and your database. Please see the error generated by your server below.',
                                         'type': 'error_connecting_to_database',
                                         'database_error': str(e)
                                     }
-                                })
+                                }
+
+                                if resource.response_format == 'JSON':
+                                    response = json.dumps(response)
+                                elif resource.response_format == 'XML':
+                                    response = dicttoxml.dicttoxml(response)
 
                                 # Cannot connect to the server. Record it and respond
                                 api_request = APIRequest(
@@ -582,17 +584,26 @@ class RequestHandlerPrivate(View):
 
                                 api_request.save()
 
-                                return HttpResponse(response, content_type='application/json', status=402)
+                                if resource.response_format == 'JSON':
+                                    return HttpResponse(response, content_type='application/json', status=402)
+                                elif resource.response_format == 'XML':
+                                    return HttpResponse(response,
+                                                        content_type='application/xml', status=402)
 
                     except Exception as e:
                         print(e)
                         # Create a response
-                        response = json.dumps({
+                        response = {
                             'error': {
                                 'message': 'The resource that was requested does not exist.',
                                 'type': 'resource_doesnt_exist'
                             }
-                        })
+                        }
+
+                        if resource.response_format == 'JSON':
+                            response = json.dumps(response)
+                        elif resource.response_format == 'XML':
+                            response = dicttoxml.dicttoxml(response)
 
                         # Resource does not exist. Record the request.
                         api_request = APIRequest(
@@ -609,15 +620,19 @@ class RequestHandlerPrivate(View):
 
                         api_request.save()
 
-                        return HttpResponse(response, content_type='application/json', status=404)
+                        if resource.response_format == 'JSON':
+                            return HttpResponse(response, content_type='application/json', status=404)
+                        elif resource.response_format == 'XML':
+                            return HttpResponse(response,
+                                                content_type='application/xml', status=404)
                 else:
                     # Create a response
-                    response = json.dumps({
+                    response = {
                         'error': {
                             'message': 'No resource was provided. RESTBroker cannot tell what you are trying to access.',
                             'type': 'no_resource_provided'
                         }
-                    })
+                    }
 
                     # The resource was not provided. Record the requst
                     api_request = APIRequest(

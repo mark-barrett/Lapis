@@ -1229,6 +1229,8 @@ class ViewResourceRequests(LoginRequiredMixin, View):
                 # Check to make sure the user viewing this project is the owner of it
                 if resource.project.user == request.user:
 
+                    print(APIRequest.objects.all().filter(resource=resource.name, type=resource.request_type).order_by('-date'))
+
                     context = {
                         'projects': Project.objects.all().filter(user=request.user),
                         'project': project,
@@ -1279,7 +1281,8 @@ class ViewRequest(LoginRequiredMixin, View):
                 }
 
                 return render(request, 'core/view-request.html', context)
-            except:
+            except Exception as e:
+                print(e)
                 messages.error(request, 'Resource does not exist.')
                 return redirect('/dashboard')
 
@@ -1628,7 +1631,7 @@ class ProjectStatistics(LoginRequiredMixin, View):
                 })
 
             # Get the number of requests today
-            for x in range(1, today.hour):
+            for x in range(1, today.hour+2):
                 api_requests = APIRequest.objects.all().filter(date__day=today.day,
                                                                date__month=today.month,
                                                                date__year=today.year,
@@ -1677,7 +1680,6 @@ class ProjectStatistics(LoginRequiredMixin, View):
         else:
             messages.error(request, 'Please select a project.')
             return redirect('/')
-
 
 
 class Alerts(LoginRequiredMixin, View):

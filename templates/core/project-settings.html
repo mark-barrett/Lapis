@@ -79,12 +79,12 @@
                                             <div class="custom-control custom-checkbox">
                                                 <input type="checkbox" class="custom-control-input" id="enable_caching" name="enable_caching" {% if project.caching %}checked{% endif %}>
                                                 <label class="custom-control-label" for="enable_caching"><strong>Enable Caching</strong></label><br/>
-                                                <small>Allow RESTBroker to cache resource which are commonly accessed/requested. Any unchanged resource will be returned from RESTBroker rather than your database.</small>
+                                                <small>Allow Lapis to cache resource which are commonly accessed/requested. Any unchanged resource will be returned from Lapis rather than your database.</small>
                                             </div>
                                         </li>
                                         <li id="cache-expiry" class="list-group-item {% if not project.caching %}disabled-setting{% endif %}">
                                             <strong>Expiry</strong><br/>
-                                            <small>The time for which data will expire and be deleted from the RESTBroker servers.</small>
+                                            <small>The time for which data will expire and be deleted from the Lapis servers.</small>
                                             <div class="form-group">
                                                 <select id="cache-expiry" class="custom-select" name="cache-select">
                                                     <option value="1" {% if project.caching_expiry == '1' %}selected{% endif %}>1 hour</option>

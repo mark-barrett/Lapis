@@ -86,7 +86,11 @@
                             </div>
                             <strong>Generated Error:</strong>
                         </div>
-                        <pre><code class="json" id="response">{{ api_request.response_to_user|pretty_json }}</code></pre>
+                        {% if api_request.response_to_user|slice:"1" == '{' %}
+                            <pre><code class="json" id="response">{{ api_request.response_to_user|pretty_json }}</code></pre>
+                        {% else %}
+                            <pre><code class="xml" id="response">{{ api_request.response_to_user|pretty_xml }}</code></pre>
+                        {% endif %}
                     {% endif %}
                 </div>
             </div>

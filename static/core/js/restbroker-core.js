@@ -263,7 +263,7 @@ $('body').on('click', '#choose-database-as-source', function() {
                             <div class="float-right"><button type="button" id="remove_data_source_'+num_databases_as_source+'" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></div>\
                             <p class="form-instruction"><i class="fa fa-database"></i> Database Data Source</p>\
                                 <div class="form-group">\
-                                    <label for="table-select">Add Columns:</label><br/>\
+                                    <label for="table-select">Add Tables:</label><br/>\
                                     <select name="table" class="selectpicker" multiple data-width="100%" id="table-'+num_databases_as_source+'">\
                                         '+columnData+'\
                                     </select>\
