@@ -696,6 +696,9 @@ class CreateResource(LoginRequiredMixin, View):
                 # Get the columns that are to be returned
                 columns = request.POST.getlist('chosen-column')
 
+                # Try to get the text data sources
+                text_data_sources = request.POST.getlist('text-source-hidden-field')
+
                 # Start to construct the response object
                 response = {
                     'response_type': response_type,
@@ -772,6 +775,16 @@ class CreateResource(LoginRequiredMixin, View):
                     )
 
                     resource.save()
+
+                    # Check for text data source
+                    if text_data_sources:
+                        for text_data_source in text_data_sources:
+                            text_data_source_obj = ResourceTextSource(
+                                text=text_data_source,
+                                resource=resource
+                            )
+
+                            text_data_source_obj.save()
 
                     # Check for user groups
                     if request.session['resource']['user_groups']:

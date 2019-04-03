@@ -190,6 +190,19 @@ class ResourceDataSource(models.Model):
         return 'Resource: ' + self.resource.name + ' Data Source Type: ' + self.type
 
 
+# A data source used in the returning of data from the request
+class ResourceTextSource(models.Model):
+
+    text = models.TextField()
+    resource = models.ForeignKey(Resource)
+
+    class Meta:
+        verbose_name_plural = 'Resource Text Sources'
+
+    def __str__(self):
+        return 'Resource: ' + self.resource.name
+
+
 # Each instance defines a column that needs to be returned
 class ResourceDataSourceColumn(models.Model):
     # In form, the available column names are received when building the table but filtered by the selected table.

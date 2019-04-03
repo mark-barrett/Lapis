@@ -5,6 +5,7 @@ from datetime import datetime
 import dicttoxml
 from django.db.models import Q
 from django.http import HttpResponse
+from core.tasks import handle_get_request
 from django.shortcuts import render
 from django.views import View
 
@@ -16,7 +17,7 @@ import redis
 from api.models import APIRequest, APIKey
 from core.models import Resource, ResourceParameter, ResourceHeader, ResourceDataSourceColumn, DatabaseColumn, Database, \
     ResourceDataSourceFilter, DatabaseTable, ResourceParentChildRelationship, BlockedIP, ResourceDataBind, \
-    ResourceUserGroup
+    ResourceUserGroup, ResourceTextSource
 
 
 def get_client_ip(request):
@@ -38,7 +39,7 @@ class RequestHandlerPrivate(View):
             # Access GET params: print(request.GET)
             # The key was provided so check it. First we need to base64 decode the key.
             # Extract the key from the string. Base64decode, remove the last colon, and decode to utf-8 rather than bytes
-            api_key = base64.b64decode(request.META['HTTP_AUTHORIZATION'].split('Basic ',1)[1])[:-1].decode('utf-8')
+            api_key = base64.b64decode(request.META['HTTP_AUTHORIZATION'].split('Basic ', 1)[1])[:-1].decode('utf-8')
 
             # Look up API key
             try:
@@ -169,11 +170,11 @@ class RequestHandlerPrivate(View):
                             # Loop through each header and check to see if it exists in the request
                             for header in resource_headers:
                                 # Check to see if that one is present. HTTP_+header name with dashes replaced with underscores.
-                                if 'HTTP_'+header.key.upper().replace('-', '_') in request.META:
+                                if 'HTTP_' + header.key.upper().replace('-', '_') in request.META:
                                     # Does exist.
                                     single_header_object = {
                                         'obj': header,
-                                        'provided_value': request.META['HTTP_'+header.key.upper().replace('-', '_')]
+                                        'provided_value': request.META['HTTP_' + header.key.upper().replace('-', '_')]
                                     }
 
                                     # Append it to the users provided headers
@@ -337,12 +338,13 @@ class RequestHandlerPrivate(View):
                                     unsafe_api_requests_list = []
                                     # Now we have to check if there have been any POST or DELETE API requests where they have not been cached
                                     # with the hour as now. If there aren't then just return the cache, if there are then do SQL and cache.
-                                    unsafe_api_requests = APIRequest.objects.all().filter(Q(type='POST') | Q(type='DELETE'),
-                                                                                            date__day=day,
-                                                                                            date__month=month,
-                                                                                            date__year=year,
-                                                                                            date__hour=hour,
-                                                                                            cache=False)
+                                    unsafe_api_requests = APIRequest.objects.all().filter(
+                                        Q(type='POST') | Q(type='DELETE'),
+                                        date__day=day,
+                                        date__month=month,
+                                        date__year=year,
+                                        date__hour=hour,
+                                        cache=False)
 
                                     # We need to loop through each request, see if any of the tables it has are in tables_included
                                     for unsafe_api_request in unsafe_api_requests:
@@ -388,7 +390,8 @@ class RequestHandlerPrivate(View):
                                         api_request.save()
 
                                         if resource.response_format == 'JSON':
-                                            return HttpResponse(json.dumps(data), content_type='application/json', status=200)
+                                            return HttpResponse(json.dumps(data), content_type='application/json',
+                                                                status=200)
                                         elif resource.response_format == 'XML':
                                             return HttpResponse(dicttoxml.dicttoxml(data),
                                                                 content_type='application/xml', status=200)
@@ -444,7 +447,8 @@ class RequestHandlerPrivate(View):
                                 sql_query = ''
 
                                 # Loop through each table
-                                for table_index, (table, columns) in enumerate(resource_request['columns_to_return'].items()):
+                                for table_index, (table, columns) in enumerate(
+                                        resource_request['columns_to_return'].items()):
 
                                     # Create a cursor
                                     cursor = conn.cursor()
@@ -455,11 +459,11 @@ class RequestHandlerPrivate(View):
                                         single_table_query += column.name
 
                                         # If we are in any iteration apart from the last add a comma and space
-                                        if(index < len(columns)-1):
+                                        if (index < len(columns) - 1):
                                             single_table_query += ', '
 
                                     # Add the table
-                                    single_table_query += ' FROM '+table+''
+                                    single_table_query += ' FROM ' + table + ''
 
                                     # Append the end with a semi colon to end the query
                                     single_table_query += ';'
@@ -489,18 +493,26 @@ class RequestHandlerPrivate(View):
                                 conn.close()
 
                                 # Now lets look for the parent child relationships
-                                parent_child_relationships = ResourceParentChildRelationship.objects.all().filter(resource=resource)
+                                parent_child_relationships = ResourceParentChildRelationship.objects.all().filter(
+                                    resource=resource)
 
                                 for relationship in parent_child_relationships:
                                     # Loop through the data
                                     for value, data in data_from_database.items():
                                         # Check to see if the table is a parent
                                         try:
-                                            this_relationship = ResourceParentChildRelationship.objects.get(resource=resource, parent_table=DatabaseTable.objects.get(database=database, name=value))
+                                            this_relationship = ResourceParentChildRelationship.objects.get(
+                                                resource=resource,
+                                                parent_table=DatabaseTable.objects.get(database=database, name=value))
 
                                             for instance in data:
                                                 # Delete the column with the name of
-                                                instance[this_relationship.child_table.name] = list(filter(lambda single_instance: single_instance[this_relationship.child_table_column.name] == instance[this_relationship.parent_table_column.name], data_from_database[this_relationship.child_table.name]))
+                                                instance[this_relationship.child_table.name] = list(filter(
+                                                    lambda single_instance: single_instance[
+                                                                                this_relationship.child_table_column.name] ==
+                                                                            instance[
+                                                                                this_relationship.parent_table_column.name],
+                                                    data_from_database[this_relationship.child_table.name]))
 
                                         except Exception as e:
                                             print(e)
@@ -533,14 +545,17 @@ class RequestHandlerPrivate(View):
                                     today = datetime.now()
 
                                     # Set the dict
-                                    r.psetex(name=today.strftime('%Y-%m-%d:%H'), time_ms=((int(resource.project.caching_expiry)*60)*60)*1000, value=str(json.dumps(data_from_database)))
+                                    r.psetex(name=today.strftime('%Y-%m-%d:%H'),
+                                             time_ms=((int(resource.project.caching_expiry) * 60) * 60) * 1000,
+                                             value=str(json.dumps(data_from_database)))
 
                                     # Loop through the last unsafe HTTP requests in the last hour and mark them as cached.
-                                    unsafe_api_requests = APIRequest.objects.all().filter(Q(type='POST') | Q(type ='DELETE'),
-                                                                                          date__day=today.day,
-                                                                                          date__month=today.month,
-                                                                                          date__year=today.year,
-                                                                                          date__hour=today.hour)
+                                    unsafe_api_requests = APIRequest.objects.all().filter(
+                                        Q(type='POST') | Q(type='DELETE'),
+                                        date__day=today.day,
+                                        date__month=today.month,
+                                        date__year=today.year,
+                                        date__hour=today.hour)
 
                                     # Marking them as cached.
                                     for api_request in unsafe_api_requests:
@@ -548,7 +563,8 @@ class RequestHandlerPrivate(View):
                                         api_request.save()
 
                                 if resource.response_format == 'JSON':
-                                    return HttpResponse(json.dumps(data_from_database), content_type='application/json', status=200)
+                                    return HttpResponse(json.dumps(data_from_database), content_type='application/json',
+                                                        status=200)
                                 elif resource.response_format == 'XML':
                                     return HttpResponse(dicttoxml.dicttoxml(data_from_database),
                                                         content_type='application/xml', status=200)
@@ -988,6 +1004,19 @@ class RequestHandlerPrivate(View):
                                 api_request.save()
 
                                 # DO POST RESPONSE STUFF
+                                # Check to see if there a response text sources.
+                                resource_text_sources = ResourceTextSource.objects.all().filter(resource=resource)
+
+                                response = ''
+
+                                if resource_text_sources:
+                                    for resource_text_source in resource_text_sources:
+                                        response += resource_text_source.text
+
+                                # Return it
+                                if resource.response_format == 'JSON':
+                                    return HttpResponse(response, content_type='application/json', status=200)
+
 
                             except Exception as e:
                                 print(e)

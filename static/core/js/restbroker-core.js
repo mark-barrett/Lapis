@@ -380,7 +380,8 @@ function handleColumnCheck(columnID, tableID) {
     }
 }
 
-var num_text_as_source = 0;
+// Have to start at 1 because ace starts at 1
+var num_text_as_source = 1;
 
 $('body').on('click', '#choose-text-as-source', function() {
     // Fade out the data source choice menu and then create the new menu for the form.
@@ -392,19 +393,24 @@ $('body').on('click', '#choose-text-as-source', function() {
                       <div class="float-right"><button type="button" id="remove-data-source" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></div>\
                         <p class="form-instruction"><i class="fa fa-code"></i> Text Data Source</p>\
                                 <div class="form-group">\
-                                    <div id="editor" style="height: 500px; width: 100%">\
+                                    <div id="editor'+num_text_as_source+'" style="height: 500px; width: 100%">\
                                     </div>\
-                                    <textarea name="text-source" class="form-control" placeholder="JSON" rows="10"></textarea>\
                                 </div>\
                     </div>\
-                </div><br/>';
+                </div> <input type="text" style="display: none;" id="text-input-hidden-field-editor'+num_text_as_source+'" name="text-source-hidden-field"><br/>';
     $('#data-sources').append(html);
 
-    var editor = ace.edit("editor");
+    var editor = ace.edit("editor"+num_text_as_source);
     editor.setTheme("ace/theme/tomorrow_night");
     var JavaScriptMode = ace.require("ace/mode/javascript").Mode;
     editor.session.setMode(new JavaScriptMode());
 
+    editor.getSession().on('change', function() {
+        // Get the editors hidden field by its ID set when it was created
+        $('#text-input-hidden-field-'+editor.id).val(editor.getSession().getValue());
+    });
+
+    // Increment the number of text sources.
     num_text_as_source++;
 });
 
