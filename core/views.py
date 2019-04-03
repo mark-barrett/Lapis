@@ -448,7 +448,7 @@ class DeleteProject(LoginRequiredMixin, View):
             # Remove the session of this project
             del request.session['selected_project_id']
             messages.success(request, 'Successfully deleted project.')
-            return redirect('/dashboard')
+            return redirect('/projects')
 
 
 class BuildDatabase(LoginRequiredMixin, View):
