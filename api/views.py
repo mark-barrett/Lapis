@@ -22,7 +22,7 @@ from core.models import Resource, ResourceParameter, ResourceHeader, ResourceDat
 
 
 def get_client_ip(request):
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    x_forwarded_for = request.META.get('HTTP_X_REAL_IP')
     if x_forwarded_for:
         ip = x_forwarded_for.split(',')[0]
     else:

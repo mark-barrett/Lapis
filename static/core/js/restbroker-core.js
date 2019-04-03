@@ -508,7 +508,11 @@ $('#build-database').click(function() {
                     // Remove the blur and loading screen
                     pageContent.removeClass('blur');
                     $('#building-database-loader').remove();
-                    toastr.error('Error Building Database: '+data['message']);
+                    if(data['message'] == undefined) {
+                    	toastr.error('There was a problem handling your request, please try again later.')
+                    } else {
+                    	toastr.error('Error Building Database: '+data['message']);
+                    }
                 }
             },
             error: function(data) {
