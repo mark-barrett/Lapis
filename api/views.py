@@ -1,3 +1,4 @@
+import ast
 import base64
 import json
 from datetime import datetime
@@ -388,6 +389,18 @@ class RequestHandlerPrivate(View):
                                         )
 
                                         api_request.save()
+
+                                        resource_text_sources = ResourceTextSource.objects.all().filter(
+                                            resource=resource)
+
+                                        text_response = ''
+
+                                        if resource_text_sources:
+                                            for resource_text_source in resource_text_sources:
+                                                text_response += resource_text_source.text
+
+                                        # Check if there was text sources, if there is then try merge them
+                                        data = {**data, **ast.literal_eval(text_response)}
 
                                         if resource.response_format == 'JSON':
                                             return HttpResponse(json.dumps(data), content_type='application/json',

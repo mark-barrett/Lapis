@@ -503,7 +503,7 @@ $('#build-database').click(function() {
                 console.log(data);
                 if(data['message'] == 'Built Database') {
                     buildingDatabaseLoader.html('<i class="fa fa-check faa-tada animated" aria-hidden="true"></i> Database Build Successful<br/><small>Let us finalise some things and we will redirect you.</small>');
-                    setTimeout(function() { window.location.href = '/project/'+projectID}, 5000);
+                    setTimeout(function() { window.location.href = '/resources'}, 4000);
                 } else {
                     // Remove the blur and loading screen
                     pageContent.removeClass('blur');
