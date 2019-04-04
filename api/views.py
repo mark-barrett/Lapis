@@ -1425,6 +1425,19 @@ class RequestHandlerPrivate(View):
                                     api_request.save()
 
                                     # DO DELETE RESPONSE STUFF
+                                    # Check to see if there a response text sources.
+                                    resource_text_sources = ResourceTextSource.objects.all().filter(resource=resource)
+
+                                    response = ''
+
+                                    if resource_text_sources:
+                                        for resource_text_source in resource_text_sources:
+                                            response += resource_text_source.text
+
+                                    # Return it
+                                    if resource.response_format == 'JSON':
+                                        return HttpResponse(response, content_type='application/json', status=200)
+
 
                                 except Exception as e:
                                     print(e)
