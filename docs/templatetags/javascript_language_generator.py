@@ -58,7 +58,7 @@ def javascript_resource_request_example(request):
 
 @register.simple_tag()
 def javascript_generate_resource(request, resource):
-    url = 'https://'+request.META["HTTP_HOST"]+'/api'
+    url = 'https://lapis.works/api'
 
     # Get the get parameters
     resource_parameters = ResourceParameter.objects.all().filter(resource=resource)

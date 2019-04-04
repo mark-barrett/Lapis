@@ -10,17 +10,17 @@ register = template.Library()
 
 @register.simple_tag()
 def curl_authentication_example(request):
-    return '<pre><code class="powershell">$ curl https://'+request.META["HTTP_HOST"]+'/api \<br/> -u rb_nrm_key_123examplekey:</code></pre>'
+    return '<pre><code class="powershell">$ curl https://lapis.works/api \<br/> -u rb_nrm_key_123examplekey:</code></pre>'
 
 
 @register.simple_tag()
 def curl_resource_request_example(request):
-    return '<pre><code class="powershell">$ curl https://'+request.META["HTTP_HOST"]+'/api \<br/> -u rb_nrm_key_123examplekey: \<br/> -H \'RESTBroker-Resource: Resource\' </code></pre>'
+    return '<pre><code class="powershell">$ curl https://lapis.works/api \<br/> -u rb_nrm_key_123examplekey: \<br/> -H \'RESTBroker-Resource: Resource\' </code></pre>'
 
 
 @register.simple_tag()
 def curl_generate_resource(request, resource):
-    url = 'https://'+request.META["HTTP_HOST"]+'/api'
+    url = 'https://lapis.works/api'
 
     if resource.request_type == 'GET':
 

@@ -19,7 +19,7 @@ def java_authentication_example(request):
 
     html_to_return += 'Request request = new Request.Builder()<br/>'
 
-    html_to_return += '.url("https://'+request.META["HTTP_HOST"]+'/api")<br/>'
+    html_to_return += '.url("https://lapis.works/api")<br/>'
 
     html_to_return += '.get()<br/>'
 
@@ -65,7 +65,7 @@ def java_resource_request_example(request):
 
 @register.simple_tag()
 def java_generate_resource(request, resource):
-    url = 'https://'+request.META["HTTP_HOST"]+'/api'
+    url = 'https://lapis.works/api'
 
     # Get the get parameters
     resource_parameters = ResourceParameter.objects.all().filter(resource=resource)
