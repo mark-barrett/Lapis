@@ -52,7 +52,7 @@ def java_resource_request_example(request):
 
     html_to_return += '.addHeader("Authorization", credential)<br/>'
 
-    html_to_return += '.addHeader("RESTBroker-Resource", "Resource")<br/>'
+    html_to_return += '.addHeader("Resource", "Resource")<br/>'
 
     html_to_return += '.build();<br/><br/>'
 
@@ -116,7 +116,7 @@ def java_generate_resource(request, resource):
 
     html_to_return += '.addHeader("Authorization", credential)<br/>'
 
-    html_to_return += '.addHeader("RESTBroker-Resource", "Resource")<br/>'
+    html_to_return += '.addHeader("Resource", "Resource")<br/>'
 
     # Get the resources headers
     resource_headers = ResourceHeader.objects.all().filter(resource=resource)

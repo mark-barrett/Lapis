@@ -42,7 +42,7 @@ def javascript_resource_request_example(request):
     html_to_return += '&nbsp;&nbsp; "method": "GET",<br/>'
     html_to_return += '&nbsp;&nbsp; "headers": {<br/>'
     html_to_return += '&nbsp;&nbsp;&nbsp;&nbsp; "Authorization": /* Your key. Must be base64 encoded */,<br/>'
-    html_to_return += '&nbsp;&nbsp;&nbsp;&nbsp; "RESTBroker-Resource": "Resource",<br/>'
+    html_to_return += '&nbsp;&nbsp;&nbsp;&nbsp; "Resource": "Resource",<br/>'
     html_to_return += '&nbsp;&nbsp;&nbsp;&nbsp; "cache-control": "no-cache"<br/>'
     html_to_return += '&nbsp;&nbsp;}<br/>'
     html_to_return += '}<br/><br/>'
@@ -97,7 +97,7 @@ def javascript_generate_resource(request, resource):
     html_to_return += '&nbsp;&nbsp; "method": "'+resource.request_type+'",<br/>'
     html_to_return += '&nbsp;&nbsp; "headers": {<br/>'
     html_to_return += '&nbsp;&nbsp;&nbsp;&nbsp; "Authorization": /* Your key. Must be base64 encoded */,<br/>'
-    html_to_return += '&nbsp;&nbsp;&nbsp;&nbsp; "RESTBroker-Resource": "Resource",<br/>'
+    html_to_return += '&nbsp;&nbsp;&nbsp;&nbsp; "Resource": "Resource",<br/>'
 
     # Get the resources headers
     resource_headers = ResourceHeader.objects.all().filter(resource=resource)

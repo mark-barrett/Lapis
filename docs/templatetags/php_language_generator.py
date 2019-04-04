@@ -42,7 +42,7 @@ def php_resource_request_example(request):
 
     html_to_return += '$request->setHeaders(array(<br/>'
     html_to_return += '&nbsp;&nbsp;"Authorization" => "/* Must be base64 encoded */",<br/>'
-    html_to_return += '&nbsp;&nbsp;"RESTBroker-Resource" => "Resource"<br/>'
+    html_to_return += '&nbsp;&nbsp;"Resource" => "Resource"<br/>'
     html_to_return += '));<br/><br/>'
 
     html_to_return += '$client->enqueue($request)->send();<br/>'
@@ -105,7 +105,7 @@ def php_generate_resource(request, resource):
 
     html_to_return += '<br/>$request->setHeaders(array(<br/>'
     html_to_return += '&nbsp;&nbsp;"Authorization" => "/* Must be base64 encoded */",<br/>'
-    html_to_return += '&nbsp;&nbsp;"RESTBroker-Resource" => "Resource"'
+    html_to_return += '&nbsp;&nbsp;"Resource" => "Resource"'
 
     if resource.request_type == 'POST':
         html_to_return +=  ',<br/>'

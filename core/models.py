@@ -11,6 +11,7 @@ from django.utils import timezone
 class Account(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     resource_limit = models.IntegerField(default=10)
+    demo = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = 'Accounts'

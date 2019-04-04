@@ -30,6 +30,10 @@
 
 </head>
 <body class="{% block background-color %}{% endblock %}">
+    {# If its a demo account, show the corner ribbon #}
+    {% if request.user.account.demo %}
+        <div class="corner-ribbon top-right sticky red shadow" style="z-index: 1000">Demo Account</div>
+    {% endif %}
     {% block content %}{% endblock content %}
 </body>
 <script src="{% static 'core/js/jquery-3.3.1.min.js' %}"></script>

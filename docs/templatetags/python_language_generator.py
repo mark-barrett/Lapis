@@ -14,7 +14,7 @@ def python_authentication_example(request):
 
 @register.simple_tag()
 def python_resource_request_example(request):
-    return "<pre><code class='python'>import requests<br/><br/>headers = {'RESTBroker-Resource': 'Resource'}<br/><br/>response = "\
+    return "<pre><code class='python'>import requests<br/><br/>headers = {'Resource': 'Resource'}<br/><br/>response = "\
             "requests.get('https://"+request.META['HTTP_HOST']+"/api',<br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"\
             "&nbsp;&nbsp;&nbsp; auth=('rb_nrm_key_examplekey', ''), <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; headers=headers)</code></pre>"
 
@@ -48,7 +48,7 @@ def python_generate_resource(request, resource):
     if resource_headers:
 
         # Add the Resource header
-        html_to_return += 'headers = {<br/>&nbsp;&nbsp;\'RESTBroker-Resource\': \'' + resource.name + '\','
+        html_to_return += 'headers = {<br/>&nbsp;&nbsp;\'Resource\': \'' + resource.name + '\','
 
         for index, header in enumerate(resource_headers):
             html_to_return += '<br/>&nbsp;&nbsp;\''+header.key+'\': your_value'
@@ -60,7 +60,7 @@ def python_generate_resource(request, resource):
         # Add the last bracket
         html_to_return += '<br/>}'
     else:
-        html_to_return += 'headers = {\'RESTBroker-Resource\': \'' + resource.name + '\'}'
+        html_to_return += 'headers = {\'Resource\': \'' + resource.name + '\'}'
 
     if resource.request_type == 'GET':
         type = 'get'

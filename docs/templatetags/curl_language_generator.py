@@ -15,7 +15,7 @@ def curl_authentication_example(request):
 
 @register.simple_tag()
 def curl_resource_request_example(request):
-    return '<pre><code class="powershell">$ curl https://lapis.works/api \<br/> -u rb_nrm_key_123examplekey: \<br/> -H \'RESTBroker-Resource: Resource\' </code></pre>'
+    return '<pre><code class="powershell">$ curl https://lapis.works/api \<br/> -u rb_nrm_key_123examplekey: \<br/> -H \'Resource: Resource\' </code></pre>'
 
 
 @register.simple_tag()
@@ -45,7 +45,7 @@ def curl_generate_resource(request, resource):
     resource_headers = ResourceHeader.objects.all().filter(resource=resource)
 
     # Add the resource to the request
-    html_to_return += ' \<br/> -H \'RESTBroker-Resource: '+resource.name+'\''
+    html_to_return += ' \<br/> -H \'Resource: '+resource.name+'\''
 
     # Check if they exist
     if resource_headers:
