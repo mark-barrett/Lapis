@@ -152,11 +152,7 @@ class RegenerateAPIKey(View):
 
 class GetAllAPIKeys(View):
 
-    def get(self, request):
-        return redirect('/')
-
-    def post(self, request, master_key):
-
+    def get(self, request, master_key):
         # Check that the master key is valid
         try:
             api_key = APIKey.objects.get(key=master_key)
@@ -184,3 +180,4 @@ class GetAllAPIKeys(View):
             }
 
             return HttpResponse(json.dumps(response), content_type='application/json', status=403)
+
