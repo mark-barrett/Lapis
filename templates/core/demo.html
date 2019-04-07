@@ -1,0 +1,81 @@
+{% extends 'core/base.html' %}
+
+{# Load static templating tag to be able to use it to get paths to static files #}
+{% load static %}
+
+{# Set the title and background color for the base.html file. #}
+{% block title %}Demo{% endblock %}
+{% block background-color %}secondary-background{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12 login-left">
+            <div class="float-left" style="padding-top: 10px;">
+                <a href="{% url 'features' %}"><img class="logo" src="{% static 'core/images/logo-white.png' %}" style="width:100px;"></a>
+            </div>
+            <div class="float-right login-sign-up-nav">
+                <br/>
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'demo' %}">Demo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'learn' %}">Learn</a>
+                    </li>
+                    {% if request.user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'projects' %}"><i class="fas fa-user text-white"></i>{{ request.user.first_name }}</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'sign-up' %}">Signup</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <br/><br/>
+    <div class="container">
+        <div class="text-center">
+            <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#introduction" style="border-left: none;" role="tab" aria-controls="introduction" aria-selected="true">Introduction</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#building-project" style="border-left: none" role="tab" aria-controls="building-project" aria-selected="false">Building a Project</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#creating-resource" style="border-left: none" role="tab" aria-controls="creating-resource" aria-selected="false">Creating a Resource</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#caching" role="tab" style="border-left: none" aria-controls="caching" aria-selected="false">Caching</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#documentation" style="border-left: none" role="tab" aria-controls="documentation" aria-selected="false">Documentation</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#user-groups-keys" style="border-left: none" role="tab" aria-controls="user-groups-keys" aria-selected="false">User Groups &amp; Keys</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="introduction" style="border-left: none" role="tabpanel" aria-labelledby="introduction">
+                    <video width="80%" controls>
+                        <source src="{% static 'core/videos/Untitled.mov' %}" type="video/mp4">
+                        Your browser does not support HTML5 video.
+                    </video>
+                    <h2 class="text-white">Introduction</h2>
+                    <p class="text-white">Introduction into what Lapis is and how it works.</p>
+                </div>
+                <div class="tab-pane fade" id="building-project" role="tabpanel" style="border-left: none" aria-labelledby="building-project">...</div>
+                <div class="tab-pane fade" id="creating-resource" role="tabpanel" style="border-left: none" aria-labelledby="creating-resource">...</div>
+                <div class="tab-pane fade" id="caching" role="tabpanel" style="border-left: none" aria-labelledby="caching">...</div>
+                <div class="tab-pane fade" id="documentation" role="tabpanel" style="border-left: none" aria-labelledby="documentation">...</div>
+                <div class="tab-pane fade" id="user-groups-keys" role="tabpanel" style="border-left: none" aria-labelledby="user-groups-keys">...</div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -38,6 +38,13 @@ class Features(View):
         return render(request, 'core/features.html')
 
 
+class Demo(View):
+
+    def get(self, request):
+
+        return render(request, 'core/demo.html')
+
+
 class Learn(View):
 
     def get(self, request):
@@ -181,14 +188,13 @@ class Dashboard(LoginRequiredMixin, View):
             # Get today
             today = datetime.today()
 
+            project = Project.objects.get(id=request.session['selected_project_id'])
+
             # Get the number of requests this month
-            num_requests_this_month = APIRequest.objects.all().filter(date__month=today.month).count()
+            num_requests_this_month = APIRequest.objects.all().filter(date__month=today.month, api_key__project=project).count()
 
             # Get the number of requests last month
-            num_requests_last_month = APIRequest.objects.all().filter(date__month=today.month-1).count()
-
-            print(num_requests_this_month)
-            print(num_requests_last_month)
+            num_requests_last_month = APIRequest.objects.all().filter(date__month=today.month-1, api_key__project=project).count()
 
             # If no requests have been made this month then its a -100% decrease
             if num_requests_this_month == 0:
@@ -202,15 +208,23 @@ class Dashboard(LoginRequiredMixin, View):
 
                     percentage = (change / num_requests_last_month) * 100
 
-            project = Project.objects.get(id=request.session['selected_project_id'])
+            # Get all API Keys and sort them by their usage.
+            api_keys = APIKey.objects.all().filter(project=project)
+
+            api_keys_with_counts = {}
+
+            for api_key in api_keys:
+                # Get the count of requests for that API Key
+                api_keys_with_counts[api_key.key] = APIRequest.objects.all().filter(api_key=api_key).count()
 
             context = {
                 'projects': Project.objects.all().filter(user=request.user),
-                'api_keys': APIKey.objects.all(),
+                'api_keys': APIKey.objects.all().filter(project=project),
                 'num_requests_this_month': num_requests_this_month,
                 'percentage': percentage,
                 'project': project,
                 'recent_api_requests': APIRequest.objects.all().filter(api_key__project=project).order_by('-id')[:5],
+                'api_keys_with_counts': dict(sorted(api_keys_with_counts.items(), key=operator.itemgetter(1), reverse=True))
             }
 
             return render(request, 'core/dashboard.html', context)
@@ -273,6 +287,11 @@ class CreateProject(LoginRequiredMixin, View):
         return render(request, 'core/create-edit-project.html', context)
 
     def post(self, request):
+
+        if request.user.account.demo:
+            messages.warning(request, 'Cannot create project as this is a demo account. Contact us to remove demo restrictions: hi@lapis.works')
+            return redirect('/projects')
+
         form = ProjectForm(request.POST, request=request)
 
         if form.is_valid():
@@ -400,6 +419,10 @@ class EditProject(LoginRequiredMixin, View):
 
     def post(self, request, project_id):
 
+        if request.user.account.demo:
+            messages.warning(request, 'Cannot edit project as this is a demo account. Contact us to remove demo restrictions: hi@lapis.works')
+            return redirect('/projects')
+
         project = Project.objects.get(id=project_id)
 
         form = ProjectForm(request.POST, instance=project, request=request, project_id=project_id)
@@ -437,6 +460,11 @@ class DeleteProject(LoginRequiredMixin, View):
     login_url = '/'
 
     def get(self, request, project_id):
+
+        if request.user.account.demo:
+            messages.warning(request, 'Cannot delete project as this is a demo account. Contact us to remove demo restrictions: hi@lapis.works')
+            return redirect('/projects')
+
         # Get the project
         project = Project.objects.get(id=project_id)
 
@@ -478,6 +506,10 @@ class BuildDatabase(LoginRequiredMixin, View):
             return redirect('/dashboard')
 
     def post(self, request, project_id):
+
+        if request.user.account.demo:
+            messages.warning(request, 'Cannot build database as this is a demo account. Contact us to remove demo restrictions: hi@lapis.works')
+            return redirect('/projects')
 
         try:
             server_address = request.POST['server_address']
@@ -687,6 +719,11 @@ class CreateResource(LoginRequiredMixin, View):
                     return redirect('/resource/create')
             # If we are on the second step, i.e the response
             else:
+                if request.user.account.demo:
+                    messages.warning(request,
+                                     'Cannot create resource as this is a demo account. Contact us to remove demo restrictions: hi@lapis.works')
+                    return redirect('/projects')
+
                 # JSON or XML
                 response_type = request.POST['response_type']
 
@@ -1122,6 +1159,10 @@ class EditResource(LoginRequiredMixin, View):
 
     def post(self, request, resource_id):
 
+        if request.user.account.demo:
+            messages.warning(request, 'Cannot edit resource as this is a demo account. Contact us to remove demo restrictions: hi@lapis.works')
+            return redirect('/projects')
+
         if 'selected_project_id' in request.session:
             resource = Resource.objects.get(id=resource_id)
 
@@ -1242,8 +1283,6 @@ class ViewResourceRequests(LoginRequiredMixin, View):
                 # Check to make sure the user viewing this project is the owner of it
                 if resource.project.user == request.user:
 
-                    print(APIRequest.objects.all().filter(resource=resource.name, type=resource.request_type).order_by('-date'))
-
                     context = {
                         'projects': Project.objects.all().filter(user=request.user),
                         'project': project,
@@ -1309,6 +1348,10 @@ class ChangeResourceStatus(LoginRequiredMixin, View):
 
     def get(self, request, resource_id):
 
+        if request.user.account.demo:
+            messages.warning(request, 'Cannot change resource status as this is a demo account. Contact us to remove demo restrictions: hi@lapis.works')
+            return redirect('/projects')
+
         if 'selected_project_id' in request.session:
 
             try:
@@ -1348,6 +1391,10 @@ class DeleteResource(LoginRequiredMixin, View):
 
     def get(self, request, resource_id):
 
+        if request.user.account.demo:
+            messages.warning(request, 'Cannot delete as this is a demo account. Contact us to remove demo restrictions: hi@lapis.works')
+            return redirect('/resources')
+
         if 'selected_project_id' in request.session:
             # Get the project
             project = Project.objects.get(id=request.session['selected_project_id'])
@@ -1371,8 +1418,6 @@ class Account(LoginRequiredMixin, View):
     login_url = '/'
 
     def get(self, request):
-
-        print("Hello World")
 
         context = {
             'projects': Project.objects.all().filter(user=request.user)
@@ -1398,6 +1443,11 @@ class ProjectSettings(LoginRequiredMixin, View):
             return redirect('/')
 
     def post(self, request):
+
+        if request.user.account.demo:
+            messages.warning(request, 'Cannot edit project settings as this is a demo account. Contact us to remove demo restrictions: hi@lapis.works')
+            return redirect('/projects')
+
         if 'selected_project_id' in request.session:
             # Check if the user who is logged in has access to this project
             project = Project.objects.get(id=request.session['selected_project_id'])
@@ -1458,6 +1508,10 @@ class ProjectSecuritySettings(LoginRequiredMixin, View):
 
 
     def post(self, request):
+
+        if request.user.account.demo:
+            messages.warning(request, 'Cannot edit project settings as this is a demo account. Contact us to remove demo restrictions: hi@lapis.works')
+            return redirect('/projects')
 
         if 'selected_project_id' in request.session:
 
@@ -1547,6 +1601,10 @@ class DocumentationSettings(LoginRequiredMixin, View):
 
 
     def post(self, request):
+
+        if request.user.account.demo:
+            messages.warning(request, 'Cannot edit project settings as this is a demo account. Contact us to remove demo restrictions: hi@lapis.works')
+            return redirect('/projects')
 
         if 'selected_project_id' in request.session:
 
@@ -1870,6 +1928,10 @@ class GenerateAPIKey(LoginRequiredMixin, View):
 
     def post(self, request):
 
+        if request.user.account.demo:
+            messages.warning(request, 'Cannot generate API Key as this is a demo account. Contact us to remove demo restrictions: hi@lapis.works')
+            return redirect('/projects')
+
         if 'selected_project_id' in request.session:
             project = Project.objects.get(id=request.session['selected_project_id'])
 
@@ -1924,6 +1986,10 @@ class DeleteAPIKey(LoginRequiredMixin, View):
 
     def get(self, request, id):
 
+        if request.user.account.demo:
+            messages.warning(request, 'Cannot delete API Key as this is a demo account. Contact us to remove demo restrictions: hi@lapis.works')
+            return redirect('/projects')
+
         if 'selected_project_id' in request.session:
 
             project = Project.objects.get(id=request.session['selected_project_id'])
@@ -1952,6 +2018,10 @@ class RegenerateAPIKey(LoginRequiredMixin, View):
     login_url = '/'
 
     def get(self, request, id):
+
+        if request.user.account.demo:
+            messages.warning(request, 'Cannot regenerate API Key as this is a demo account. Contact us to remove demo restrictions: hi@lapis.works')
+            return redirect('/projects')
 
         if 'selected_project_id' in request.session:
 
@@ -2000,6 +2070,10 @@ class ResetResource(LoginRequiredMixin, View):
 
     def get(self, request):
 
+        if request.user.account.demo:
+            messages.warning(request, 'Cannot reset resource as this is a demo account. Contact us to remove demo restrictions: hi@lapis.works')
+            return redirect('/projects')
+
         if 'selected_project_id' in request.session:
 
             project = Project.objects.get(id=request.session['selected_project_id'])
@@ -2038,6 +2112,10 @@ class UserGroups(LoginRequiredMixin, View):
 
     def post(self, request):
 
+        if request.user.account.demo:
+            messages.warning(request, 'Cannot create user group as this is a demo account. Contact us to remove demo restrictions: hi@lapis.works')
+            return redirect('/projects')
+
         # Let's make sure the user is logged in
         if 'selected_project_id' in request.session:
 
@@ -2066,6 +2144,10 @@ class DeleteUserGroup(LoginRequiredMixin, View):
     login_url = '/'
 
     def get(self, request, id):
+
+        if request.user.account.demo:
+            messages.warning(request, 'Cannot delete user group as this is a demo account. Contact us to remove demo restrictions: hi@lapis.works')
+            return redirect('/projects')
 
         if 'selected_project_id' in request.session:
 
@@ -2124,6 +2206,10 @@ class EditUserGroup(LoginRequiredMixin, View):
 
 
     def post(self, request, id):
+
+        if request.user.account.demo:
+            messages.warning(request, 'Cannot delete user group as this is a demo account. Contact us to remove demo restrictions: hi@lapis.works')
+            return redirect('/projects')
 
         # Let's make sure the user is logged in
         if 'selected_project_id' in request.session:

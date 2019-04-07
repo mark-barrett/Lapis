@@ -9,6 +9,7 @@ from core import views
 
 urlpatterns = [
     url(r'^$', views.Features.as_view(), name='features'),
+    url(r'^demo', views.Demo.as_view(), name='demo'),
     url(r'account/view$', views.Account.as_view(), name='account'),
     url(r'learn', views.Learn.as_view(), name='learn'),
     url(r'login', views.Login.as_view(), name='login'),

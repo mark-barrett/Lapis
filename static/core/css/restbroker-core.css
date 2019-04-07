@@ -1149,3 +1149,7 @@ a.disabled {
 .corner-ribbon.red{background: #e43;}
 .corner-ribbon.orange{background: #e82;}
 .corner-ribbon.yellow{background: #ec0;}
+
+.nav-item .active {
+    border-radius: 5px !important;
+}

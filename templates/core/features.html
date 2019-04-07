@@ -17,6 +17,9 @@
                 <br/>
                 <ul class="nav">
                     <li class="nav-item">
+                        <a class="nav-link" href="{% url 'demo' %}">Demo</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'learn' %}">Learn</a>
                     </li>
                     {% if request.user.is_authenticated %}
