@@ -1093,6 +1093,9 @@ a.disabled {
     -webkit-transform: rotate(-45deg);
 }
 
+.corner-ribbon > a {
+    color: white !important;
+}
 /* Custom styles */
 
 .corner-ribbon.sticky{
@@ -1152,4 +1155,14 @@ a.disabled {
 
 .nav-item .active {
     border-radius: 5px !important;
+}
+
+.pin {
+    display: inline-block;
+    width: 74px;
+    text-align: center;
+}
+
+.pin-container {
+    padding-bottom: 10px;
 }

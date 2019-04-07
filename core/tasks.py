@@ -7,6 +7,8 @@ import os
 
 import django
 from celery import Celery
+from django.core.mail import get_connection, send_mail
+from django.template import loader
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'RESTBroker.settings')
 
@@ -33,6 +35,34 @@ def get_client_ip(request):
     else:
         ip = request.META.get('REMOTE_ADDR')
     return ip
+
+
+@app.task(name='send_email')
+def send_email(to, subject, body):
+
+    # Establish a connection
+    connection = get_connection(
+        host='mail.privateemail.com',
+        port=587,
+        username='hi@lapis.works',
+        password='yE1UpesF',
+        use_tls=True
+    )
+
+    # Open the template and pass the body into it
+    email_obj = loader.render_to_string('email/main.html', {'body': body})
+
+    # Send it
+    send_mail(subject,
+              subject,
+              'hi@lapis.works',
+              [to],
+              fail_silently=True,
+              html_message=email_obj,
+              connection=connection)
+
+    # Close the connection
+    connection.close()
 
 
 @app.task(name='build_database')

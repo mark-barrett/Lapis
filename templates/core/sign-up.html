@@ -62,7 +62,7 @@
                     <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
                 </form>
                 <br/>
-                <a href="" class="btn btn-secondary btn-block">Forgot Password</a>
+                <a href="{% url 'forgot-password' %}" class="btn btn-secondary btn-block">Forgot Password</a>
                 <hr/>
                 <div class="text-center">
                     Already have an account? <a href="{% url 'login' %}">Login.</a>
@@ -113,7 +113,7 @@
                             <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
                         </form>
                         <br/>
-                        <a href="" class="btn btn-secondary btn-block">Forgot Password</a>
+                        <a href="{% url 'forgot-password' %}" class="btn btn-secondary btn-block">Forgot Password</a>
                         <hr/>
                         <div class="text-center">
                             Already have an account? <a href="{% url 'login' %}">Login.</a>

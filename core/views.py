@@ -27,7 +27,7 @@ from sshtunnel import SSHTunnelForwarder
 
 import MySQLdb as db
 
-from core.tasks import build_database
+from core.tasks import build_database, send_email
 from docs.models import DocumentationInstance, ProgrammingLanguageChoice
 
 
@@ -51,6 +51,144 @@ class Learn(View):
 
         return render(request, 'core/learn.html')
 
+
+class ForgotPassword(View):
+
+    def get(self, request):
+
+        return render(request, 'core/forgot-password.html')
+
+
+    def post(self, request):
+        email_username = request.POST['email_username']
+
+        # Generate an access code and then email the user.
+        a = random.sample(range(10), 5)
+        number = int(str(random.randint(1, 9)) + str(a[0]) + str(a[1]) + str(a[2]) + str(a[3]) + str(a[4]))
+
+        # See if there is an @ in the value, if there is its an email, if not its a username
+        if '@' in email_username:
+            try:
+                user = User.objects.get(email=email_username)
+
+                user.account.forgot_password_code = number
+
+                user.save()
+
+                body = """
+                    Hey {},<br/><br/>
+
+                    We heard you lost your Lapis account password. Not you? If you didn't request this password change, please ignore
+                    this email.<br/><br/>
+
+                    If you did request it, please enter the following code on the page found at the link below:<br/><br/>
+
+                    <div class="align-center"><h1>{}</h1></div>
+
+                    <br/>
+                    <a href="{}">Enter Code Here</a><br/><br/>
+                    This is an automatic email, please do not respond.<br/><br/>
+                    Please note, this link will expire in an hour!<br/><br/>
+                    Thank you and have a good day!<br/>
+                    - Lapis
+                    """.format(user.first_name, str(number),
+                               'https://lapis.works/forgot-password/' + user.username)
+
+                send_email.delay(user.email, '[Lapis] Password Reset Instructions', body)
+
+                messages.success(request, 'Thank You! Please enter the code sent to your email below.')
+                return redirect('/forgot-password/' + user.username)
+            except:
+                messages.error(request, 'No accounts with that email could be found.')
+                return redirect('/forgot-password')
+        else:
+            try:
+                user = User.objects.get(username=email_username)
+
+                user.account.forgot_password_code = number
+
+                user.account.forgot_password_expiry = timezone.now()
+
+                user.save()
+
+                body = """
+                    Hey {},<br/><br/>
+
+                    We heard you lost your Lapis account password. Not you? If you didn't request this password change, please ignore
+                    this email.<br/><br/>
+
+                    If you did request it, please enter the following code on the page found at the link below:<br/><br/>
+
+                    <div class="align-center"><h1>{}</h1></div>
+
+                    <br/>
+                    <a href="{}">Enter Code Here</a><br/><br/>
+                    This is an automatic email, please do not respond.<br/><br/>
+                    Please note, this link will expire in an hour!<br/><br/>
+                    Thank you and have a good day!<br/>
+                    - Lapis
+                    """.format(user.first_name, str(number), 'https://lapis.works/forgot-password/'+user.username)
+
+                send_email.delay(user.email, '[Lapis] Password Reset Instructions', body)
+
+                messages.success(request, 'Thank You! Please enter the code sent to your email below.')
+                return redirect('/forgot-password/'+user.username)
+            except:
+                messages.error(request, 'No accounts with that username could be found.')
+                return redirect('/forgot-password')
+
+
+class ForgotPasswordReset(View):
+
+    def get(self, request, username):
+        print(username)
+        return render(request, 'core/reset-password.html')
+
+    def post(self, request, username):
+
+        try:
+            user = User.objects.get(username=username)
+
+            # Now that we have the account, get the pin and join it
+            pin = ''.join(request.POST.getlist('pin'))
+
+            # See if that pin matches the user
+            if int(pin) == user.account.forgot_password_code:
+                # Matches, now check if it has expired.
+                if timezone.now() > user.account.forgot_password_expiry+timezone.timedelta(hours=1):
+                    messages.error(request, 'The given code has expired.')
+                    return redirect('/forgot-password/'+user.username)
+                else:
+                    # Right pin and not expired, set the password.
+                    user.set_password(request.POST['password'])
+
+                    # Set the expiry to 2 hours ago so it can't be used again
+                    user.account.forgot_password_expiry -= timezone.timedelta(hours=2)
+
+                    user.save()
+
+                    body = """
+                        Hey {},<br/><br/>
+
+                        This is an email to let you know that your password has been changed successfully. If this was not you please
+                        email us at: hi@lapis.works<br/><br/>
+
+                        Thank you and have a good day!<br/>
+                        - Lapis
+                        """.format(user.username)
+
+                    send_email.delay(user.email, '[Lapis] Password Reset Succesfully', body)
+
+                    messages.success(request, 'Password changed successfully, you can now login.')
+                    return redirect('/login')
+
+            else:
+                messages.error(request, 'The given code is incorrect.')
+                return redirect('/forgot-password/' + user.username)
+        except Exception as e:
+            print(e)
+            messages.error(request, 'That account does not exist.')
+            return redirect('/forgot-password')
 
 class Home(View):
 
@@ -152,6 +290,20 @@ class SignUp(View):
                 user.set_password(password)
 
                 user.save()
+
+                body = """
+                    Hey {},<br/><br/>
+
+                    Thank you for signing up for Lapis! We hope you enjoy the application.<br/><br/>
+
+                    If your account is in 'demo mode' you wont be able to edit anything. To remove the demo status and enable your account,
+                    please email us at: hi@lapis.works.<br/><br/>
+
+                    Thank you and have a good day!<br/>
+                    - Lapis
+                    """.format(user.first_name)
+
+                send_email.delay(user.email, '[Lapis] Signup Successful', body)
 
                 user = authenticate(username=username, password=password)
 
@@ -1424,6 +1576,26 @@ class Account(LoginRequiredMixin, View):
         }
 
         return render(request, 'core/account.html', context)
+
+    def post(self, request):
+        # Check to see if the password was sent
+        if 'password' in request.POST and 'confirm_password' in request.POST:
+            # Make sure they match
+            if request.POST['password'] == request.POST['confirm_password']:
+
+                # Get the user
+                user = User.objects.get(username=request.user.username)
+
+                # Set their password
+                user.set_password(request.POST['password'])
+
+                user.save()
+
+                messages.success(request, 'Password changed successfully. You can now re-log in.')
+                return redirect('/login')
+            else:
+                messages.error(request, 'The entered passwords do not match.')
+                return redirect('/account/view')
 
 
 class ProjectSettings(LoginRequiredMixin, View):

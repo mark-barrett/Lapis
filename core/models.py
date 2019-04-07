@@ -12,6 +12,8 @@ class Account(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     resource_limit = models.IntegerField(default=10)
     demo = models.BooleanField(default=True)
+    forgot_password_code = models.IntegerField(null=True, blank=True)
+    forgot_password_expiry = models.DateTimeField(default=timezone.now, blank=True, null=True)
 
     class Meta:
         verbose_name_plural = 'Accounts'

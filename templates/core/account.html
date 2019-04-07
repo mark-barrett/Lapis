@@ -31,7 +31,7 @@
             <div class="card">
                 <div class="card-header">My Account</div>
                 <div class="card-body">
-                    <form name="account-information">
+                    <form name="account-information" method="post">
                         User Information
                         <br/><br/>
                         <div class="row">
@@ -63,13 +63,13 @@
                                 </div>
                             </div>
                         </div>
-
+                        {% csrf_token %}
                         <button type="submit" class="btn btn-primary btn-block">Change User Information</button>
                     </form>
                     <hr/>
                     Change Password
                     <br/><br/>
-                    <form name="change-password">
+                    <form name="change-password" method="post">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -84,7 +84,7 @@
                                 </div>
                             </div>
                         </div>
-
+                        {% csrf_token %}
                         <button type="submit" class="btn btn-primary btn-block">Change Password</button>
                     </form>
                 </div>
