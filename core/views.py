@@ -1948,6 +1948,10 @@ class Alerts(LoginRequiredMixin, View):
 
     def post(self, request):
 
+        if request.user.account.demo:
+            messages.warning(request, 'Cannot create Alert as this is a demo account. Contact us to remove demo restrictions: hi@lapis.works')
+            return redirect('/projects')
+
         if 'selected_project_id' in request.session:
 
             project = Project.objects.get(id=request.session['selected_project_id'])
@@ -2001,6 +2005,30 @@ class Alerts(LoginRequiredMixin, View):
         else:
             messages.error(request, 'Please select a project.')
             return redirect('/')
+
+
+class DeleteAlert(View):
+
+    def get(self, request, alert_id):
+
+        if request.user.account.demo:
+            messages.warning(request, 'Cannot delete Alert as this is a demo account. Contact us to remove demo restrictions: hi@lapis.works')
+            return redirect('/projects')
+
+        try:
+            # Get the alert
+            alert = Alert.objects.get(id=alert_id)
+
+            # Delete it
+            alert.delete()
+
+            messages.success(request, 'Alert deleted successfully.')
+            return redirect('/alerts')
+        except Exception as e:
+            print(e)
+            messages.error(request, 'That alert does not exist.')
+
+        return render(request, 'core/login.html')
 
 
 class RequestStatistics(LoginRequiredMixin, View):
