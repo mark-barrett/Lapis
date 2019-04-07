@@ -112,3 +112,6 @@ flags
 
 # For idea
 /.idea/
+
+# For videos
+.mov
