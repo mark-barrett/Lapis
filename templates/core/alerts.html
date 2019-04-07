@@ -36,16 +36,99 @@
                             </div>
                         </div>
                         <div class="col-md-9">
+                            <div class="float-right">
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#createAlert">
+                                    <i class="fa fa-plus"></i> Create Alert
+                                </button>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="createAlert" tabindex="-1" role="dialog" aria-labelledby="createAlert" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Create Alert</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form name="create-alert" method="post">
+                                                    <div class="form-group">
+                                                        <label for="resource">Resource to Watch</label>
+                                                        <select name="resource" id="resource" class="form-control">
+                                                            {% for resource in resources %}
+                                                                <option value="{{ resource.id }}">{{ resource }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="notify_when">Alert When Requests Reach</label>
+                                                        <input type="number" name="notify_when" id="notify_when" class="form-control" min="1">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="period">Period</label>
+                                                        <select name="period" id="period" class="form-control">
+                                                            <option value="day">On the current day</option>
+                                                            <option value="week">On the current week</option>
+                                                            <option value="month">On the current month</option>
+                                                            <option value="year">On the current year</option>
+                                                            <option value="forever">Forever</option>
+                                                        </select>
+                                                    </div>
+                                                    {% csrf_token %}
+                                                    <button class="btn btn-block btn-primary" type="submit">Create Alert</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <h4>Alerts</h4>
                             <hr/>
                             Alerts allow you to be notified when a particular endpoint reaches a certain number of requests.<br/><br/>
                             <div class="card stat-card">
                                 <div class="card-body">
-                                    <strong>Email for Notfications:</strong><br/>
-                                    <small>The email that Lapis will contact for notifications</small>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="example@example.com">
-                                    </div>
+                                    <form name="change_notification_email" method="post">
+                                        <strong>Email for Notfications:</strong><br/>
+                                        <small>The email that Lapis will contact for notifications</small>
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="example@example.com" name="alert_email" {% if project.alert_email %}value="{{ project.alert_email }}"{% endif %}>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary btn-block">Save</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="card stat-card">
+                                <div class="card-header">Alerts</div>
+                                <div class="card-body">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Resource</th>
+                                            <th scope="col">Limit</th>
+                                            <th scope="col">Period</th>
+                                            <th scope="col"></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for alert in alerts %}
+                                            <tr>
+                                                <td scope="row">{{ alert.resource.name }} <span class="badge resource-type-bg-{{ alert.resource.request_type }} text-white">{{ alert.resource.request_type }}</span></td>
+                                                <td>{{ alert.limit }}</td>
+                                                <td>{{ alert.period }}</td>
+                                                <td>
+                                                    <div class="float-right">
+                                                        <a href="" class="btn btn-light btn-sm"><i class="fa fa-eye"></i></a>
+                                                        <a href="" class="btn btn-info btn-sm"><i class="fa fa-pen"></i></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>

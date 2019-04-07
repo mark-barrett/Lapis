@@ -1,9 +1,10 @@
+from datetime import datetime
+
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 
-from core.models import Resource, Project, UserGroup
-
+from core.models import Resource, Project, UserGroup, Alert
 
 # Projects can have API Keys
 class APIKey(models.Model):
@@ -61,4 +62,74 @@ class APIRequest(models.Model):
 
     class Meta:
         verbose_name_plural = 'API Requests'
+
+    # this is not needed if small_image is created at set_image
+    def save(self, *args, **kwargs):
+        # Get all of the alerts, if they hit the limit then email.
+        # Only if we have the API Key
+        if self.api_key:
+            try:
+                # Get today
+                today = datetime.today()
+
+                alerts = Alert.objects.all().filter(resource=Resource.objects.get(name=self.resource, request_type=self.type, project=self.api_key.project))
+
+                # Loop through alerts
+                for alert in alerts:
+                    api_requests = 0
+
+                    # Check to see what the period is
+                    if alert.period == 'day':
+                        # If these arent equal, the notification has not been sent.
+                        if alert.notification_sent_on.day != today.day:
+
+                            api_requests = APIRequest.objects.all().filter(date__day=today.day).count()
+
+                    elif alert.period == 'month':
+                        # If these arent equal, the notification has not been sent.
+                        if alert.notification_sent_on.month != today.month:
+
+                            api_requests = APIRequest.objects.all().filter(date__month=today.month).count()
+
+                    if alert.period == 'year':
+                        # If these arent equal, the notification has not been sent.
+                        if alert.notification_sent_on.year == today.year:
+
+                            api_requests = APIRequest.objects.all().filter(date__year=today.year).count()
+
+                    if alert.period == 'forever':
+
+                        api_requests = APIRequest.objects.all().filter().count()
+
+                    if api_requests >= alert.limit:
+                        # Send the mail using celery.
+                        from core.tasks import send_email
+                        body = """
+                            Hey, <br/><br/>
+
+                            This is an automated email to let you know that the following resource has reached its request limit:<br/><br/>
+
+                            <strong>Resource:</strong> {}<br/>
+                            <strong>Limit:</strong> {}<br/>
+                            <strong>Period:</strong> {}<br/>
+                            <br/>
+                            This is an automated email, please do not reply.<br/><br/>
+                            Thank you and have a good day!<br/>
+                            - Lapis
+                        """.format(self.resource, str(alert.limit),
+                                   str(alert.get_period_display()))
+
+                        send_email.delay(alert.resource.project.alert_email, '[Lapis] ' + self.resource + ' Alert',
+                                         body)
+
+                        # Set the timezone of the notification to now so that the alert won't happen again in this period.
+                        alert.notification_sent_on = timezone.now()
+
+                        alert.save()
+            except Exception as e:
+                print(e)
+                print('Cannot find alerts')
+
+        super(APIRequest, self).save(*args, **kwargs)
+
 

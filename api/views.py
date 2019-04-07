@@ -6,7 +6,6 @@ from datetime import datetime
 import dicttoxml
 from django.db.models import Q
 from django.http import HttpResponse
-from core.tasks import handle_get_request
 from django.shortcuts import render
 from django.views import View
 
@@ -63,7 +62,7 @@ class RequestHandlerPrivate(View):
                     api_request = APIRequest(
                         authentication_type='KEY',
                         type=request.method,
-                        resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                        resource=request.META['HTTP_RESOURCE'],
                         url=request.get_full_path(),
                         status='403 ERR',
                         ip_address=get_client_ip(request),
@@ -81,11 +80,11 @@ class RequestHandlerPrivate(View):
                     pass
 
                 # API Key is found. No check for a resource.
-                if 'HTTP_RESTBROKER_RESOURCE' in request.META:
+                if 'HTTP_RESOURCE' in request.META:
                     # Now that we know they provided a resource, let's check to see if it exists.
                     try:
                         resource = Resource.objects.get(
-                            name=request.META['HTTP_RESTBROKER_RESOURCE'],
+                            name=request.META['HTTP_RESOURCE'],
                             project=api_key.project,
                             request_type='GET'
                         )
@@ -136,7 +135,7 @@ class RequestHandlerPrivate(View):
                                     api_request = APIRequest(
                                         authentication_type='KEY',
                                         type=request.method,
-                                        resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                        resource=request.META['HTTP_RESOURCE'],
                                         url=request.get_full_path(),
                                         status='403 ERR',
                                         ip_address=get_client_ip(request),
@@ -197,7 +196,7 @@ class RequestHandlerPrivate(View):
                                     api_request = APIRequest(
                                         authentication_type='KEY',
                                         type=request.method,
-                                        resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                        resource=request.META['HTTP_RESOURCE'],
                                         url=request.get_full_path(),
                                         status='400 ERR',
                                         ip_address=get_client_ip(request),
@@ -256,7 +255,7 @@ class RequestHandlerPrivate(View):
                                     api_request = APIRequest(
                                         authentication_type='KEY',
                                         type=request.method,
-                                        resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                        resource=request.META['HTTP_RESOURCE'],
                                         url=request.get_full_path(),
                                         status='400 ERR',
                                         ip_address=get_client_ip(request),
@@ -379,7 +378,7 @@ class RequestHandlerPrivate(View):
                                         api_request = APIRequest(
                                             authentication_type='KEY',
                                             type=request.method,
-                                            resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                            resource=request.META['HTTP_RESOURCE'],
                                             url=request.get_full_path(),
                                             status='200 OK',
                                             ip_address=get_client_ip(request),
@@ -541,7 +540,7 @@ class RequestHandlerPrivate(View):
                                 api_request = APIRequest(
                                     authentication_type='KEY',
                                     type=request.method,
-                                    resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                    resource=request.META['HTTP_RESOURCE'],
                                     url=request.get_full_path(),
                                     status='200 OK',
                                     ip_address=get_client_ip(request),
@@ -602,7 +601,7 @@ class RequestHandlerPrivate(View):
                                 api_request = APIRequest(
                                     authentication_type='KEY',
                                     type=request.method,
-                                    resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                    resource=request.META['HTTP_RESOURCE'],
                                     url=request.get_full_path(),
                                     status='402 ERR',
                                     ip_address=get_client_ip(request),
@@ -638,7 +637,7 @@ class RequestHandlerPrivate(View):
                         api_request = APIRequest(
                             authentication_type='KEY',
                             type=request.method,
-                            resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                            resource=request.META['HTTP_RESOURCE'],
                             url=request.get_full_path(),
                             status='404 ERR',
                             ip_address=get_client_ip(request),
@@ -656,12 +655,12 @@ class RequestHandlerPrivate(View):
                                                 content_type='application/xml', status=404)
                 else:
                     # Create a response
-                    response = {
+                    response = json.dumps({
                         'error': {
-                            'message': 'No resource was provided. RESTBroker cannot tell what you are trying to access.',
+                            'message': 'No resource was provided. Lapis cannot tell what you are trying to access.',
                             'type': 'no_resource_provided'
                         }
-                    }
+                    })
 
                     # The resource was not provided. Record the requst
                     api_request = APIRequest(
@@ -761,7 +760,7 @@ class RequestHandlerPrivate(View):
                     api_request = APIRequest(
                         authentication_type='KEY',
                         type=request.method,
-                        resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                        resource=request.META['HTTP_RESOURCE'],
                         url=request.get_full_path(),
                         status='403 ERR',
                         ip_address=get_client_ip(request),
@@ -779,11 +778,11 @@ class RequestHandlerPrivate(View):
                     pass
 
                 # API Key is found. No check for a resource.
-                if 'HTTP_RESTBROKER_RESOURCE' in request.META:
+                if 'HTTP_RESOURCE' in request.META:
                     # Now that we know they provided a resource, let's check to see if it exists.
                     try:
                         resource = Resource.objects.get(
-                            name=request.META['HTTP_RESTBROKER_RESOURCE'],
+                            name=request.META['HTTP_RESOURCE'],
                             project=api_key.project,
                             request_type=request.method
                         )
@@ -825,7 +824,7 @@ class RequestHandlerPrivate(View):
                                     api_request = APIRequest(
                                         authentication_type='KEY',
                                         type=request.method,
-                                        resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                        resource=request.META['HTTP_RESOURCE'],
                                         url=request.get_full_path(),
                                         status='403 ERR',
                                         ip_address=get_client_ip(request),
@@ -879,7 +878,7 @@ class RequestHandlerPrivate(View):
                                     api_request = APIRequest(
                                         authentication_type='KEY',
                                         type=request.method,
-                                        resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                        resource=request.META['HTTP_RESOURCE'],
                                         url=request.get_full_path(),
                                         status='400 ERR',
                                         ip_address=get_client_ip(request),
@@ -944,7 +943,7 @@ class RequestHandlerPrivate(View):
                                         api_request = APIRequest(
                                             authentication_type='KEY',
                                             type=request.method,
-                                            resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                            resource=request.META['HTTP_RESOURCE'],
                                             url=request.get_full_path(),
                                             status='400 ERR',
                                             ip_address=get_client_ip(request),
@@ -1002,7 +1001,7 @@ class RequestHandlerPrivate(View):
                                 api_request = APIRequest(
                                     authentication_type='KEY',
                                     type=request.method,
-                                    resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                    resource=request.META['HTTP_RESOURCE'],
                                     url=request.get_full_path(),
                                     status='200 OK',
                                     ip_address=get_client_ip(request),
@@ -1042,7 +1041,7 @@ class RequestHandlerPrivate(View):
                                 api_request = APIRequest(
                                     authentication_type='KEY',
                                     type=request.method,
-                                    resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                    resource=request.META['HTTP_RESOURCE'],
                                     url=request.get_full_path(),
                                     status='402 ERR',
                                     ip_address=get_client_ip(request),
@@ -1069,7 +1068,7 @@ class RequestHandlerPrivate(View):
                         api_request = APIRequest(
                             authentication_type='KEY',
                             type=request.method,
-                            resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                            resource=request.META['HTTP_RESOURCE'],
                             url=request.get_full_path(),
                             status='404 ERR',
                             ip_address=get_client_ip(request),
@@ -1086,7 +1085,7 @@ class RequestHandlerPrivate(View):
                     # Create a response
                     response = json.dumps({
                         'error': {
-                            'message': 'No resource was provided. RESTBroker cannot tell what you are trying to access.',
+                            'message': 'No resource was provided. Lapis cannot tell what you are trying to access.',
                             'type': 'no_resource_provided'
                         }
                     })
@@ -1189,7 +1188,7 @@ class RequestHandlerPrivate(View):
                     api_request = APIRequest(
                         authentication_type='KEY',
                         type=request.method,
-                        resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                        resource=request.META['HTTP_RESOURCE'],
                         url=request.get_full_path(),
                         status='403 ERR',
                         ip_address=get_client_ip(request),
@@ -1207,11 +1206,11 @@ class RequestHandlerPrivate(View):
                     pass
 
                 # API Key is found. No check for a resource.
-                if 'HTTP_RESTBROKER_RESOURCE' in request.META:
+                if 'HTTP_RESOURCE' in request.META:
                     # Now that we know they provided a resource, let's check to see if it exists.
                     try:
                         resource = Resource.objects.get(
-                            name=request.META['HTTP_RESTBROKER_RESOURCE'],
+                            name=request.META['HTTP_RESOURCE'],
                             project=api_key.project,
                             request_type=request.method
                         )
@@ -1253,7 +1252,7 @@ class RequestHandlerPrivate(View):
                                     api_request = APIRequest(
                                         authentication_type='KEY',
                                         type=request.method,
-                                        resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                        resource=request.META['HTTP_RESOURCE'],
                                         url=request.get_full_path(),
                                         status='403 ERR',
                                         ip_address=get_client_ip(request),
@@ -1307,7 +1306,7 @@ class RequestHandlerPrivate(View):
                                     api_request = APIRequest(
                                         authentication_type='KEY',
                                         type=request.method,
-                                        resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                        resource=request.META['HTTP_RESOURCE'],
                                         url=request.get_full_path(),
                                         status='400 ERR',
                                         ip_address=get_client_ip(request),
@@ -1366,7 +1365,7 @@ class RequestHandlerPrivate(View):
                                         api_request = APIRequest(
                                             authentication_type='KEY',
                                             type=request.method,
-                                            resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                            resource=request.META['HTTP_RESOURCE'],
                                             url=request.get_full_path(),
                                             status='400 ERR',
                                             ip_address=get_client_ip(request),
@@ -1414,7 +1413,7 @@ class RequestHandlerPrivate(View):
                                     api_request = APIRequest(
                                         authentication_type='KEY',
                                         type=request.method,
-                                        resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                        resource=request.META['HTTP_RESOURCE'],
                                         url=request.get_full_path(),
                                         status='200 OK',
                                         ip_address=get_client_ip(request),
@@ -1454,7 +1453,7 @@ class RequestHandlerPrivate(View):
                                     api_request = APIRequest(
                                         authentication_type='KEY',
                                         type=request.method,
-                                        resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                                        resource=request.META['HTTP_RESOURCE'],
                                         url=request.get_full_path(),
                                         status='402 ERR',
                                         ip_address=get_client_ip(request),
@@ -1484,7 +1483,7 @@ class RequestHandlerPrivate(View):
                         api_request = APIRequest(
                             authentication_type='KEY',
                             type=request.method,
-                            resource=request.META['HTTP_RESTBROKER_RESOURCE'],
+                            resource=request.META['HTTP_RESOURCE'],
                             url=request.get_full_path(),
                             status='404 ERR',
                             ip_address=get_client_ip(request),
@@ -1501,7 +1500,7 @@ class RequestHandlerPrivate(View):
                     # Create a response
                     response = json.dumps({
                         'error': {
-                            'message': 'No resource was provided. RESTBroker cannot tell what you are trying to access.',
+                            'message': 'No resource was provided. Lapis cannot tell what you are trying to access.',
                             'type': 'no_resource_provided'
                         }
                     })

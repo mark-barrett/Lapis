@@ -1932,12 +1932,72 @@ class Alerts(LoginRequiredMixin, View):
 
         if 'selected_project_id' in request.session:
 
+            project = Project.objects.get(id=request.session['selected_project_id'])
+
             context = {
                 'projects': Project.objects.all().filter(user=request.user),
+                'resources': Resource.objects.all().filter(project=project),
                 'project': Project.objects.get(id=request.session['selected_project_id']),
+                'alerts': Alert.objects.all().filter(resource__project=project)
             }
 
             return render(request, 'core/alerts.html', context)
+        else:
+            messages.error(request, 'Please select a project.')
+            return redirect('/')
+
+    def post(self, request):
+
+        if 'selected_project_id' in request.session:
+
+            project = Project.objects.get(id=request.session['selected_project_id'])
+
+            # If alert_email in POST then we are only updating that not the whole thing
+            if 'alert_email' in request.POST:
+                # Update the email in the project information
+                project.alert_email = request.POST['alert_email']
+
+                # Save it
+                project.save()
+
+                messages.success(request, 'Alert email changed successfully.')
+                return redirect('/alerts')
+            # Check to make sure the right information was posted
+            elif 'resource' in request.POST and 'notify_when' in request.POST and 'period' in request.POST:
+                try:
+                    # Try and find the resource
+                    resource = Resource.objects.get(id=request.POST['resource'])
+
+                    # Make sure that notfiy_when is greater than 0
+                    if int(request.POST['notify_when']) > 0:
+
+                        # Check the period
+                        if request.POST['period'] in ['day', 'week', 'month', 'year', 'forever']:
+                            # Both have been provided and the resource exists, create the alert.
+                            alert = Alert(
+                                resource=resource,
+                                limit=request.POST['notify_when'],
+                                period=request.POST['period']
+                            )
+
+                            alert.save()
+
+                            messages.success(request, 'Alert created successfully.')
+                            return redirect('/alerts')
+                        else:
+                            messages.error(request, 'Invalid time period.')
+                            return redirect('/alerts')
+                    else:
+                        messages.error(request, 'The notification limit must be greater than 0')
+                        return redirect('/alerts')
+
+                except Exception as e:
+                    print(e)
+                    messages.error(request, 'That resource does not exist.')
+                    return redirect('/alerts')
+            else:
+                messages.error(request, 'The resource and notification limit need to be provided.')
+
         else:
             messages.error(request, 'Please select a project.')
             return redirect('/')

@@ -57,6 +57,7 @@ class Project(models.Model):
     type = models.CharField(max_length=25, choices=TYPE_CHOICES, null=True, default='private')
     caching = models.BooleanField(default=False)
     caching_expiry = models.CharField(max_length=2, choices=CACHE_EXPIRY, null=True, blank=True)
+    alert_email = models.CharField(max_length=256, blank=True, null=True)
 
     class Meta:
         unique_together = (('name', 'user'))
@@ -323,3 +324,25 @@ class BlockedIP(models.Model):
 
     def __str__(self):
         return self.project.name + ': ' + self.ip_address
+
+
+class Alert(models.Model):
+
+    PERIOD_OPTIONS = (
+        ('day', 'In one day'),
+        ('week', 'In one week'),
+        ('month', 'In one month'),
+        ('year', 'In one year'),
+        ('forever', 'In all time')
+    )
+
+    resource = models.ForeignKey(Resource)
+    limit = models.IntegerField()
+    period = models.CharField(max_length=10, choices=PERIOD_OPTIONS)
+    notification_sent_on = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        verbose_name_plural = 'Alerts'
+
+    def __str__(self):
+        return self.resource.name + ' ' + self.resource.project.name + ' ' + str(self.limit)
