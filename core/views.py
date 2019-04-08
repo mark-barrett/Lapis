@@ -2050,7 +2050,7 @@ class RequestStatistics(LoginRequiredMixin, View):
             g = GeoIP2()
 
             # Get the number of 400 requests vs 200 requests
-            api_requests = APIRequest.objects.all()
+            api_requests = APIRequest.objects.all().filter(api_key__project=project)
 
             # Loop through each api_request
             for api_request in api_requests:
