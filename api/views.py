@@ -624,7 +624,8 @@ class RequestHandlerPrivate(View):
                         response = {
                             'error': {
                                 'message': 'The resource that was requested does not exist.',
-                                'type': 'resource_doesnt_exist'
+                                'type': 'resource_doesnt_exist',
+                                'error': str(e)
                             }
                         }
 
