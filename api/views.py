@@ -315,8 +315,6 @@ class RequestHandlerPrivate(View):
                                     date__hour=hour
                                 )
 
-                                return HttpResponse(json.dumps({'howya': 'howya'}), content_type='application/json')
-
                                 # So if neither have entries then we can return the Redis result
                                 # Any future checks here to whether or not the data has been modified
                                 # would go here
@@ -347,6 +345,8 @@ class RequestHandlerPrivate(View):
                                         date__year=year,
                                         date__hour=hour,
                                         cache=False)
+
+                                    return HttpResponse(json.dumps({'howya': 'howya'}), content_type='application/json')
 
                                     # We need to loop through each request, see if any of the tables it has are in tables_included
                                     for unsafe_api_request in unsafe_api_requests:
