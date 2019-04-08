@@ -282,7 +282,7 @@ class RequestHandlerPrivate(View):
                         if resource.project.caching:
                             # Now that we know that caching is enabled. Check to see if there has been any stores today of this cache
                             # Let's connect to Redis
-                            r = redis.Redis(host='localhost', port=6379, db=0)
+                            r = redis.Redis(host='127.0.0.1', port=6379, db=0)
 
                             # Now we have a connection, check to see if there is a cache with todays timestamp
                             if r.get(datetime.now().strftime('%Y-%m-%d:%H')):
@@ -552,7 +552,7 @@ class RequestHandlerPrivate(View):
 
                                 # Let's check to see if we were meant to save the cache
                                 if need_to_be_cached:
-                                    r = redis.Redis(host='localhost', port=6379, db=0)
+                                    r = redis.Redis(host='127.0.0.1', port=6379, db=0)
 
                                     today = datetime.now()
 
