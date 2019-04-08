@@ -285,8 +285,7 @@ class RequestHandlerPrivate(View):
                             r = redis.Redis(host='127.0.0.1', port=6379, db=0)
 
                             # Now we have a connection, check to see if there is a cache with todays timestamp
-                            if r.get(datetime.now().strftime('%Y-%m-%d:%H')):
-                                the_data = {'yuppa': 'yuppa'}
+                            if r.get(datetime.now().strftime('%Y-%m-%d:%H')) is not None:
                                 # So there is a cache from the last hour. This means that we now need to basically look
                                 # through all requests to this resource and see if any of them have happened in this hour
                                 # of this day. If they have then we must let SQL do its thing, else we can just returned the
@@ -403,10 +402,10 @@ class RequestHandlerPrivate(View):
                                         data = {**data, **ast.literal_eval(text_response)}
 
                                         if resource.response_format == 'JSON':
-                                            return HttpResponse(json.dumps(the_data), content_type='application/json',
+                                            return HttpResponse(json.dumps(data), content_type='application/json',
                                                                 status=200)
                                         elif resource.response_format == 'XML':
-                                            return HttpResponse(dicttoxml.dicttoxml(the_data),
+                                            return HttpResponse(dicttoxml.dicttoxml(data),
                                                                 content_type='application/xml', status=200)
                                     else:
                                         need_to_be_cached = True
