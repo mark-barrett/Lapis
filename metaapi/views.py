@@ -2,11 +2,85 @@ import json
 import random
 import string
 
+import MySQLdb
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views import View
+import MySQLdb as db
 
 from api.models import APIKey
+
+
+class Profiles(View):
+
+    def get(self, request):
+        conn = db.connect(host='35.241.219.62', port=3306,
+                          user='mark', password='password123',
+                          database='main', cursorclass=MySQLdb.cursors.DictCursor)
+
+        cursor = conn.cursor()
+
+        query = "SELECT * FROM profiles"
+
+        # Get all of the tables in that database
+        cursor.execute("SELECT * FROM profiles")
+
+        response = []
+
+        for row in cursor:
+
+            response.append(row)
+
+        conn.close()
+
+        return HttpResponse(json.dumps(response), content_type='application/json', status=200)
+
+class Posts(View):
+
+    def get(self, request):
+        conn = db.connect(host='35.241.219.62', port=3306,
+                          user='mark', password='password123',
+                          database='main', cursorclass=MySQLdb.cursors.DictCursor)
+
+        cursor = conn.cursor()
+
+        query = "SELECT * FROM posts"
+
+        # Get all of the tables in that database
+        cursor.execute("SELECT * FROM posts")
+
+        response = []
+
+        for row in cursor:
+            response.append(row)
+
+        conn.close()
+
+        return HttpResponse(json.dumps(response), content_type='application/json', status=200)
+
+
+class Comments(View):
+
+    def get(self, request):
+        conn = db.connect(host='35.241.219.62', port=3306,
+                          user='mark', password='password123',
+                          database='main', cursorclass=MySQLdb.cursors.DictCursor)
+
+        cursor = conn.cursor()
+
+        query = "SELECT * FROM comments"
+
+        # Get all of the tables in that database
+        cursor.execute("SELECT * FROM comments")
+
+        response = []
+
+        for row in cursor:
+            response.append(row)
+
+        conn.close()
+
+        return HttpResponse(json.dumps(response), content_type='application/json', status=200)
 
 
 class GenerateAPIKey(View):

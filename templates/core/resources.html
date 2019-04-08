@@ -17,9 +17,11 @@
             <span class="badge badge-light"><i class="fa fa-lock"></i> Private</span>
         {% endif %}
     </p>
-    <div class="float-right">
-        <a href="{% url 'create-resource' %}" class="btn btn-warning"><i class="fa fa-plus"></i> Create Resource</a>
-    </div>
+    {% if project.database_built %}
+        <div class="float-right">
+            <a href="{% url 'create-resource' %}" class="btn btn-warning"><i class="fa fa-plus"></i> Create Resource</a>
+        </div>
+    {% endif %}
     <div class="float-left">
         <h2><i class="fas fa-table" aria-hidden="true"></i> Resources</h2>
     </div>
@@ -105,7 +107,7 @@
                     <div class="text-center">
                         <h1><i class="fa fa-database" aria-hidden="true"></i></h1>
                         <h3>Database has not been built<br/><small class="subtext">Before creating resources, RESTBroker needs to contact your database and build a schema.</small></h3>
-                        <a href="/build-database/{{ project.id }}" class="btn btn-success">Build Database</a>
+                        <a href="/build-database/{{ project.id }}" class="btn btn-primary"><i class="fa fa-hammer"></i> Build Database</a>
                     </div>
                 </div>
             </div>
