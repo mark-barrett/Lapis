@@ -372,7 +372,7 @@ class RequestHandlerPrivate(View):
                                     # make a new cache
                                     if not unsafe_api_requests_list:
                                         # If its empty then just return the cached result
-                                        data = json.loads(r.get(datetime.today().strftime('%Y-%m-%d:%H')))
+                                        data = {'yup': 'yupp'}
 
                                         # Add the API request
                                         api_request = APIRequest(
