@@ -79,6 +79,10 @@ a {
     background-color: #49CC90!important;
 }
 
+.resource-type-bg-DELETE {
+    background-color: #ff0000!important;
+}
+
 .resource-parameter-label {
     font-size: 15px;
 }
