@@ -286,7 +286,6 @@ class RequestHandlerPrivate(View):
 
                             # Now we have a connection, check to see if there is a cache with todays timestamp
                             if r.get(datetime.now().strftime('%Y-%m-%d:%H')):
-                                return HttpResponse(json.dumps({'howya': 'howya'}), content_type='application/json')
                                 # So there is a cache from the last hour. This means that we now need to basically look
                                 # through all requests to this resource and see if any of them have happened in this hour
                                 # of this day. If they have then we must let SQL do its thing, else we can just returned the
@@ -315,6 +314,8 @@ class RequestHandlerPrivate(View):
                                     date__year=year,
                                     date__hour=hour
                                 )
+
+                                return HttpResponse(json.dumps({'howya': 'howya'}), content_type='application/json')
 
                                 # So if neither have entries then we can return the Redis result
                                 # Any future checks here to whether or not the data has been modified
