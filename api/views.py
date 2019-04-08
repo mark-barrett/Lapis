@@ -319,7 +319,6 @@ class RequestHandlerPrivate(View):
                                 # Any future checks here to whether or not the data has been modified
                                 # would go here
                                 if not post_requests and not delete_requests:
-
                                     # Now that we know there hasn't been POSTs or DELETEs to any other resource with the same name, we still
                                     # have to find out if any tables have been involved in POSTs that are included in this resource.
                                     # First get the tables.

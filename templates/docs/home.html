@@ -35,7 +35,12 @@
                         <br/>
                         <p class="sub-heading">Resources</p>
                         {% for resource in resources %}
-                            <a class="nav-link" href="#resource-{{ resource.id }}">{{ resource.name }}</a>
+                            <a class="nav-link" href="#resource-{{ resource.id }}">
+                                <div class="float-right">
+                                    <span class="badge resource-type-bg-{{ resource.request_type }} text-white">{{ resource.request_type }}</span>
+                                </div>
+                                {{ resource.name }}
+                            </a>
                         {% endfor %}
                     </nav>
                 </nav>
@@ -96,7 +101,7 @@
                                 <hr id="resource-{{ resource.id }}"/>
                                 <div class="section">
                                     <div class="float-right">
-                                        <h2><span class="badge resource-type-bg-{{ resource.request_type }} text-white">{{ resource.request_type }}</span> </h2>
+                                        <h2><span class="badge resource-type-bg-{{ resource.request_type }} text-white">{{ resource.request_type }}</span></h2>
                                     </div>
                                     <h2>{{ resource.name }}</h2>
                                     <p>{{ resource.description }}</p>
