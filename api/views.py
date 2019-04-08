@@ -346,8 +346,6 @@ class RequestHandlerPrivate(View):
                                         date__hour=hour,
                                         cache=False)
 
-                                    return HttpResponse(json.dumps({'howya': 'howya'}), content_type='application/json')
-
                                     # We need to loop through each request, see if any of the tables it has are in tables_included
                                     for unsafe_api_request in unsafe_api_requests:
                                         # This will basically get the tables involved in this request by first filtering by resource name and request type.
@@ -401,7 +399,7 @@ class RequestHandlerPrivate(View):
                                                 text_response += resource_text_source.text
 
                                         # Check if there was text sources, if there is then try merge them
-                                        data = {**data, **ast.literal_eval(text_response)}
+
 
                                         if resource.response_format == 'JSON':
                                             return HttpResponse(json.dumps(data), content_type='application/json',
