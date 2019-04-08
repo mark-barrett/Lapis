@@ -399,7 +399,8 @@ class RequestHandlerPrivate(View):
                                                 text_response += resource_text_source.text
 
                                         # Check if there was text sources, if there is then try merge them
-
+                                        if text_response != '':
+                                            data = {**data, **ast.literal_eval(text_response)}
 
                                         if resource.response_format == 'JSON':
                                             return HttpResponse(json.dumps(data), content_type='application/json',
