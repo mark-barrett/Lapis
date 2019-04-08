@@ -1846,6 +1846,8 @@ class ProjectStatistics(LoginRequiredMixin, View):
 
         if 'selected_project_id' in request.session:
 
+            project = Project.objects.get(id=request.session['selected_project_id'])
+
             # The first statistic we want to get is the actual total requests over the last 7 days
             requests_over_days = []
             requests_today = []
@@ -1858,7 +1860,7 @@ class ProjectStatistics(LoginRequiredMixin, View):
             if today.day < 7:
                 start_date = date(today.year, today.month-1, 30-today.day)
             else:
-                start_date = date(today.year, today.month, 30-today.day)
+                start_date = date(today.year, today.month, today.day-6)
 
             end_date = date(today.year, today.month, today.day+1)
 
@@ -1866,7 +1868,7 @@ class ProjectStatistics(LoginRequiredMixin, View):
                 # Now we have the date
                 api_requests = APIRequest.objects.all().filter(date__day=single_date.day,
                                                                date__month=single_date.month,
-                                                               date__year=single_date.year).count()
+                                                               date__year=single_date.year, api_key__project=project).count()
 
                 requests_over_days.append({
                     'date': single_date,
@@ -1878,7 +1880,7 @@ class ProjectStatistics(LoginRequiredMixin, View):
                 api_requests = APIRequest.objects.all().filter(date__day=today.day,
                                                                date__month=today.month,
                                                                date__year=today.year,
-                                                               date__hour=x).count()
+                                                               date__hour=x, api_key__project=project).count()
 
                 requests_today.append({
                     'hour': x,
@@ -1894,7 +1896,7 @@ class ProjectStatistics(LoginRequiredMixin, View):
                 resources_list.append({
                     'resource': resource.name,
                     'type': resource.request_type,
-                    'requests': APIRequest.objects.all().filter(resource=resource.name, type=resource.request_type).count()
+                    'requests': APIRequest.objects.all().filter(resource=resource.name, type=resource.request_type, api_key__project=project).count()
                 })
 
             # Assume the most popular is the first
@@ -1909,13 +1911,13 @@ class ProjectStatistics(LoginRequiredMixin, View):
 
             context = {
                 'projects': Project.objects.all().filter(user=request.user),
-                'project': Project.objects.get(id=request.session['selected_project_id']),
+                'project': project,
                 'requests_over_days': requests_over_days,
                 'requests_today_graph': requests_today,
                 'requests_today': APIRequest.objects.all().filter(date__day=today.day,
                                                                   date__month=today.month,
-                                                                  date__year=today.year).count(),
-                'requests_this_month': APIRequest.objects.all().filter(date__month=today.month).count(),
+                                                                  date__year=today.year, api_key__project=project).count(),
+                'requests_this_month': APIRequest.objects.all().filter(date__month=today.month, api_key__project=project).count(),
                 'most_popular': most_popular
             }
 
